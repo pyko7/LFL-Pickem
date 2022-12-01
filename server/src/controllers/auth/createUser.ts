@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { FirebaseError } from "@firebase/util";
-import { auth } from "../firebase";
-import { createUserSchema } from "../validations/userValidation";
+import { auth } from "../../firebase";
+import { createUserSchema } from "../../validations/userValidation";
 import { sendVerificationEmail } from "./sendVerificationEmail";
 
 export const createUser = async (req: Request, res: Response) => {
