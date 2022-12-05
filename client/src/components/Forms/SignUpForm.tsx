@@ -28,7 +28,7 @@ const SignUpForm = () => {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    rowGap: 14,
+    rowGap: 6,
     backgroundColor: theme.palette.background.paper,
     borderRadius: 8,
     [theme.breakpoints.up("sm")]: {
