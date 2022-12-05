@@ -32,15 +32,15 @@ export const theme = createTheme({
     MuiTextField: {
       styleOverrides: {
         root: {
-          caretColor: "#fffffe",
+          caretColor: "#0A0E13",
           borderRadius: 8,
           backgroundColor: "#fffffe",
           "& label": {
-            color: "#9E9E9E",
+            color: "#36414A",
             fontWeight: 700,
           },
           "& label.Mui-focused": {
-            color: "#9E9E9E",
+            color: "#36414A",
           },
           "& .MuiFilledInput-root": {
             overflow: "hidden",
@@ -48,7 +48,6 @@ export const theme = createTheme({
           },
           "& .MuiFilledInput-underline::after ": {
             margin: "0,auto",
-            borderBottomColor: "#B8933A",
           },
         },
       },
