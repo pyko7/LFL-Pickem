@@ -18,7 +18,6 @@ const SignUp = () => {
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "space-between",
-    overflow: "hidden",
   });
 
   const ImageContainer = styled(Box)({
@@ -45,6 +44,8 @@ const SignUp = () => {
     flexDirection: "column",
     alignItems: "center",
     flexBasis: "75%",
+    backgroundColor: theme.palette.primary.main,
+
   });
 
   return (
