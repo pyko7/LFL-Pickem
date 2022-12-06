@@ -1,15 +1,42 @@
+import { useState } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import FormGroup from "@mui/material/FormGroup";
 import FormHelperText from "@mui/material/FormHelperText";
 import Button from "@mui/material/Button";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import CircularProgress from "@mui/material/CircularProgress";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SignUpForm } from "~/src/types/forms";
 import { createUserSchema } from "~/src/validations/authValidation";
+import { useMutation } from "@tanstack/react-query";
+import { createUser } from "~/src/utils/api/auth/createUser";
+import { useRouter } from "next/router";
 
 const SignUpForm = () => {
+  const router = useRouter();
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+  const [pseudoErrorMessage, setPseudoErrorMessage] = useState("");
+  const [emailErrorMessage, setEmailErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleClickShowPassword = () => {
+    return passwordVisible
+      ? setPasswordVisible(false)
+      : setPasswordVisible(true);
+  };
+  const handleClickShowConfirmPassword = () => {
+    return passwordVisible
+      ? setConfirmPasswordVisible(false)
+      : setConfirmPasswordVisible(true);
+  };
+
   const {
     register,
     handleSubmit,
@@ -19,7 +46,32 @@ const SignUpForm = () => {
     reValidateMode: "onSubmit",
     resolver: yupResolver(createUserSchema),
   });
-  const onSubmit: SubmitHandler<SignUpForm> = (data) => console.log(data);
+
+  const mutation = useMutation({
+    mutationFn: createUser,
+    onError: (error) => {
+      if (error instanceof Error) {
+        if (error.message === '"Le pseudo est déjà utilisé"') {
+          return setPseudoErrorMessage(error.message.replaceAll('"', ""));
+        }
+        if (error.message === "L'email est déjà utilisé") {
+          return setEmailErrorMessage(error.message);
+        } else {
+          return setErrorMessage(error.message);
+        }
+      }
+    },
+    onSuccess: () => {
+      router.push("/signup/confirm-email");
+    },
+  });
+
+  const onSubmit: SubmitHandler<SignUpForm> = (data) => {
+    setPseudoErrorMessage("");
+    setEmailErrorMessage("");
+    setErrorMessage("");
+    mutation.mutate(data);
+  };
 
   const Form = styled(Box)(({ theme }) => ({
     width: "100%",
@@ -49,6 +101,13 @@ const SignUpForm = () => {
     },
   }));
 
+  const PasswordVisibilityButton = styled(IconButton)(({ theme }) => ({
+    "&:hover": {
+      background: "transparent",
+      color: theme.palette.primary.main,
+    },
+  }));
+
   const SubmitButton = styled(Button)(({ theme }) => ({
     width: "100%",
     maxWidth: 290,
@@ -72,38 +131,59 @@ const SignUpForm = () => {
 
   return (
     <Form component="form" onSubmit={handleSubmit(onSubmit)}>
-      <Inputs sx={{ width: 1 }}>
+      <Inputs>
         <TextField
           type="text"
           variant="filled"
           label="Pseudo"
           {...register("pseudo")}
         />
+        {mutation.isError && pseudoErrorMessage.length > 0 ? (
+          <ErrorMessage>{pseudoErrorMessage}</ErrorMessage>
+        ) : null}
         {errors.pseudo ? (
           <ErrorMessage>{errors.pseudo.message}</ErrorMessage>
         ) : (
           ""
         )}
       </Inputs>
-      <Inputs sx={{ width: 1 }}>
+      <Inputs>
         <TextField
           type="email"
           variant="filled"
           label="Adresse email"
           {...register("email")}
         />
+        {mutation.isError && emailErrorMessage.length > 0 ? (
+          <ErrorMessage>{emailErrorMessage}</ErrorMessage>
+        ) : null}
+
         {errors.email ? (
           <ErrorMessage>{errors.email.message}</ErrorMessage>
         ) : (
           ""
         )}
       </Inputs>
-      <Inputs sx={{ width: 1 }}>
+      <Inputs>
         <TextField
-          type="password"
+          type={passwordVisible ? "text" : "password"}
           variant="filled"
           label="Mot de passe"
           {...register("password")}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <PasswordVisibilityButton
+                  aria-label="modifie la visibilité du mot de passe"
+                  onClick={handleClickShowPassword}
+                  edge="end"
+                  color="inherit"
+                >
+                  {passwordVisible ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                </PasswordVisibilityButton>
+              </InputAdornment>
+            ),
+          }}
         />
         {errors.password ? (
           <ErrorMessage>{errors.password.message}</ErrorMessage>
@@ -112,22 +192,46 @@ const SignUpForm = () => {
         )}
       </Inputs>
 
-      <Inputs sx={{ width: 1 }}>
+      <Inputs>
         <TextField
           type="password"
           variant="filled"
           label="Confirmer le mot de passe"
           {...register("confirmPassword")}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <PasswordVisibilityButton
+                  aria-label="modifie la visibilité de la confirmation du mot de passe"
+                  onClick={handleClickShowConfirmPassword}
+                  edge="end"
+                  color="inherit"
+                >
+                  {confirmPasswordVisible ? (
+                    <VisibilityOffIcon />
+                  ) : (
+                    <VisibilityIcon />
+                  )}
+                </PasswordVisibilityButton>
+              </InputAdornment>
+            ),
+          }}
         />
         {errors.confirmPassword ? (
           <ErrorMessage>{errors.confirmPassword.message}</ErrorMessage>
         ) : (
           ""
         )}
+        {mutation.isError && errorMessage.length > 0 ? (
+          <ErrorMessage>{errorMessage}</ErrorMessage>
+        ) : null}
       </Inputs>
-
       <SubmitButton variant="contained" type="submit">
-        S'inscrire
+        {mutation.isLoading ? (
+          <CircularProgress color="secondary" size={26} />
+        ) : (
+          "S'inscrire"
+        )}
       </SubmitButton>
     </Form>
   );
