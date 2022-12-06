@@ -39,7 +39,11 @@ export const createUser = async (req: Request, res: Response) => {
     );
     sendVerificationEmail(user.email, verificationEmail);
 
-    res.cookie("auth", token, { httpOnly: true, maxAge: 3600000 });
+    res.cookie("auth", token, {
+      httpOnly: true,
+      maxAge: 3600000,
+      sameSite: "lax",
+    });
     res.status(201).json({ message: "User created!" });
   } catch (error) {
     if (error instanceof Error) {
