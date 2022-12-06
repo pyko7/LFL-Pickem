@@ -1,6 +1,6 @@
-import { SignUpForm } from "~/src/types/forms";
+import { AuthForm } from "~/src/types/forms";
 
-export const createUser = async (user: SignUpForm) => {
+export const createUser = async (user: AuthForm) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/signup`, {
     method: "POST",
     headers: {

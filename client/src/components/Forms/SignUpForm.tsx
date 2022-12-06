@@ -12,7 +12,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { SignUpForm } from "~/src/types/forms";
+import { AuthForm } from "~/src/types/forms";
 import { createUserSchema } from "~/src/validations/authValidation";
 import { useMutation } from "@tanstack/react-query";
 import { createUser } from "~/src/utils/api/auth/createUser";
@@ -41,7 +41,7 @@ const SignUpForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignUpForm>({
+  } = useForm<AuthForm>({
     mode: "onSubmit",
     reValidateMode: "onSubmit",
     resolver: yupResolver(createUserSchema),
@@ -66,7 +66,7 @@ const SignUpForm = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<SignUpForm> = (data) => {
+  const onSubmit: SubmitHandler<AuthForm> = (data) => {
     setPseudoErrorMessage("");
     setEmailErrorMessage("");
     setErrorMessage("");

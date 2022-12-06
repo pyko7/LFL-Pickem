@@ -1,4 +1,4 @@
-export interface SignUpForm {
+export interface AuthForm {
   pseudo: string;
   email: string;
   password: string;
