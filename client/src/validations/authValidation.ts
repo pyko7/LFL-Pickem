@@ -5,6 +5,7 @@ export const createUserSchema = yup.object({
     .string()
     .min(2, "Veuillez entrer au minimum 2 caractères")
     .max(16, "Veuillez entrer maximum 2 caractères")
+    .lowercase()
     .matches(/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{1,16}$/g, {
       message: "Seuls les caractères spéciaux . et _ sont acceptés ",
       excludeEmptyString: true,
