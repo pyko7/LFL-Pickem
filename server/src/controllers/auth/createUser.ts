@@ -1,12 +1,10 @@
 import { Request, Response } from "express";
-import { FirebaseError } from "@firebase/util";
 import { auth } from "../../firebase";
 import { createUserSchema } from "../../validations/userValidation";
 import { sendVerificationEmail } from "./sendVerificationEmail";
 
 export const createUser = async (req: Request, res: Response) => {
   const user = req.body;
-  console.log(user);
   try {
     await createUserSchema.validate(user);
 
@@ -32,11 +30,11 @@ export const createUser = async (req: Request, res: Response) => {
 
     res.status(201).json({ message: "User created!" });
   } catch (error) {
-    if (error instanceof FirebaseError) {
-      return res.status(400).json(error.message);
-    }
     if (error instanceof Error) {
-      return res.status(400).json(error.message);
+      if (error.message === "Le pseudo est déjà utilisé") {
+        return res.status(400).json(JSON.stringify(error.message));
+      }
+      return res.status(400).json(error);
     }
   }
 };
