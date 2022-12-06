@@ -1,13 +1,13 @@
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import SignUpForm from "~/src/components/Forms/SignUpForm";
+import LoginForm from "~/src/components/Forms/LoginForm";
 import Typography from "@mui/material/Typography";
 import lflLogo from "~/public/white_lfl.png";
 import Image from "next/legacy/image";
 import Link from "next/link";
 
-const SignUp = () => {
+const LoginPage = () => {
   const theme = useTheme();
   const Page = styled(Box)({
     width: "100%",
@@ -45,7 +45,6 @@ const SignUp = () => {
     alignItems: "center",
     flexBasis: "75%",
     backgroundColor: theme.palette.primary.main,
-
   });
 
   return (
@@ -54,18 +53,18 @@ const SignUp = () => {
         <Image src={lflLogo} alt="logo" layout="responsive" />
       </ImageContainer>
       <FormContainer>
-        <SignUpForm />
+        <LoginForm />
         <Box sx={{ marginTop: 2, textAlign: "center" }}>
-          <Typography>Vous avez déjà un compte ?</Typography>
+          <Typography>Vous n'avez pas de compte ?</Typography>
           <Link
-            href="/login"
+            href="/signup"
             style={{
               color: theme.palette.secondary.main,
               fontWeight: 700,
               textDecoration: "none",
             }}
           >
-            Connectez-vous
+            Inscrivez-vous
           </Link>
         </Box>
       </FormContainer>
@@ -73,4 +72,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default LoginPage;
