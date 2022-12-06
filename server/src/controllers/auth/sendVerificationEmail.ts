@@ -14,11 +14,11 @@ export const sendVerificationEmail = (email: string, link: string) => {
     from: "LFL-Pickem <noreply@lflpickem.com>",
     to: email,
     subject: "Vérification de l'email",
-    text: `Vérification de l'email: cliquez sur le lien pour la vérification de votre adresse mail: ${link}`,
+    text: `Vérification de l'email: cliquez sur le lien pour la confirmation de votre adresse mail: ${link}`,
     html: `
     <h1 style="font-size: 1.5em">Bienvenue dans LFL-Pickem !</h1>
-    <p>Afin de pouvoir continuer sur le site je t'invite à cliquer sur le lien ci-dessous afin de vérifier ton adresse mail <br/><br/><br/>
-      <a href="${link}"> Lien d'activation</a>
+    <p>Afin de pouvoir continuer sur le site je t'invite à cliquer sur le lien ci-dessous afin de confirmer ton adresse mail <br/><br/><br/>
+      <a href="${link}"> Confirmer mon adresse email</a>
       <br/>
       <br/>
       <br/>
