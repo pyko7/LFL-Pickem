@@ -35,14 +35,13 @@ export const createUserSchema = yup.object({
 export const logUserSchema = yup.object({
   email: yup
     .string()
-    .email("Veuillez entrer une adresse email valide")
-    .required("Veuillez remplir ce champ"),
+    .email("Adresse email et/ou mot de passe incorrect")
+    .required("Adresse email et/ou mot de passe incorrect"),
   password: yup
     .string()
     .matches(/((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,})/g, {
-      message:
-        "Le mot doit contenir au minimum 8 caractères, une majuscule, une minuscule, un chiffre ainsi qu'un caractère spécial ",
+      message: "Adresse email et/ou mot de passe incorrect",
       excludeEmptyString: true,
     })
-    .required("Veuillez remplir ce champ"),
+    .required("Adresse email et/ou mot de passe incorrect"),
 });
