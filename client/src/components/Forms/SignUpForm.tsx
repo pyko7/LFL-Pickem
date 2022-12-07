@@ -82,7 +82,7 @@ const SignUpForm = () => {
     alignItems: "center",
     rowGap: 6,
     backgroundColor: theme.palette.background.paper,
-    borderRadius: 8,
+    borderRadius: "0 0 8px 8px",
     [theme.breakpoints.up("sm")]: {
       maxWidth: 395,
       padding: 35,

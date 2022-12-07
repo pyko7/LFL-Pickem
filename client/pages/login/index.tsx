@@ -46,6 +46,22 @@ const LoginPage = () => {
     flexBasis: "75%",
     backgroundColor: theme.palette.primary.main,
   });
+  const Title = styled(Typography)({
+    width: "100%",
+    paddingTop: 25,
+    fontSize: 32,
+    fontWeight: 700,
+    textAlign: "center",
+    backgroundColor: theme.palette.background.paper,
+    color: theme.palette.primary.dark,
+    borderRadius: "8px 8px 0 0",
+    [theme.breakpoints.up("sm")]: {
+      maxWidth: 395,
+    },
+    [theme.breakpoints.up("lg")]: {
+      maxWidth: 445,
+    },
+  });
 
   return (
     <Page component="section">
@@ -53,6 +69,7 @@ const LoginPage = () => {
         <Image src={lflLogo} alt="logo" layout="responsive" />
       </ImageContainer>
       <FormContainer>
+        <Title variant="h1">Connexion</Title>
         <LoginForm />
         <Box sx={{ marginTop: 2, textAlign: "center" }}>
           <Typography>Vous n'avez pas de compte ?</Typography>
