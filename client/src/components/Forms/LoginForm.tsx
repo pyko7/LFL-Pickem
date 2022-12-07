@@ -22,7 +22,9 @@ import Link from "next/link";
 const LoginForm = () => {
   const router = useRouter();
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState(
+    "Adresse email et/ou mot de passe incorrect"
+  );
 
   const handleClickShowPassword = () => {
     return passwordVisible
@@ -42,7 +44,6 @@ const LoginForm = () => {
 
   const mutation = useMutation({
     mutationFn: logUser,
-
     onSuccess: () => {
       router.push("/");
     },
@@ -125,15 +126,6 @@ const LoginForm = () => {
           label="Adresse email"
           {...register("email")}
         />
-        {mutation.isError && emailErrorMessage.length > 0 ? (
-          <ErrorMessage>{emailErrorMessage}</ErrorMessage>
-        ) : null}
-
-        {errors.email ? (
-          <ErrorMessage>{errors.email.message}</ErrorMessage>
-        ) : (
-          ""
-        )}
       </Inputs>
       <Inputs>
         <TextField
@@ -156,11 +148,9 @@ const LoginForm = () => {
             ),
           }}
         />
-        {errors.password ? (
-          <ErrorMessage>{errors.password.message}</ErrorMessage>
-        ) : (
-          ""
-        )}
+        {mutation.isError || errors.email || errors.password ? (
+          <ErrorMessage>{errorMessage}</ErrorMessage>
+        ) : null}
       </Inputs>
       <SubmitButton variant="contained" type="submit">
         {mutation.isLoading ? (
