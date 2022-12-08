@@ -15,15 +15,16 @@ export const createSessionCookie = async (req: Request, res: Response) => {
     const sessionCookie = await auth.createSessionCookie(idToken, {
       expiresIn,
     });
+
     res.cookie("session", sessionCookie, {
       maxAge: expiresIn,
       httpOnly: true,
       sameSite: "lax",
-      // secure: true,
+      secure: true,
     });
 
-    res.end(JSON.stringify({ status: "success" }));
+    return res.end(JSON.stringify({ status: "success" }));
   } catch (error) {
-    res.status(401).json(error);
+    return res.status(401).json(error);
   }
 };
