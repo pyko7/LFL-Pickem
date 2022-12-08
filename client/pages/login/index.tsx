@@ -8,10 +8,11 @@ import lflLogo from "~/public/white_lfl.png";
 import Image from "next/legacy/image";
 import Link from "next/link";
 import SendEmailForm from "~/src/components/Forms/sendEmailForm";
+import { getLoginCsrfToken } from "~/src/utils/api/auth/getLoginCsrfToken";
 
 const LoginPage = () => {
+  getLoginCsrfToken();
   const [open, setOpen] = useState(false);
-
   const formProps = {
     open,
     setOpen,
