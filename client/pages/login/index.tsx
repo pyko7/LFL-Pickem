@@ -2,17 +2,20 @@ import { useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import LoginForm from "~/src/components/Forms/LoginForm";
 import Typography from "@mui/material/Typography";
+import CircularProgress from "@mui/material/CircularProgress";
+import LoginForm from "~/src/components/Forms/LoginForm";
 import lflLogo from "~/public/white_lfl.png";
 import Image from "next/legacy/image";
 import Link from "next/link";
 import SendEmailForm from "~/src/components/Forms/sendEmailForm";
 import { getLoginCsrfToken } from "~/src/utils/api/auth/getLoginCsrfToken";
+import { useQuery } from "@tanstack/react-query";
+import ErrorSnackbar from "~/src/components/Feedbacks/ErrorSnackbar";
 
 const LoginPage = () => {
-  getLoginCsrfToken();
   const [open, setOpen] = useState(false);
+  const [openError, setOpenError] = useState(true);
   const formProps = {
     open,
     setOpen,
@@ -20,8 +23,18 @@ const LoginPage = () => {
     title: "Réinitialisation du mot de passe",
     buttonName: "réinitialiser le mot de passe",
   };
-
+  const errorProps = {
+    open: openError,
+    setOpen: setOpenError,
+    message: "Une erreur est survenue, veuillez réessayer plus tard",
+  };
   const theme = useTheme();
+
+  const { isLoading, isError } = useQuery({
+    queryKey: ["token"],
+    queryFn: getLoginCsrfToken,
+  });
+
   const Page = styled(Box)({
     width: "100%",
     minHeight: "100vh",
@@ -82,22 +95,34 @@ const LoginPage = () => {
         <Image src={lflLogo} alt="logo" layout="responsive" />
       </ImageContainer>
       <FormContainer>
-        <Title variant="h1">Connexion</Title>
-        <LoginForm setOpen={setOpen} />
-        <Box sx={{ marginTop: 2, textAlign: "center" }}>
-          <Typography>Vous n'avez pas de compte ?</Typography>
-          <Link
-            href="/signup"
-            style={{
-              color: theme.palette.secondary.main,
-              fontWeight: 700,
-              textDecoration: "none",
-            }}
-          >
-            Inscrivez-vous
-          </Link>
-        </Box>
+        {isLoading ? (
+          <CircularProgress color="secondary" />
+        ) : isError ? (
+          <Typography>
+            Une erreur est survenue, veuillez réessayer plus tard.
+          </Typography>
+        ) : (
+          <>
+            <Title variant="h1">Connexion</Title>
+            <LoginForm setOpen={setOpen} />
+            <Box sx={{ marginTop: 2, textAlign: "center" }}>
+              <Typography>Vous n'avez pas de compte ?</Typography>
+              <Link
+                href="/signup"
+                style={{
+                  color: theme.palette.secondary.main,
+                  fontWeight: 700,
+                  textDecoration: "none",
+                }}
+              >
+                Inscrivez-vous
+              </Link>
+            </Box>
+          </>
+        )}
       </FormContainer>
+      {isError ? <ErrorSnackbar {...errorProps} /> : null}
+
       <SendEmailForm {...formProps} />
     </Page>
   );
