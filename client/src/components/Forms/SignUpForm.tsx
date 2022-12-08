@@ -76,7 +76,7 @@ const SignUpForm = () => {
   const Form = styled(Box)(({ theme }) => ({
     width: "100%",
     margin: 0,
-    padding: "20px 0",
+    padding: 20,
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
