@@ -126,7 +126,7 @@ const SendEmailForm = ({
               <ErrorMessage>{errors.email.message}</ErrorMessage>
             ) : null}
           </Inputs>
-          <DialogActions>
+          <DialogActions sx={{ width: 1 }}>
             <SubmitButton variant="contained" type="submit">
               {mutation.isLoading ? (
                 <CircularProgress color="secondary" size={26} />
