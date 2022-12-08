@@ -17,9 +17,12 @@ import { logUserSchema } from "~/src/validations/authValidation";
 import { useMutation } from "@tanstack/react-query";
 import { logUser } from "~/src/utils/api/auth/logUser";
 import { useRouter } from "next/router";
-import Link from "next/link";
 
-const LoginForm = () => {
+type Props = {
+  setOpen: (open: boolean) => void;
+};
+
+const LoginForm = ({ setOpen }: Props) => {
   const router = useRouter();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState(
@@ -56,7 +59,7 @@ const LoginForm = () => {
   const Form = styled(Box)(({ theme }) => ({
     width: "100%",
     margin: 0,
-    padding: "20px 0",
+    padding: 20,
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -160,12 +163,13 @@ const LoginForm = () => {
         )}
       </SubmitButton>
       <FormLinkContainer>
-        <Link
-          href="login/forgotten-password"
-          style={{ color: "inherit", textDecoration: "none" }}
+        <Button
+          variant="text"
+          sx={{ textTransform: "none", fontSize: 15 }}
+          onClick={() => setOpen(true)}
         >
           Mot de passe oublié ?
-        </Link>
+        </Button>
       </FormLinkContainer>
     </Form>
   );

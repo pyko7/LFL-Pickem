@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -6,8 +7,19 @@ import Typography from "@mui/material/Typography";
 import lflLogo from "~/public/white_lfl.png";
 import Image from "next/legacy/image";
 import Link from "next/link";
+import SendEmailForm from "~/src/components/Forms/sendEmailForm";
 
 const LoginPage = () => {
+  const [open, setOpen] = useState(false);
+
+  const formProps = {
+    open,
+    setOpen,
+    url: "/reset-password",
+    title: "Réinitialisation du mot de passe",
+    buttonName: "réinitialiser le mot de passe",
+  };
+
   const theme = useTheme();
   const Page = styled(Box)({
     width: "100%",
@@ -70,7 +82,7 @@ const LoginPage = () => {
       </ImageContainer>
       <FormContainer>
         <Title variant="h1">Connexion</Title>
-        <LoginForm />
+        <LoginForm setOpen={setOpen} />
         <Box sx={{ marginTop: 2, textAlign: "center" }}>
           <Typography>Vous n'avez pas de compte ?</Typography>
           <Link
@@ -85,6 +97,7 @@ const LoginPage = () => {
           </Link>
         </Box>
       </FormContainer>
+      <SendEmailForm {...formProps} />
     </Page>
   );
 };

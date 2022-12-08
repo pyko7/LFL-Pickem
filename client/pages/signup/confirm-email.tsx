@@ -6,34 +6,28 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import LoginIcon from "@mui/icons-material/Login";
 import EmailIcon from "@mui/icons-material/Email";
-import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { resendVerificationEmail } from "~/src/utils/api/auth/resendVerificationEmail";
-import ErrorSnackbar from "~/src/components/Feedbacks/ErrorSnackbar";
-import SuccessSnackbar from "~/src/components/Feedbacks/SuccesSnackbar";
+import SendEmailForm from "~/src/components/Forms/sendEmailForm";
 
 const ConfirmEmail = () => {
   const theme = useTheme();
   const { push } = useRouter();
-  const [error, setError] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [open, setOpen] = useState(false);
 
-  const mutation = useMutation({
-    mutationFn: resendVerificationEmail,
-    onError: () => {
-      setError(true);
-    },
-    onSuccess: () => {
-      setSuccess(true);
-    },
-  });
+  const formProps = {
+    open,
+    setOpen,
+    url: "/confirm-email",
+    title: "Envoie d'un email de confirmation",
+    buttonName: "confirmer l'email",
+  };
 
   const handleLoginPageClick = () => {
     push("/login");
   };
 
   const handleVerificationEmailClick = () => {
-    mutation.mutate();
+    return open ? setOpen(false) : setOpen(true);
   };
 
   const Page = styled(Box)(({ theme }) => ({
@@ -125,20 +119,7 @@ const ConfirmEmail = () => {
           Renvoyer un email
         </Buttons>
       </TextContainer>
-      {mutation.isError ? (
-        <ErrorSnackbar
-          open={error}
-          setOpen={setError}
-          message="Une erreur est survenue, veuillez réessayer plus tard"
-        />
-      ) : null}
-      {mutation.isSuccess ? (
-        <SuccessSnackbar
-          open={success}
-          setOpen={setSuccess}
-          message="Email envoyé"
-        />
-      ) : null}
+      {!open ? null : <SendEmailForm {...formProps} />}
     </Page>
   );
 };
