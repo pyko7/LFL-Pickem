@@ -30,6 +30,9 @@ export const logUser = async (userData: AuthForm) => {
     );
     const data = await res.json();
     if (!res.ok) {
+      if (res.status === 403) {
+        throw new Error("Email is not verified");
+      }
       throw new Error(data);
     }
     await auth.signOut();
