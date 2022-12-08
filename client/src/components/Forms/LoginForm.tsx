@@ -25,9 +25,7 @@ type Props = {
 const LoginForm = ({ setOpen }: Props) => {
   const router = useRouter();
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(
-    "Adresse email et/ou mot de passe incorrect"
-  );
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleClickShowPassword = () => {
     return passwordVisible
@@ -47,6 +45,11 @@ const LoginForm = ({ setOpen }: Props) => {
 
   const mutation = useMutation({
     mutationFn: logUser,
+    onError: (error) => {
+      if (error instanceof Error) {
+        setErrorMessage(error.message);
+      }
+    },
     onSuccess: () => {
       router.push("/");
     },
