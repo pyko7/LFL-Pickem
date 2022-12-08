@@ -46,7 +46,7 @@ export const logUserSchema = yup.object({
     .required("Adresse email et/ou mot de passe incorrect"),
 });
 
-export const resetPasswordSchema = yup.object({
+export const sendEmailSchema = yup.object({
   email: yup
     .string()
     .email("Adresse email  incorrect")
