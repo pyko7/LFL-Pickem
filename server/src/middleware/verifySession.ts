@@ -8,13 +8,9 @@ export const verifySession = async (
 ) => {
   const sessionCookie = req.cookies.session || "";
   try {
-    const decodedClaims = await auth.verifySessionCookie(sessionCookie, true);
-    if (!decodedClaims) {
-      throw new Error("User must be logged in");
-    }
+    await auth.verifySessionCookie(sessionCookie, true);
     next();
   } catch (error) {
-    res.redirect("/login");
     return res.status(403).json(error);
   }
 };
