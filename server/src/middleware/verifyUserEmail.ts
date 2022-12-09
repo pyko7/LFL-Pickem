@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import { decode } from "jsonwebtoken";
 import { auth } from "../firebase";
 
 export const verifyUserEmail = async (
@@ -8,16 +7,9 @@ export const verifyUserEmail = async (
   next: NextFunction
 ) => {
   const idToken = req.body.idToken.toString();
-  const decodedToken = decode(idToken);
-
-  if (!decodedToken) {
-    return res.redirect("/login");
-  }
-
   try {
-    const userId = decodedToken.sub?.toString();
-    const user = await auth.getUser(userId!);
-    if (!user.emailVerified) {
+    const decodedToken = await auth.verifyIdToken(idToken, true);
+    if (!decodedToken.email_verified) {
       throw new Error("Email is not verified");
     }
     next();
