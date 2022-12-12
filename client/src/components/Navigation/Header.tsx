@@ -13,7 +13,7 @@ const Header = () => {
   const [open, setOpen] = useState(false);
   const drawerProps = { open, setOpen };
 
-  const ImageContainer = styled(Box)(({ theme }) => ({
+  const ImageContainer = styled("a")(({ theme }) => ({
     width: 65,
     height: 65,
     [theme.breakpoints.up("sm")]: {
@@ -37,7 +37,7 @@ const Header = () => {
             justifyContent: "space-between",
           }}
         >
-          <ImageContainer>
+          <ImageContainer href="/">
             <Image src={lflLogo} alt="logo" layout="responsive" priority />
           </ImageContainer>
           <IconButton
