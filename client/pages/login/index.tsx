@@ -8,7 +8,7 @@ import LoginForm from "~/src/components/Forms/LoginForm";
 import lflLogo from "~/public/white_lfl.png";
 import Image from "next/legacy/image";
 import Link from "next/link";
-import SendEmailForm from "~/src/components/Forms/sendEmailForm";
+import SendEmailForm from "~/src/components/Forms/SendEmailForm";
 import { getLoginCsrfToken } from "~/src/utils/api/auth/getLoginCsrfToken";
 import { useQuery } from "@tanstack/react-query";
 import ErrorSnackbar from "~/src/components/Feedbacks/ErrorSnackbar";

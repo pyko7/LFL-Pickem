@@ -7,7 +7,7 @@ import Divider from "@mui/material/Divider";
 import LoginIcon from "@mui/icons-material/Login";
 import EmailIcon from "@mui/icons-material/Email";
 import { useRouter } from "next/router";
-import SendEmailForm from "~/src/components/Forms/sendEmailForm";
+import SendEmailForm from "~/src/components/Forms/SendEmailForm";
 
 const ConfirmEmail = () => {
   const theme = useTheme();
