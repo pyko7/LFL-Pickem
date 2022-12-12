@@ -46,6 +46,7 @@ const LoginForm = ({ setOpen }: Props) => {
   const mutation = useMutation({
     mutationFn: logUser,
     onError: (error) => {
+      console.log(error);
       if (error instanceof Error) {
         if (error.message === "Email is not verified") {
           push("/signup/confirm-email");
@@ -157,8 +158,11 @@ const LoginForm = ({ setOpen }: Props) => {
             ),
           }}
         />
-        {mutation.isError || errors.email || errors.password ? (
+
+        {mutation.isError ? (
           <ErrorMessage>{errorMessage}</ErrorMessage>
+        ) : errors.email || errors.password ? (
+          <ErrorMessage>{errors.email?.message}</ErrorMessage>
         ) : null}
       </Inputs>
       <SubmitButton variant="contained" type="submit">

@@ -47,6 +47,9 @@ export const logUser = async (userData: AuthForm) => {
           "Votre compte a été temporairement bloqué. Pour pouvoir vous connecter, veuillez modifier votre mot de passe ou réessayer ultérieurement"
         );
       }
+      if (error.code === "auth/user-not-found") {
+        throw new Error("Aucun utilisateur trouvé");
+      }
     }
     if (error instanceof Error) {
       throw new Error(error.message);
