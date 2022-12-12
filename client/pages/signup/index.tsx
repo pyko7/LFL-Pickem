@@ -10,19 +10,23 @@ import Link from "next/link";
 const SignUp = () => {
   const theme = useTheme();
   const Page = styled(Box)({
+    position: "absolute",
+    top: 0,
+    left: 0,
     width: "100%",
     minHeight: "100vh",
     height: "100vh",
-    padding: "15px 0",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "center",
+    backgroundColor: theme.palette.primary.main,
   });
 
   const ImageContainer = styled(Box)({
     width: 80,
     height: 80,
+    marginBottom: 25,
 
     [theme.breakpoints.up("sm")]: {
       top: 25,
@@ -44,7 +48,6 @@ const SignUp = () => {
     flexDirection: "column",
     alignItems: "center",
     flexBasis: "75%",
-    backgroundColor: theme.palette.primary.main,
   });
 
   const Title = styled(Typography)({
@@ -66,10 +69,10 @@ const SignUp = () => {
 
   return (
     <Page component="section">
-      <ImageContainer>
-        <Image src={lflLogo} alt="logo" layout="responsive" />
-      </ImageContainer>
       <FormContainer>
+        <ImageContainer>
+          <Image src={lflLogo} alt="logo" layout="responsive" priority />
+        </ImageContainer>
         <Title variant="h1">Inscription</Title>
 
         <SignUpForm />

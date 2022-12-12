@@ -36,19 +36,23 @@ const LoginPage = () => {
   });
 
   const Page = styled(Box)({
+    position: "absolute",
+    top: 0,
+    left: 0,
     width: "100%",
     minHeight: "100vh",
     height: "100vh",
-    padding: "15px 0",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "center",
+    backgroundColor: theme.palette.primary.main,
   });
 
   const ImageContainer = styled(Box)({
     width: 80,
     height: 80,
+    marginBottom: 25,
 
     [theme.breakpoints.up("sm")]: {
       top: 25,
@@ -91,10 +95,10 @@ const LoginPage = () => {
 
   return (
     <Page component="section">
-      <ImageContainer>
-        <Image src={lflLogo} alt="logo" layout="responsive" />
-      </ImageContainer>
       <FormContainer>
+        <ImageContainer>
+          <Image src={lflLogo} alt="logo" layout="responsive" />
+        </ImageContainer>
         {isLoading ? (
           <CircularProgress color="secondary" />
         ) : isError ? (
