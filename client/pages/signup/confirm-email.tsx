@@ -83,7 +83,7 @@ const ConfirmEmail = () => {
         </Typography>
         <Typography paragraph>
           Vous êtes bientôt prêt à acceder au site. Nous avons envoyé un email
-          de vérification.
+          de vérification lors de votre inscription.
           <br />
           <br /> Vérifier votre boîte mail ainsi que vos{" "}
           <strong style={{ color: theme.palette.secondary.main }}>
@@ -91,7 +91,7 @@ const ConfirmEmail = () => {
           </strong>{" "}
           et cliquez sur le lien contenu dans l'email.
           <br />
-          <br /> Note: L'envoi de l'email peut prendre quelques minutes.
+          <br /> Note: l'envoi de l'email peut prendre quelques minutes.
         </Typography>
       </TextContainer>
       <SectionDivider />

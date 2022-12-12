@@ -25,8 +25,8 @@ const SendEmailForm = ({
   title,
   buttonName,
 }: EmailFormProps) => {
-  const successMessage = `Demande réussie ! Vous recevrez un email sous peu contenant un lien pour ${buttonName}`;
-  const [errorMessage, setErrorMessage] = useState("e");
+  const successMessage = `Demande réussie ! Vous recevrez un email sous peu contenant un lien pour ${buttonName}.`;
+  const [errorMessage, setErrorMessage] = useState("");
   const {
     register,
     handleSubmit,
