@@ -2,12 +2,22 @@ import { ReactNode } from "react";
 import Head from "next/head";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
+import Header from "./Navigation/Header";
 
 const Layout = ({ children }: { children?: ReactNode }) => {
+  const Layout = styled(Box)(({ theme }) => ({
+    width: "100%",
+    padding: 0,
+    margin: 0,
+    minHeight: "100vh",
+    backgroundColor: theme.palette.primary.main,
+  }));
+
   const MainContainer = styled(Box)(({ theme }) => ({
     width: "100%",
+    maxWidth: 1920,
+    margin: "0 auto",
     minHeight: "100vh",
-    margin: 0,
     padding: 0,
     color: theme.palette.neutral.main,
     backgroundColor: theme.palette.primary.main,
@@ -32,8 +42,10 @@ const Layout = ({ children }: { children?: ReactNode }) => {
           content="Bienvenue dans LFL-Pickem ! Pariez sur les victoires des équipes à chaque journée de LFL"
         />
       </Head>
-
-      <MainContainer component="main">{children}</MainContainer>
+      <Layout>
+        <Header />
+        <MainContainer component="main">{children}</MainContainer>
+      </Layout>
     </>
   );
 };
