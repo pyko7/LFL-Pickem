@@ -6,14 +6,30 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
+import Button from "@mui/material/Button";
 import Link from "next/link";
+import { useMutation } from "@tanstack/react-query";
+import { logoutUser } from "~/src/utils/api/auth/logoutUser";
+import { useRouter } from "next/router";
 
 const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
   const theme = useTheme();
+  const { push } = useRouter();
+
   const handleClose = () => {
     return setOpen(false);
+  };
+
+  const mutation = useMutation({
+    mutationFn: logoutUser,
+    onSuccess: () => {
+      push("/login");
+    },
+  });
+
+  const handleLogoutButton = () => {
+    handleClose();
+    mutation.mutate();
   };
 
   const navLinks = [
@@ -58,6 +74,23 @@ const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
     },
   }));
 
+  const LogoutButton = styled(Button)(({ theme }) => ({
+    position: "absolute",
+    bottom: 0,
+    left: 16,
+    width: "fit-content",
+    color: theme.palette.neutral.dark,
+    backgroundColor: theme.palette.secondary.main,
+    marginBottom: 15,
+    textDecoration: "none",
+    fontWeight: 700,
+    fontSize: 18,
+    textTransform: "none",
+    "&:hover": {
+      backgroundColor: theme.palette.secondary.light,
+    },
+  }));
+
   const ListHeader = styled(Box)({
     width: "100%",
     padding: 16,
@@ -92,7 +125,9 @@ const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
         {navLinks.map((item) => {
           return item.name !== "Live" ? (
             <ListItem key={item.name} disablePadding>
-              <Link href={item.pathname} onClick={handleClose}>{item.name}</Link>
+              <Link href={item.pathname} onClick={handleClose}>
+                {item.name}
+              </Link>
             </ListItem>
           ) : (
             <ListItem key={item.name} disablePadding>
@@ -103,11 +138,11 @@ const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
           );
         })}
       </ItemList>
+      <LogoutButton variant="contained" onClick={handleLogoutButton}>
+        Se déconnecter
+      </LogoutButton>
     </Drawer>
   );
 };
 
 export default NavigationDrawer;
-
-//END DRAWER + ADD LINKS + RESPONSIVE
-//PROFILE PAGE WITH INFORMATIONS
