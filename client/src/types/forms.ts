@@ -12,3 +12,8 @@ export interface EmailFormProps {
   title: string;
   buttonName: string;
 }
+
+export interface DeleteAccountProps {
+  deleteAccount: boolean;
+  setDeleteAccount: (deleteAccount: boolean) => void;
+}
