@@ -31,9 +31,15 @@ const ConfirmEmail = () => {
   };
 
   const Page = styled(Box)(({ theme }) => ({
+    position: "absolute",
+    top: 0,
+    left: "50%",
+    transform: "translateX(-50%)",
     width: "100%",
+    maxWidth: 1920,
     padding: "35px 20px",
     color: theme.palette.neutral.light,
+    backgroundColor: theme.palette.primary.main,
   }));
 
   const Title = styled(Typography)({
