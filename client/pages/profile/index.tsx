@@ -9,10 +9,13 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import CircularProgress from "@mui/material/CircularProgress";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendEmailForm from "~/src/components/Forms/SendEmailForm";
 import ConfirmDelete from "~/src/components/Forms/ConfirmDelete";
+import { useQuery } from "@tanstack/react-query";
+import { getLoginCsrfToken } from "~/src/utils/api/auth/getLoginCsrfToken";
 
 const Profile = () => {
   const theme = useTheme();
@@ -28,6 +31,10 @@ const Profile = () => {
   };
 
   const deleteAccountProps = { deleteAccount, setDeleteAccount };
+
+  const { isLoading, isError } = useQuery(["token"], () =>
+    getLoginCsrfToken("/user")
+  );
 
   const handlePasswordClick = () => {
     return resetPassword ? setResetPassword(false) : setResetPassword(true);
@@ -98,44 +105,57 @@ const Profile = () => {
 
   return (
     <Page component="section">
-      <Container maxWidth="md">
-        <ProfileHeader>
-          <UserName>John Doe</UserName>
-          <PointsCounter>25 pts</PointsCounter>
-        </ProfileHeader>
-        <SectionDivider />
+      {isLoading ? (
+        <CircularProgress color="secondary" />
+      ) : isError ? (
+        <Typography>
+          Une erreur est survenue, veuillez réessayer plus tard.
+        </Typography>
+      ) : (
+        <>
+          <Container maxWidth="md">
+            <ProfileHeader>
+              <UserName>John Doe</UserName>
+              <PointsCounter>25 pts</PointsCounter>
+            </ProfileHeader>
+            <SectionDivider />
 
-        <ProfileList>
-          <ListItem disableGutters>
-            <ListItemText primary="Classement actuel: 525" />
-          </ListItem>
-          <ListItem disableGutters>
-            <ListItemText primary="Top: 75%" />
-          </ListItem>
-        </ProfileList>
-        <SectionDivider />
+            <ProfileList>
+              <ListItem disableGutters>
+                <ListItemText primary="Classement actuel: 525" />
+              </ListItem>
+              <ListItem disableGutters>
+                <ListItemText primary="Top: 75%" />
+              </ListItem>
+            </ProfileList>
+            <SectionDivider />
 
-        <ProfileList>
-          <ListItem disableGutters>
-            <ListItemButton disableGutters onClick={handlePasswordClick}>
-              <ListIcon>
-                <EditIcon />
-              </ListIcon>
-              <ListItemText primary="Modifier le mot de passe" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disableGutters>
-            <ListItemButton disableGutters onClick={handleDeleteAccountClick}>
-              <ListIcon>
-                <DeleteIcon />
-              </ListIcon>
-              <ListItemText primary="Supprimer le compte" />
-            </ListItemButton>
-          </ListItem>
-        </ProfileList>
-      </Container>
-      <SendEmailForm {...resetPasswordProps} />
-      <ConfirmDelete {...deleteAccountProps} />
+            <ProfileList>
+              <ListItem disableGutters>
+                <ListItemButton disableGutters onClick={handlePasswordClick}>
+                  <ListIcon>
+                    <EditIcon />
+                  </ListIcon>
+                  <ListItemText primary="Modifier le mot de passe" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem disableGutters>
+                <ListItemButton
+                  disableGutters
+                  onClick={handleDeleteAccountClick}
+                >
+                  <ListIcon>
+                    <DeleteIcon />
+                  </ListIcon>
+                  <ListItemText primary="Supprimer le compte" />
+                </ListItemButton>
+              </ListItem>
+            </ProfileList>
+          </Container>
+          <SendEmailForm {...resetPasswordProps} />
+          <ConfirmDelete {...deleteAccountProps} />
+        </>
+      )}
     </Page>
   );
 };
