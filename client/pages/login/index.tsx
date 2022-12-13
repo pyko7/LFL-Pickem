@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -93,41 +94,60 @@ const LoginPage = () => {
   });
 
   return (
-    <Page component="section">
-      <FormContainer>
-        <ImageContainer>
-          <Image src={lflLogo} alt="logo" layout="responsive" />
-        </ImageContainer>
-        {isLoading ? (
-          <CircularProgress color="secondary" />
-        ) : isError ? (
-          <Typography>
-            Une erreur est survenue, veuillez réessayer plus tard.
-          </Typography>
-        ) : (
-          <>
-            <Title variant="h1">Connexion</Title>
-            <LoginForm setOpen={setOpen} />
-            <Box sx={{ marginTop: 2, textAlign: "center" }}>
-              <Typography>Vous n'avez pas de compte ?</Typography>
-              <Link
-                href="/signup"
-                style={{
-                  color: theme.palette.secondary.main,
-                  fontWeight: 700,
-                  textDecoration: "none",
-                }}
-              >
-                Inscrivez-vous
-              </Link>
-            </Box>
-          </>
-        )}
-      </FormContainer>
-      {isError ? <ErrorSnackbar {...errorProps} /> : null}
+    <>
+      <Head>
+        <title>Connexion - LFL-Pickem</title>
+        <meta
+          name="description"
+          content="Connectez-vous à LFL-Pickem puis pariez sur les victoires des équipes à chaque journée de LFL"
+        />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <link rel="icon" href="favicon.ico" type="image/x-icon" />
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Connexion - LFL-Pickem" />
+        <meta
+          property="og:description"
+          content="Connectez-vous à LFL-Pickem puis pariez sur les victoires des équipes à chaque journée de LFL"
+        />
+      </Head>
+      <Page component="section">
+        <FormContainer>
+          <ImageContainer>
+            <Image src={lflLogo} alt="logo" layout="responsive" />
+          </ImageContainer>
+          {isLoading ? (
+            <CircularProgress color="secondary" />
+          ) : isError ? (
+            <Typography>
+              Une erreur est survenue, veuillez réessayer plus tard.
+            </Typography>
+          ) : (
+            <>
+              <Title variant="h1">Connexion</Title>
+              <LoginForm setOpen={setOpen} />
+              <Box sx={{ marginTop: 2, textAlign: "center" }}>
+                <Typography>Vous n'avez pas de compte ?</Typography>
+                <Link
+                  href="/signup"
+                  style={{
+                    color: theme.palette.secondary.main,
+                    fontWeight: 700,
+                    textDecoration: "none",
+                  }}
+                >
+                  Inscrivez-vous
+                </Link>
+              </Box>
+            </>
+          )}
+        </FormContainer>
+        {isError ? <ErrorSnackbar {...errorProps} /> : null}
 
-      <SendEmailForm {...formProps} />
-    </Page>
+        <SendEmailForm {...formProps} />
+      </Page>
+    </>
   );
 };
 

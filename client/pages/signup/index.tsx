@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -68,29 +69,48 @@ const SignUp = () => {
   });
 
   return (
-    <Page component="section">
-      <FormContainer>
-        <ImageContainer>
-          <Image src={lflLogo} alt="logo" layout="responsive" priority />
-        </ImageContainer>
-        <Title variant="h1">Inscription</Title>
+    <>
+      <Head>
+        <title>Inscription - LFL-Pickem</title>
+        <meta
+          name="description"
+          content="Inscrivez-vous à LFL-Pickem puis pariez sur les victoires des équipes à chaque journée de LFL"
+        />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <link rel="icon" href="favicon.ico" type="image/x-icon" />
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Connexion - LFL-Pickem" />
+        <meta
+          property="og:description"
+          content="Inscrivez-vous à LFL-Pickem puis pariez sur les victoires des équipes à chaque journée de LFL"
+        />
+      </Head>
+      <Page component="section">
+        <FormContainer>
+          <ImageContainer>
+            <Image src={lflLogo} alt="logo" layout="responsive" priority />
+          </ImageContainer>
+          <Title variant="h1">Inscription</Title>
 
-        <SignUpForm />
-        <Box sx={{ marginTop: 2, textAlign: "center" }}>
-          <Typography>Vous avez déjà un compte ?</Typography>
-          <Link
-            href="/login"
-            style={{
-              color: theme.palette.secondary.main,
-              fontWeight: 700,
-              textDecoration: "none",
-            }}
-          >
-            Connectez-vous
-          </Link>
-        </Box>
-      </FormContainer>
-    </Page>
+          <SignUpForm />
+          <Box sx={{ marginTop: 2, textAlign: "center" }}>
+            <Typography>Vous avez déjà un compte ?</Typography>
+            <Link
+              href="/login"
+              style={{
+                color: theme.palette.secondary.main,
+                fontWeight: 700,
+                textDecoration: "none",
+              }}
+            >
+              Connectez-vous
+            </Link>
+          </Box>
+        </FormContainer>
+      </Page>
+    </>
   );
 };
 
