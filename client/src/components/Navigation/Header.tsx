@@ -24,10 +24,7 @@ const Header = () => {
 
   return (
     <>
-      <AppBar
-        position="static"
-        sx={{ maxWidth: 1920, margin: "auto", boxShadow: "none" }}
-      >
+      <AppBar position="static" sx={{ boxShadow: "none" }}>
         <Toolbar
           sx={{
             width: 1,

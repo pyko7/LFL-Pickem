@@ -7,15 +7,16 @@ import Header from "./Navigation/Header";
 const Layout = ({ children }: { children?: ReactNode }) => {
   const Layout = styled(Box)(({ theme }) => ({
     width: "100%",
-    padding: 0,
     margin: 0,
     minHeight: "100vh",
     backgroundColor: theme.palette.primary.main,
+    [theme.breakpoints.up("xl")]: {
+      padding: "0 35px",
+    },
   }));
 
   const MainContainer = styled(Box)(({ theme }) => ({
     width: "100%",
-    maxWidth: 1920,
     margin: "0 auto",
     minHeight: "100vh",
     padding: 0,
