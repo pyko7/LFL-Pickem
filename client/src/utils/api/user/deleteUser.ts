@@ -19,6 +19,9 @@ export const deleteUser = async (user: AuthForm) => {
       if (res.status === 403) {
         throw new Error("Adresse email incorrect");
       }
+      if (res.status === 401) {
+        throw new Error("Requête non autorisée");
+      }
       throw new Error(data);
     }
     return data;

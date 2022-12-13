@@ -16,6 +16,12 @@ export const sendAuthEmail = async (user: AuthForm, url: string) => {
     });
     const data = await res.json();
     if (!res.ok) {
+      if (res.status === 401) {
+        throw new Error("Requête non autorisée");
+      }
+      if (res.status === 403) {
+        throw new Error("Adresse email incorrecte");
+      }
       throw new Error(data);
     }
     return data;
