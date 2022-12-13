@@ -17,7 +17,7 @@ const ConfirmEmail = () => {
   const formProps = {
     open,
     setOpen,
-    url: "/confirm-email",
+    url: "auth/confirm-email",
     title: "Envoie d'un email de confirmation",
     buttonName: "confirmer l'email",
   };

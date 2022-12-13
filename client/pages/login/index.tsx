@@ -19,7 +19,7 @@ const LoginPage = () => {
   const formProps = {
     open,
     setOpen,
-    url: "/reset-password",
+    url: "auth/reset-password",
     title: "Réinitialisation du mot de passe",
     buttonName: "réinitialiser le mot de passe",
   };
