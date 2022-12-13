@@ -12,6 +12,7 @@ export const authRoutes = Router();
 authRoutes.all("*", (req, res, next) => {
   if (req.cookies.session) {
     res.clearCookie("session");
+    res.clearCookie("pid");
   }
   next();
 });

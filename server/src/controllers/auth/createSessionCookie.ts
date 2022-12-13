@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
 import { auth } from "../../firebase";
+import { sign } from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 
 export const createSessionCookie = async (req: Request, res: Response) => {
   const idToken = req.body.idToken.toString();
@@ -15,10 +18,20 @@ export const createSessionCookie = async (req: Request, res: Response) => {
     const sessionCookie = await auth.createSessionCookie(idToken, {
       expiresIn,
     });
+    const token = await auth.verifyIdToken(idToken);
+
+    const pidCookie = sign(token.uid, `${process.env.JWT_SECRET_KEY}`, {
+      expiresIn: 3600,
+    });
 
     res.cookie("session", sessionCookie, {
       maxAge: expiresIn,
       httpOnly: true,
+      sameSite: "lax",
+      secure: true,
+    });
+    res.cookie("pid", pidCookie, {
+      maxAge: expiresIn,
       sameSite: "lax",
       secure: true,
     });

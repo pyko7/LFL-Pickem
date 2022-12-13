@@ -7,5 +7,6 @@ export const logoutUser = (req: Request, res: Response) => {
     return res.status(401).send("UNAUTHORIZED REQUEST!");
   }
   res.clearCookie("session");
+  res.clearCookie("pid");
   res.status(200).json({ message: "success" });
 };
