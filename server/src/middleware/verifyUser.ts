@@ -8,15 +8,15 @@ export const verifyUser = async (
 ) => {
   const token = req.cookies.session;
   const csrfToken = req.body.csrfToken.toString();
+  const { email } = req.body;
 
   if (csrfToken !== req.cookies["__Host.x-csrf-token"]) {
     return res.status(401).send("UNAUTHORIZED REQUEST!");
   }
 
-  const { user } = req.body;
   try {
     const decodedToken = await auth.verifySessionCookie(token);
-    if (user.email !== decodedToken.email) {
+    if (email !== decodedToken.email) {
       throw Error("Unauthorized request: wrong email");
     }
     next();
