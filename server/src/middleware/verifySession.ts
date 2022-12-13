@@ -6,11 +6,14 @@ export const verifySession = async (
   res: Response,
   next: NextFunction
 ) => {
-  const sessionCookie = req.cookies.session || "";
+  const sessionCookie = req.cookies.session;
   try {
-    await auth.verifySessionCookie(sessionCookie, true);
+    const foundUser = await auth.verifySessionCookie(sessionCookie);
+    if (!foundUser) {
+      throw new Error("Unauthorized request");
+    }
     next();
   } catch (error) {
-    return res.status(403).json(error);
+    return res.status(401).json(error);
   }
 };
