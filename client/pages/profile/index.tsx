@@ -172,5 +172,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
-//DELETE USER
