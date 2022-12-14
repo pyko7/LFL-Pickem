@@ -18,16 +18,19 @@ export const verifyUser = async (
   }
 
   try {
-    const userId = verify(pid, `${process.env.JWT_SECRET_KEY}`);
+    const user = verify(pid, `${process.env.JWT_SECRET_KEY}`);
     const decodedToken = await auth.verifySessionCookie(session);
-    if (
-      email !== decodedToken.email ||
-      (userId && userId !== decodedToken.uid)
-    ) {
-      throw Error("Unauthorized request");
+
+    if (typeof user === "object") {
+      if (email !== decodedToken.email || user.pid !== decodedToken.uid) {
+        throw Error("Forbidden access");
+      }
     }
     next();
   } catch (error) {
+    if (error instanceof Error) {
+      res.status(403).json(error.message);
+    }
     res.status(403).json(error);
   }
 };

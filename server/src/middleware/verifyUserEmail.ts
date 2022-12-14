@@ -14,6 +14,9 @@ export const verifyUserEmail = async (
     }
     next();
   } catch (error) {
+    if (error instanceof Error) {
+      return res.status(403).json(error.message);
+    }
     return res.status(403).json(error);
   }
 };

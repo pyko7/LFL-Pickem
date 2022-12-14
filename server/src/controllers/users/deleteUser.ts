@@ -8,6 +8,6 @@ export const deleteUser = async (req: Request, res: Response) => {
     await auth.deleteUser(decodedToken.uid);
     res.status(200).json({ message: "User deleted" });
   } catch (error) {
-    return res.status(401).json(error);
+    return res.status(403).json(error);
   }
 };

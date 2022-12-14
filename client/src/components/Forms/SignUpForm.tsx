@@ -51,8 +51,8 @@ const SignUpForm = () => {
     mutationFn: createUser,
     onError: (error) => {
       if (error instanceof Error) {
-        if (error.message === '"Le pseudo est déjà utilisé"') {
-          return setPseudoErrorMessage(error.message.replaceAll('"', ""));
+        if (error.message === "Le pseudo est déjà utilisé") {
+          return setPseudoErrorMessage(error.message);
         }
         if (error.message === "L'email est déjà utilisé") {
           return setEmailErrorMessage(error.message);

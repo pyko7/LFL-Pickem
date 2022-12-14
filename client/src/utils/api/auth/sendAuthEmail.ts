@@ -1,4 +1,3 @@
-import { FirebaseError } from "firebase/app";
 import { AuthForm } from "~/src/types/forms";
 import Cookies from "js-cookie";
 
@@ -16,29 +15,26 @@ export const sendAuthEmail = async (user: AuthForm, url: string) => {
     });
     const data = await res.json();
     if (!res.ok) {
+      if (res.status === 400) {
+        if (data.code === "auth/internal-error") {
+          throw new Error(
+            "Une erreur s'est produite, veuillez réessayer ultérieurement"
+          );
+        }
+      }
       if (res.status === 401) {
-        throw new Error("Requête non autorisée");
+        if (data.code === "auth/argument-error") {
+          throw new Error("Token invalide");
+        }
       }
-      if (res.status === 403) {
-        throw new Error("Adresse email incorrecte");
-      }
-      throw new Error(data);
+      throw new Error(res.statusText);
     }
     return data;
   } catch (error) {
-    if (error instanceof FirebaseError) {
-      if (error.code === "auth/internal-error") {
-        throw new Error(
-          "Une erreur s'est produite, veuillez réessayer ultérieurement"
-        );
-      }
-      if (error.code === "auth/too-many-requests") {
-        throw new Error(
-          "Votre compte a été temporairement bloqué. Pour pouvoir vous connecter, veuillez modifier votre mot de passe ou réessayer ultérieurement"
-        );
-      }
-    }
     if (error instanceof Error) {
+      if (error.message === "Token invalide") {
+        window.location.href = "/login";
+      }
       throw new Error(error.message);
     }
   }

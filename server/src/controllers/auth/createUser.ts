@@ -33,10 +33,8 @@ export const createUser = async (req: Request, res: Response) => {
     res.status(201).json({ message: "User created!" });
   } catch (error) {
     if (error instanceof Error) {
-      if (error.message === "Le pseudo est déjà utilisé") {
-        return res.status(400).json(JSON.stringify(error.message));
-      }
-      return res.status(400).json(error);
+      return res.status(400).json(error.message);
     }
+    return res.status(400).json(error);
   }
 };

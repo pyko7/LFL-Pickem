@@ -11,9 +11,6 @@ export const resendVerificationEmail = async (req: Request, res: Response) => {
     sendVerificationEmail(email, verificationEmail);
     res.status(200).json({ message: "Email sent!" });
   } catch (error) {
-    if (error instanceof Error) {
-      return res.status(400).json(error);
-    }
-    return res.status(400).json(error);
+     return res.status(400).json(error);
   }
 };
