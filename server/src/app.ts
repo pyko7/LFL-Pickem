@@ -4,7 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import { authRoutes } from "./routes/authRoutes";
-import { profileRoutes } from "./routes/profileRoutes";
+import { userRoutes } from "./routes/userRoutes";
 import { verifySession } from "./middleware/verifySession";
 
 dotenv.config();
@@ -18,7 +18,7 @@ app.use(helmet());
 app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
-app.use("/api/user", verifySession, profileRoutes);
+app.use("/api/user", verifySession, userRoutes);
 app.listen(process.env.PORT, () => {
   console.log("listening at " + port);
 });

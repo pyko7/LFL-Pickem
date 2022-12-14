@@ -5,9 +5,9 @@ import { getUserById } from "../controllers/users/getUserById";
 import { createCsrf } from "../middleware/createCsrfToken";
 import { verifyUser } from "../middleware/verifyUser";
 
-export const profileRoutes = Router();
+export const userRoutes = Router();
 
-profileRoutes.get("/", createCsrf, getUserById);
-profileRoutes.post("/reset-password", verifyUser, sendResetPasswordEmail);
-profileRoutes.delete("/delete", verifyUser, deleteUser);
-
+userRoutes.get("/token", createCsrf);
+userRoutes.get("/", getUserById);
+userRoutes.post("/reset-password", verifyUser, sendResetPasswordEmail);
+userRoutes.delete("/delete", verifyUser, deleteUser);
