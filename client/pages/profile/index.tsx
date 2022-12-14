@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -15,6 +16,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import SendEmailForm from "~/src/components/Forms/SendEmailForm";
 import ConfirmDelete from "~/src/components/Forms/ConfirmDelete";
 import { useQuery } from "@tanstack/react-query";
+import { getUserById } from "~/src/utils/api/user/getUserById";
 import { getLoginCsrfToken } from "~/src/utils/api/auth/getLoginCsrfToken";
 
 const Profile = () => {
@@ -32,9 +34,8 @@ const Profile = () => {
 
   const deleteAccountProps = { deleteAccount, setDeleteAccount };
 
-  const { isLoading, isError } = useQuery(["token"], () =>
-    getLoginCsrfToken("/user")
-  );
+  useQuery(["token"], () => getLoginCsrfToken("/user/token"));
+  const { isLoading, isError, data } = useQuery(["user"], () => getUserById());
 
   const handlePasswordClick = () => {
     return resetPassword ? setResetPassword(false) : setResetPassword(true);
@@ -104,59 +105,66 @@ const Profile = () => {
   }));
 
   return (
-    <Page component="section">
-      {isLoading ? (
-        <CircularProgress color="secondary" />
-      ) : isError ? (
-        <Typography>
-          Une erreur est survenue, veuillez réessayer plus tard.
-        </Typography>
-      ) : (
-        <>
-          <Container maxWidth="md">
-            <ProfileHeader>
-              <UserName>John Doe</UserName>
-              <PointsCounter>25 pts</PointsCounter>
-            </ProfileHeader>
-            <SectionDivider />
+    <>
+      <Head>
+        <title>Profil - LFL-Pickem</title>
+        <meta property="og:title" content="Profil - LFL-Pickem" />
+      </Head>
 
-            <ProfileList>
-              <ListItem disableGutters>
-                <ListItemText primary="Classement actuel: 525" />
-              </ListItem>
-              <ListItem disableGutters>
-                <ListItemText primary="Top: 75%" />
-              </ListItem>
-            </ProfileList>
-            <SectionDivider />
+      <Page component="section">
+        {isLoading ? (
+          <CircularProgress color="secondary" />
+        ) : isError ? (
+          <Typography>
+            Une erreur est survenue, veuillez réessayer plus tard.
+          </Typography>
+        ) : (
+          <>
+            <Container maxWidth="md">
+              <ProfileHeader>
+                <UserName>John Doe</UserName>
+                <PointsCounter>25 pts</PointsCounter>
+              </ProfileHeader>
+              <SectionDivider />
 
-            <ProfileList>
-              <ListItem disableGutters>
-                <ListItemButton disableGutters onClick={handlePasswordClick}>
-                  <ListIcon>
-                    <EditIcon />
-                  </ListIcon>
-                  <ListItemText primary="Modifier le mot de passe" />
-                </ListItemButton>
-              </ListItem>
-              <ListItem disableGutters>
-                <ListItemButton
-                  disableGutters
-                  onClick={handleDeleteAccountClick}
-                >
-                  <ListIcon>
-                    <DeleteIcon />
-                  </ListIcon>
-                  <ListItemText primary="Supprimer le compte" />
-                </ListItemButton>
-              </ListItem>
-            </ProfileList>
-          </Container>
-          <SendEmailForm {...resetPasswordProps} />
-          <ConfirmDelete {...deleteAccountProps} />
-        </>
-      )}
-    </Page>
+              <ProfileList>
+                <ListItem disableGutters>
+                  <ListItemText primary="Classement actuel: 525" />
+                </ListItem>
+                <ListItem disableGutters>
+                  <ListItemText primary="Top: 75%" />
+                </ListItem>
+              </ProfileList>
+              <SectionDivider />
+
+              <ProfileList>
+                <ListItem disableGutters>
+                  <ListItemButton disableGutters onClick={handlePasswordClick}>
+                    <ListIcon>
+                      <EditIcon />
+                    </ListIcon>
+                    <ListItemText primary="Modifier le mot de passe" />
+                  </ListItemButton>
+                </ListItem>
+                <ListItem disableGutters>
+                  <ListItemButton
+                    disableGutters
+                    onClick={handleDeleteAccountClick}
+                  >
+                    <ListIcon>
+                      <DeleteIcon />
+                    </ListIcon>
+                    <ListItemText primary="Supprimer le compte" />
+                  </ListItemButton>
+                </ListItem>
+              </ProfileList>
+            </Container>
+            <SendEmailForm {...resetPasswordProps} />
+            <ConfirmDelete {...deleteAccountProps} />
+          </>
+        )}
+      </Page>
+    </>
   );
 };
 
