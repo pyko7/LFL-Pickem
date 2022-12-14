@@ -161,7 +161,7 @@ const LoginForm = ({ setOpen }: Props) => {
         {mutation.isError ? (
           <ErrorMessage>{errorMessage}</ErrorMessage>
         ) : errors.email || errors.password ? (
-          <ErrorMessage>{errors.email?.message}</ErrorMessage>
+          <ErrorMessage>Adresse email et/ou mot de passe incorrect</ErrorMessage>
         ) : null}
       </Inputs>
       <SubmitButton variant="contained" type="submit">
