@@ -11,7 +11,6 @@ export const verifySession = async (
     await auth.verifySessionCookie(sessionCookie);
     next();
   } catch (error) {
-    console.log(error);
     return res.status(401).json(error);
   }
 };
