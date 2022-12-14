@@ -7,22 +7,26 @@ dotenv.config();
 export const createSessionCookie = async (req: Request, res: Response) => {
   const idToken = req.body.idToken.toString();
   const csrfToken = req.body.csrfToken.toString();
+  const expiresIn = 3600000;
 
   if (csrfToken !== req.cookies["__Host.x-csrf-token"]) {
     res.status(401).send("UNAUTHORIZED REQUEST!");
     return;
   }
 
-  const expiresIn = 3600000;
   try {
     const sessionCookie = await auth.createSessionCookie(idToken, {
       expiresIn,
     });
     const token = await auth.verifyIdToken(idToken);
 
-    const pidCookie = sign(token.uid, `${process.env.JWT_SECRET_KEY}`, {
-      expiresIn: 3600,
-    });
+    const pidCookie = sign(
+      { pid: token.uid },
+      `${process.env.JWT_SECRET_KEY}`,
+      {
+        expiresIn: 360,
+      }
+    );
 
     res.cookie("session", sessionCookie, {
       maxAge: expiresIn,
