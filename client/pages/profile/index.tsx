@@ -45,14 +45,17 @@ const Profile = () => {
     return deleteAccount ? setDeleteAccount(false) : setDeleteAccount(true);
   };
 
-  const Page = styled(Box)({
+  const Page = styled(Box)(({ theme }) => ({
     width: "100%",
-    padding: "15px 0",
+    padding: "32px 0 15px 0",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "space-between",
-  });
+    [theme.breakpoints.up("sm")]: {
+      paddingTop: 50,
+    },
+  }));
 
   const ProfileHeader = styled(Box)(({ theme }) => ({
     width: "100%",
@@ -122,7 +125,7 @@ const Profile = () => {
           <>
             <Container maxWidth="md">
               <ProfileHeader>
-                <UserName>John Doe</UserName>
+                <UserName>{data.displayName}</UserName>
                 <PointsCounter>25 pts</PointsCounter>
               </ProfileHeader>
               <SectionDivider />
