@@ -8,12 +8,10 @@ export const verifySession = async (
 ) => {
   const sessionCookie = req.cookies.session;
   try {
-    const foundUser = await auth.verifySessionCookie(sessionCookie);
-    if (!foundUser) {
-      throw new Error("Unauthorized request");
-    }
+    await auth.verifySessionCookie(sessionCookie);
     next();
   } catch (error) {
+    console.log(error);
     return res.status(401).json(error);
   }
 };
