@@ -24,7 +24,7 @@ export const createSessionCookie = async (req: Request, res: Response) => {
       { pid: token.uid },
       `${process.env.JWT_SECRET_KEY}`,
       {
-        expiresIn: 360,
+        expiresIn: expiresIn,
       }
     );
 
