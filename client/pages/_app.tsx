@@ -4,6 +4,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Layout from "../src/components/Layout";
 import { theme } from "../src/style/theme";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AuthProvider } from "~/context/AuthContext";
 
 type AppProps<P = any> = {
   pageProps: P;
@@ -20,10 +21,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <AuthProvider>
+          <CssBaseline />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </AuthProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );
