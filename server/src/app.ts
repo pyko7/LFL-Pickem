@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import { authRoutes } from "./routes/authRoutes";
 import { userRoutes } from "./routes/userRoutes";
 import { verifySession } from "./middleware/verifySession";
+import { teamRoutes } from "./routes/teamsRoute";
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", verifySession, userRoutes);
+app.use("/api/team", verifySession, teamRoutes);
 app.listen(process.env.PORT, () => {
   console.log("listening at " + port);
 });
