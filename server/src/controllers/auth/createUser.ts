@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { auth } from "../../firebase";
+import { auth, db } from "../../firebase";
 import { createUserSchema } from "../../validations/userValidation";
 import { sendVerificationEmail } from "./sendVerificationEmail";
 
@@ -16,12 +16,17 @@ export const createUser = async (req: Request, res: Response) => {
       }
     });
 
-    await auth.createUser({
+    const newUser = await auth.createUser({
       email: user.email,
       emailVerified: false,
       password: user.password,
       displayName: pseudo,
       disabled: false,
+    });
+
+    await db.collection("users").doc(newUser.uid).set({
+      games: [],
+      points: 0,
     });
 
     const verificationEmail = await auth.generateEmailVerificationLink(
