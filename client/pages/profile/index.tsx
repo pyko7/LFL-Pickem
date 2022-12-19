@@ -15,12 +15,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendEmailForm from "~/src/components/Forms/SendEmailForm";
 import ConfirmDelete from "~/src/components/Forms/ConfirmDelete";
-import { useQuery } from "@tanstack/react-query";
-import { getUserById } from "~/src/utils/api/user/getUserById";
-import { getLoginCsrfToken } from "~/src/utils/api/auth/getLoginCsrfToken";
+import { useAuthContext } from "~/context/AuthContext";
 
 const Profile = () => {
   const theme = useTheme();
+  const { isLoading, isError, user } = useAuthContext();
   const [resetPassword, setResetPassword] = useState(false);
   const [deleteAccount, setDeleteAccount] = useState(false);
 
@@ -33,9 +32,6 @@ const Profile = () => {
   };
 
   const deleteAccountProps = { deleteAccount, setDeleteAccount };
-
-  useQuery(["token"], () => getLoginCsrfToken("/user/token"));
-  const { isLoading, isError, data } = useQuery(["user"], () => getUserById());
 
   const handlePasswordClick = () => {
     return resetPassword ? setResetPassword(false) : setResetPassword(true);
@@ -125,8 +121,8 @@ const Profile = () => {
           <>
             <Container maxWidth="md">
               <ProfileHeader>
-                <UserName>{data.displayName}</UserName>
-                <PointsCounter>25 pts</PointsCounter>
+                <UserName>{user?.userName}</UserName>
+                <PointsCounter>{user?.gamesData.points} pts</PointsCounter>
               </ProfileHeader>
               <SectionDivider />
 

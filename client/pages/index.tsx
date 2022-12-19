@@ -8,9 +8,11 @@ import GameContainer from "~/src/components/Containers/GameContainer";
 import { useEffect, useState } from "react";
 import { Day } from "~/src/types/teams";
 import { useGameContext } from "~/context/GameContext";
+import { useAuthContext } from "~/context/AuthContext";
 
 const Home = () => {
   const theme = useTheme();
+  const { user } = useAuthContext();
   const { dayId, days } = useGameContext();
   const [currentDay, setCurrentDay] = useState<Day | undefined>();
 
@@ -89,7 +91,7 @@ const Home = () => {
           <ScrollableDaysTabs />
           <PageHeader>
             <Date>{currentDay?.date}</Date>
-            <PointsCounter>25 pts</PointsCounter>
+            <PointsCounter>{user?.gamesData.points} pts</PointsCounter>
           </PageHeader>
           <Games>
             {currentDay?.games.map((game) => (
