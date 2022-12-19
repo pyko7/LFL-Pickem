@@ -115,7 +115,7 @@ const ConfirmEmail = () => {
       </TextContainer>
       <TextContainer>
         <Typography variant="h3" sx={{ fontSize: 18 }}>
-          Vous n'avez pas reçu de mail ?
+          Vous n&apos;avez pas reçu de mail ?
         </Typography>
         <Buttons
           variant="outlined"
