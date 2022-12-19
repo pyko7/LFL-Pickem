@@ -15,6 +15,7 @@ export interface Team {
   name: string;
   logo: string;
   lineup: TeamLineup;
+  color: string;
 }
 
 export type DayList = {
