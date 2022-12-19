@@ -131,7 +131,7 @@ const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
             </ListItem>
           ) : (
             <ListItem key={item.name} disablePadding>
-              <a href={item.pathname} target="_blank">
+              <a href={item.pathname} target="_blank" rel="noreferrer">
                 {item.name}
               </a>
             </ListItem>

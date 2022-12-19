@@ -95,9 +95,9 @@ const ConfirmEmail = () => {
           <strong style={{ color: theme.palette.secondary.main }}>
             spams
           </strong>{" "}
-          et cliquez sur le lien contenu dans l'email.
+          et cliquez sur le lien contenu dans l&apos;email.
           <br />
-          <br /> Note: l'envoi de l'email peut prendre quelques minutes.
+          <br /> Note: l&apos;envoi de l&apos;email peut prendre quelques minutes.
         </Typography>
       </TextContainer>
       <SectionDivider />

@@ -128,7 +128,7 @@ const LoginPage = () => {
               <Title variant="h1">Connexion</Title>
               <LoginForm setOpen={setOpen} />
               <Box sx={{ marginTop: 2, textAlign: "center" }}>
-                <Typography>Vous n'avez pas de compte ?</Typography>
+                <Typography>Vous n&apos;avez pas de compte ?</Typography>
                 <Link
                   href="/signup"
                   style={{
