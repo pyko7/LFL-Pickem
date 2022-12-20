@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
-import { auth, db } from "../../firebase";
+import { auth } from "../../firebase";
 import { createUserSchema } from "../../validations/userValidation";
 import { sendVerificationEmail } from "./sendVerificationEmail";
+import { prisma } from "../../prisma";
 
 export const createUser = async (req: Request, res: Response) => {
   const user = req.body;
@@ -24,9 +25,12 @@ export const createUser = async (req: Request, res: Response) => {
       disabled: false,
     });
 
-    await db.collection("users").doc(newUser.uid).set({
-      games: [],
-      points: 0,
+    await prisma.user.create({
+      data: {
+        id: newUser.uid,
+        email: newUser.email!,
+        userName: newUser.displayName!,
+      },
     });
 
     const verificationEmail = await auth.generateEmailVerificationLink(
