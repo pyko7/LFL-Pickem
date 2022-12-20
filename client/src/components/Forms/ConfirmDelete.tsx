@@ -25,7 +25,7 @@ const ConfirmDelete = ({
 }: DeleteAccountProps) => {
   const { push } = useRouter();
   const successMessage = `Suppression confirmée, merci d'avoir fait partie de l'aventure !`;
-  const [errorMessage, setErrorMessage] = useState("e");
+  const [errorMessage, setErrorMessage] = useState("");
   const {
     register,
     handleSubmit,
@@ -42,7 +42,6 @@ const ConfirmDelete = ({
 
   const mutation = useMutation({
     onError: (error) => {
-      console.log(error);
       if (error instanceof Error) {
         setErrorMessage(error.message);
       }

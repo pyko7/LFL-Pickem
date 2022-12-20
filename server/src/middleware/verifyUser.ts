@@ -11,18 +11,18 @@ export const verifyUser = async (
 ) => {
   const { session, pid } = req.cookies;
   const csrfToken = req.body.csrfToken.toString();
-  const { email } = req.body;
+  const { user } = req.body;
 
   if (csrfToken !== req.cookies["__Host.x-csrf-token"]) {
     return res.status(401).send("UNAUTHORIZED REQUEST!");
   }
 
   try {
-    const user = verify(pid, `${process.env.JWT_SECRET_KEY}`);
+    const userToken = verify(pid, `${process.env.JWT_SECRET_KEY}`);
     const decodedToken = await auth.verifySessionCookie(session);
 
-    if (typeof user === "object") {
-      if (email !== decodedToken.email || user.pid !== decodedToken.uid) {
+    if (typeof userToken === "object") {
+      if (user.email !== decodedToken.email || userToken.pid !== decodedToken.uid) {
         throw Error("Forbidden access");
       }
     }
