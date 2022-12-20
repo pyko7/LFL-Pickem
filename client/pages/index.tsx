@@ -3,18 +3,31 @@ import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
+import CircularProgress from "@mui/material/CircularProgress";
 import ScrollableDaysTabs from "~/src/components/Navigation/ScrollableDaysTabs";
 import GameContainer from "~/src/components/Containers/GameContainer";
 import { useEffect, useState } from "react";
 import { Day } from "~/src/types/teams";
-import { useGameContext } from "~/context/GameContext";
 import { useAuthContext } from "~/context/AuthContext";
+import { GameProvider, useGameContext } from "~/context/GameContext";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { getUserById } from "~/src/utils/api/user/getUserById";
+import { User } from "~/src/types/user";
 
 const Home = () => {
   const theme = useTheme();
-  const { user } = useAuthContext();
+  const { user, setUser } = useAuthContext();
   const { dayId, days } = useGameContext();
   const [currentDay, setCurrentDay] = useState<Day | undefined>();
+
+  const currentUser: UseQueryResult<User> | null = useQuery(
+    ["user"],
+    getUserById
+  );
+
+  useEffect(() => {
+    setUser(currentUser);
+  }, []);
 
   useEffect(() => {
     days?.days.forEach((day: Day) => {
@@ -22,7 +35,7 @@ const Home = () => {
         setCurrentDay(day);
       }
     });
-  }, [dayId]);
+  });
 
   const Page = styled(Box)(({ theme }) => ({
     position: "relative",
@@ -83,23 +96,33 @@ const Home = () => {
         <meta property="og:title" content="Accueil - LFL-Pickem" />
       </Head>
 
-      <Page component="section">
-        <Container
-          maxWidth="md"
-          sx={{ display: "flex", flexDirection: "column", gap: 4 }}
-        >
-          <ScrollableDaysTabs />
-          <PageHeader>
-            <Date>{currentDay?.date}</Date>
-            <PointsCounter>{user?.gamesData.points} pts</PointsCounter>
-          </PageHeader>
-          <Games>
-            {currentDay?.games.map((game) => (
-              <GameContainer {...game} key={game.id} />
-            ))}
-          </Games>
-        </Container>
-      </Page>
+      {currentUser?.isLoading ? (
+        <CircularProgress color="secondary" />
+      ) : currentUser?.isError ? (
+        <Typography>
+          Une erreur est survenue, veuillez réessayer plus tard.
+        </Typography>
+      ) : (
+        <GameProvider>
+          <Page component="section">
+            <Container
+              maxWidth="md"
+              sx={{ display: "flex", flexDirection: "column", gap: 4 }}
+            >
+              <ScrollableDaysTabs />
+              <PageHeader>
+                <Date>{currentDay?.date}</Date>
+                <PointsCounter>{currentUser.data.points} pts</PointsCounter>
+              </PageHeader>
+              <Games>
+                {currentDay?.games.map((game) => (
+                  <GameContainer {...game} key={game.id} />
+                ))}
+              </Games>
+            </Container>
+          </Page>
+        </GameProvider>
+      )}
     </>
   );
 };

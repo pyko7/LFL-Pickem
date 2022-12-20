@@ -19,7 +19,7 @@ import { useAuthContext } from "~/context/AuthContext";
 
 const Profile = () => {
   const theme = useTheme();
-  const { isLoading, isError, user } = useAuthContext();
+  const { user } = useAuthContext();
   const [resetPassword, setResetPassword] = useState(false);
   const [deleteAccount, setDeleteAccount] = useState(false);
 
@@ -111,9 +111,9 @@ const Profile = () => {
       </Head>
 
       <Page component="section">
-        {isLoading ? (
+        {user?.isLoading ? (
           <CircularProgress color="secondary" />
-        ) : isError ? (
+        ) : user?.isError ? (
           <Typography>
             Une erreur est survenue, veuillez réessayer plus tard.
           </Typography>
@@ -121,8 +121,8 @@ const Profile = () => {
           <>
             <Container maxWidth="md">
               <ProfileHeader>
-                <UserName>{user?.userName}</UserName>
-                <PointsCounter>{user?.gamesData.points} pts</PointsCounter>
+                <UserName>{user?.data?.userName}</UserName>
+                <PointsCounter>{user?.data?.points} pts</PointsCounter>
               </ProfileHeader>
               <SectionDivider />
 

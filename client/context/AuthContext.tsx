@@ -3,9 +3,8 @@ import { ContextProps, AuthContextInterface } from "~/src/types/context";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import { verify } from "jsonwebtoken";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { getLoginCsrfToken } from "~/src/utils/api/auth/getLoginCsrfToken";
-import { getUserById } from "~/src/utils/api/user/getUserById";
 import { User } from "~/src/types/user";
 
 const AuthContext = createContext({} as AuthContextInterface);
@@ -16,16 +15,16 @@ export const useAuthContext = () => {
 
 export const AuthProvider = ({ children }: ContextProps) => {
   const [auth, setAuth] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UseQueryResult<User> | null>(null);
   const { push } = useRouter();
   const pid = Cookies.get("pid");
 
-  useQuery(["token"], () => getLoginCsrfToken("/user/token"));
-  const { isLoading, isError, data } = useQuery(["user"], () => getUserById());
+  useQuery(["token"], () => getLoginCsrfToken("/auth/login"));
 
   const isAuth = () => {
     if (!pid) {
       setAuth(false);
+      setUser(null);
       return push("/login");
     }
 
@@ -33,11 +32,11 @@ export const AuthProvider = ({ children }: ContextProps) => {
       if (err) {
         push("/login");
         setAuth(false);
+        setUser(null);
         Cookies.remove("pid");
         return;
       }
     });
-
     setAuth(true);
   };
 
@@ -45,15 +44,8 @@ export const AuthProvider = ({ children }: ContextProps) => {
     isAuth();
   }, [auth]);
 
-  useEffect(() => {
-    if (!auth) {
-      setUser(null);
-    }
-    setUser(data);
-  });
-
   return (
-    <AuthContext.Provider value={{ auth, setAuth, user, isLoading, isError }}>
+    <AuthContext.Provider value={{ auth, setAuth, user, setUser }}>
       {children}
     </AuthContext.Provider>
   );
