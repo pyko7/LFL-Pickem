@@ -8,16 +8,47 @@ datasource db {
 }
 
 model User {
-  id       String    @id
+  id       String @id
   email    String @unique
   userName String @unique
   points   Int    @default(0)
 }
 
+// model Team {
+//   id               Int    @id @default(autoincrement())
+//   name             String @unique
+//   logo             String
+//   color            String
+//   gameAsFirstTeam  Game?  @relation("FirstTeam")
+//   gameAsSecondTeam Game?  @relation("SecondTeam")
+// }
+
+// model Game {
+//   id           Int      @id @default(autoincrement())
+//   date         DateTime
+//   firstTeam    Team     @relation("FirstTeam", fields: [firstTeamId], references: [id])
+//   firstTeamId  Int      @unique
+//   secondTeam   Team     @relation("SecondTeam", fields: [secondTeamId], references: [id])
+//   secondTeamId Int      @unique
+//   winner       Int      @default(0)
+//   dayId        Int      @default(0)
+// }
 model Team {
-  id    Int    @id @default(autoincrement())
-  name  String @unique
-  logo  String
-  color String
+  id         Int    @id @default(autoincrement())
+  name       String @unique
+  logo       String
+  color      String
+  FirstTeam  Game[] @relation("FirstTeam")
+  SecondTeam Game[] @relation("SecondTeam")
 }
 
+model Game {
+  id           Int      @id @default(autoincrement())
+  date         DateTime
+  firstTeam    Team?    @relation("FirstTeam", references: [id], fields: [firstTeamId])
+  secondTeam   Team?    @relation("SecondTeam", references: [id], fields: [secondTeamId])
+  winner       Int      @default(0)
+  dayId        Int      @default(0)
+  firstTeamId  Int?
+  secondTeamId Int?
+}
