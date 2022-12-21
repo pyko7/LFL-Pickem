@@ -14,25 +14,6 @@ model User {
   points   Int    @default(0)
 }
 
-// model Team {
-//   id               Int    @id @default(autoincrement())
-//   name             String @unique
-//   logo             String
-//   color            String
-//   gameAsFirstTeam  Game?  @relation("FirstTeam")
-//   gameAsSecondTeam Game?  @relation("SecondTeam")
-// }
-
-// model Game {
-//   id           Int      @id @default(autoincrement())
-//   date         DateTime
-//   firstTeam    Team     @relation("FirstTeam", fields: [firstTeamId], references: [id])
-//   firstTeamId  Int      @unique
-//   secondTeam   Team     @relation("SecondTeam", fields: [secondTeamId], references: [id])
-//   secondTeamId Int      @unique
-//   winner       Int      @default(0)
-//   dayId        Int      @default(0)
-// }
 model Team {
   id         Int    @id @default(autoincrement())
   name       String @unique
@@ -48,7 +29,14 @@ model Game {
   firstTeam    Team?    @relation("FirstTeam", references: [id], fields: [firstTeamId])
   secondTeam   Team?    @relation("SecondTeam", references: [id], fields: [secondTeamId])
   winner       Int      @default(0)
-  dayId        Int      @default(0)
   firstTeamId  Int?
   secondTeamId Int?
+  Day          Day      @relation(fields: [dayId], references: [id], onDelete: NoAction, onUpdate: Cascade)
+  dayId        Int      @default(0)
+}
+
+model Day {
+  id    Int      @id @default(autoincrement())
+  games Game[]
+  date  DateTime @default(now())
 }
