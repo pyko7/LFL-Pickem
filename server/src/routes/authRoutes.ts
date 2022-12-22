@@ -9,13 +9,6 @@ import { verifyUserEmail } from "../middleware/verifyUserEmail";
 
 export const authRoutes = Router();
 
-authRoutes.all("*", (req, res, next) => {
-  if (req.cookies.session) {
-    res.clearCookie("session");
-    res.clearCookie("pid");
-  }
-  next();
-});
 authRoutes.get("/login", createCsrf);
 authRoutes.post("/signup", createUser);
 authRoutes.post("/sessionLogin", verifyUserEmail, createSessionCookie);

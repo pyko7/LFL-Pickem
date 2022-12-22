@@ -12,6 +12,8 @@ export const deleteUser = async (req: Request, res: Response) => {
         id: decodedToken.uid,
       },
     });
+    res.clearCookie("session");
+    res.clearCookie("pid");
     res.status(200).json({ message: "User deleted" });
   } catch (error) {
     return res.status(403).json(error);
