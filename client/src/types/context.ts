@@ -1,6 +1,6 @@
 import { UseQueryResult } from "@tanstack/react-query";
 import { ReactNode } from "react";
-import { DayList, TeamList } from "./teams";
+import { Day, Game, TeamList } from "./teams";
 import { User } from "./user";
 
 export type ContextProps = {
@@ -10,16 +10,15 @@ export type ContextProps = {
 export interface AuthContextInterface {
   auth: boolean;
   setAuth: (auth: boolean) => void;
-  user: User | null;
-  isLoading: boolean;
-  isError: boolean;
+  user: UseQueryResult<User> | null;
+  setUser: (user: UseQueryResult<User> | null) => void;
 }
 
 export interface GameContextInterface {
-  schedule: UseQueryResult<DayList, unknown>;
-  dayId: number | undefined;
-  setDayId: (dayId: number | undefined) => void;
-  days: DayList | undefined;
-  setDays: (days: DayList | undefined) => void;
-  teams: TeamList | undefined;
+  allDays: UseQueryResult<Day[]>;
+  teams: TeamList | null;
+  day: Game[] | null;
+  setDay: (day: Game[] | null) => void;
+  dayData: Day | null;
+  setDayData: (dayData: Day | null) => void;
 }

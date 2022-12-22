@@ -18,21 +18,18 @@ export interface Team {
   color: string;
 }
 
-export type DayList = {
-  days: Day[];
-};
-
 export interface Day {
   id: number;
   date: string;
-  games: Game[];
 }
 
 export interface Game {
   id: number;
-  time: string;
+  date: string;
+  dayId: number;
   firstTeamId: number;
   secondTeamId: number;
+  winner: number;
 }
 
 export interface DayId {

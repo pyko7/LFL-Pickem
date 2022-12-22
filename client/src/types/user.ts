@@ -1,9 +1,14 @@
+export interface SelectedTeamsByDay {
+  dayId: number;
+  teams: number[];
+}
+
 export interface GamesData {
-  games: [];
+  games: SelectedTeamsByDay[];
   points: number;
 }
 
 export interface User {
   userName: string;
-  gamesData: GamesData;
+  points: number;
 }
