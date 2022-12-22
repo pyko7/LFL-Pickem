@@ -1,11 +1,11 @@
 import { Router } from "express";
-import path from "path";
+import { getAllDays } from "../controllers/teams/getAllDays";
 import { getAllTeams } from "../controllers/teams/getAllTeams";
+import { getGamesByDay } from "../controllers/teams/getGamesByDay";
 import { verifySession } from "../middleware/verifySession";
 
 export const teamRoutes = Router();
 
 teamRoutes.get("/all", verifySession, getAllTeams);
-teamRoutes.get("/schedule", verifySession, (req, res) => {
-  res.sendFile(path.join(__dirname, "../assets/json/", "days.json"));
-});
+teamRoutes.get("/game/:id", verifySession, getGamesByDay);
+teamRoutes.get("/games", verifySession, getAllDays)
