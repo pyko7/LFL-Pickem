@@ -7,7 +7,7 @@ import path from "path";
 import { authRoutes } from "./routes/authRoutes";
 import { userRoutes } from "./routes/userRoutes";
 import { verifySession } from "./middleware/verifySession";
-import { teamRoutes } from "./routes/teamsRoute";
+import { gameRoutes } from "./routes/gameRoutes";
 
 dotenv.config();
 
@@ -28,7 +28,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "assets/images/logos")));
 app.use("/api/auth", authRoutes);
 app.use("/api/user", verifySession, userRoutes);
-app.use("/api/team", verifySession, teamRoutes);
+app.use("/api/game", verifySession, gameRoutes);
 app.listen(process.env.PORT, () => {
   console.log("listening at " + port);
 });

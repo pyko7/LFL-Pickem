@@ -2,9 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { createContext, useContext, useEffect, useState } from "react";
 import { ContextProps, GameContextInterface } from "~/src/types/context";
 import { TeamList, Game, Day } from "~/src/types/teams";
-import { getAllDays } from "~/src/utils/api/teams/getAllDays";
-import { getAllTeams } from "~/src/utils/api/teams/getAllTeams";
-import { getGamesByDay } from "~/src/utils/api/teams/getGamesByDay";
+import { getAllDays } from "~/src/utils/api/game/getAllDays";
+import { getAllTeams } from "~/src/utils/api/game/getAllTeams";
+import { getGamesByDay } from "~/src/utils/api/game/getGamesByDay";
 
 const GameContext = createContext({} as GameContextInterface);
 

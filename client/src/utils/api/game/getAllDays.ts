@@ -2,7 +2,7 @@ import { Day } from "~/src/types/teams";
 
 export const getAllDays = async (): Promise<Day[]> => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/team/games`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/game/days`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

@@ -2,7 +2,7 @@ import { TeamList } from "~/src/types/teams";
 
 export const getAllTeams = async (): Promise<TeamList> => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/team/all`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/game/teams`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
