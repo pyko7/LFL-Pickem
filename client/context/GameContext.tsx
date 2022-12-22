@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useContext, useEffect, useState } from "react";
 import { ContextProps, GameContextInterface } from "~/src/types/context";
-import { DayList, TeamList } from "~/src/types/teams";
+import { TeamList, Game, Day } from "~/src/types/teams";
+import { getAllDays } from "~/src/utils/api/teams/getAllDays";
 import { getAllTeams } from "~/src/utils/api/teams/getAllTeams";
-import { getSchedule } from "~/src/utils/api/teams/getSchedule";
+import { getGamesByDay } from "~/src/utils/api/teams/getGamesByDay";
 
 const GameContext = createContext({} as GameContextInterface);
 
@@ -12,11 +13,11 @@ export const useGameContext = () => {
 };
 
 export const GameProvider = ({ children }: ContextProps) => {
-  const [dayId, setDayId] = useState<number | undefined>();
-  const [days, setDays] = useState<DayList>();
-  const [teams, setTeams] = useState<TeamList>();
+  const [teams, setTeams] = useState<TeamList | null>(null);
+  const [dayData, setDayData] = useState<Day | null>(null);
+  const [day, setDay] = useState<Game[] | null>(null);
 
-  const schedule = useQuery(["schedule"], getSchedule);
+  const allDays = useQuery(["allDays"], getAllDays);
   const teamsList = useQuery(["teams"], getAllTeams);
 
   useEffect(() => {
@@ -25,15 +26,27 @@ export const GameProvider = ({ children }: ContextProps) => {
     }
   }, [teamsList]);
 
+  useEffect(() => {
+    if (dayData === null) {
+      return;
+    }
+
+    const setGames = async () => {
+      const games = await getGamesByDay(dayData?.id);
+      setDay(games);
+    };
+    setGames();
+  }, [dayData?.id]);
+
   return (
     <GameContext.Provider
       value={{
-        schedule,
-        dayId,
-        setDayId,
-        days,
-        setDays,
+        allDays,
         teams,
+        day,
+        setDay,
+        dayData,
+        setDayData,
       }}
     >
       {children}

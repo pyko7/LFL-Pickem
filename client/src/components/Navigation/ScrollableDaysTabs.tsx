@@ -1,26 +1,30 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
+import Typography from "@mui/material/Typography";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { useGameContext } from "~/context/GameContext";
+import { Day } from "~/src/types/teams";
 
 const ScrollableDaysTabs = () => {
-  const { schedule, dayId, setDayId, setDays } = useGameContext();
-  const [value, setValue] = useState(dayId! - 1);
+  const { allDays, dayData, setDayData } = useGameContext();
+  const [value, setValue] = useState(dayData?.id! - 1);
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
-  useEffect(() => {
-    return dayId ? setValue(dayId - 1) : setValue(0);
-  }, []);
+  const handleClick = (day: Day) => {
+    setDayData(day);
+  };
 
   useEffect(() => {
-    if (typeof schedule.data !== "undefined") {
-      setDays(schedule.data);
+    if (dayData === null) {
+      setValue(0);
     }
-  }, [dayId]);
+  }, [dayData?.id]);
 
   const Container = styled(Box)(({ theme }) => ({
     position: "absolute",
@@ -51,21 +55,29 @@ const ScrollableDaysTabs = () => {
 
   return (
     <Container>
-      <Days
-        value={value}
-        onChange={handleChange}
-        variant="scrollable"
-        scrollButtons="auto"
-        aria-label="Selecteur de journée"
-      >
-        {schedule.data?.days.map((day) => (
-          <Day
-            label={`Journée ${day.id}`}
-            key={day.id}
-            onClick={() => setDayId(day.id)}
-          />
-        ))}
-      </Days>
+      {allDays.isLoading ? (
+        <CircularProgress color="secondary" />
+      ) : allDays.isError ? (
+        <Typography>
+          Une erreur est survenue, veuillez réessayer plus tard.
+        </Typography>
+      ) : (
+        <Days
+          value={value}
+          onChange={handleChange}
+          variant="scrollable"
+          scrollButtons="auto"
+          aria-label="Selecteur de journée"
+        >
+          {allDays.data?.map((day) => (
+            <Day
+              label={`Journée ${day.id}`}
+              key={day.id}
+              onClick={() => handleClick(day)}
+            />
+          ))}
+        </Days>
+      )}
     </Container>
   );
 };
