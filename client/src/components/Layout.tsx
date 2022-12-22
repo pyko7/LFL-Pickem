@@ -3,8 +3,16 @@ import Head from "next/head";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import Header from "./Navigation/Header";
+import { GameProvider } from "~/context/GameContext";
+import moment from "moment";
 
 const Layout = ({ children }: { children?: ReactNode }) => {
+  moment.updateLocale("fr", {
+    months:
+      "janvier_février_mars_avril_mai_juin_juillet_août_septembre_octobre_novembre_décembre".split(
+        "_"
+      ),
+  });
   const Layout = styled(Box)(({ theme }) => ({
     width: "100%",
     margin: 0,
@@ -43,10 +51,12 @@ const Layout = ({ children }: { children?: ReactNode }) => {
           content="Bienvenue dans LFL-Pickem ! Pariez sur les victoires des équipes à chaque journée de LFL"
         />
       </Head>
-      <Layout>
-        <Header />
-        <MainContainer component="main">{children}</MainContainer>
-      </Layout>
+      <GameProvider>
+        <Layout>
+          <Header />
+          <MainContainer component="main">{children}</MainContainer>
+        </Layout>
+      </GameProvider>
     </>
   );
 };
