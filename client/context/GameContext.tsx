@@ -4,7 +4,9 @@ import { ContextProps, GameContextInterface } from "~/src/types/context";
 import { TeamList, Game, Day } from "~/src/types/teams";
 import { getAllDays } from "~/src/utils/api/game/getAllDays";
 import { getAllTeams } from "~/src/utils/api/game/getAllTeams";
+import { getDayByDate } from "~/src/utils/api/game/getDayByDate";
 import { getGamesByDay } from "~/src/utils/api/game/getGamesByDay";
+import { getClosestDayFromNow } from "~/src/utils/getClosestDayFromNow";
 
 const GameContext = createContext({} as GameContextInterface);
 
@@ -19,6 +21,17 @@ export const GameProvider = ({ children }: ContextProps) => {
 
   const allDays = useQuery(["allDays"], getAllDays);
   const teamsList = useQuery(["teams"], getAllTeams);
+
+  useEffect(() => {
+    if (typeof allDays.data !== "undefined") {
+      const getClosestDay = async () => {
+        const date = getClosestDayFromNow(allDays.data);
+        const closestDay = await getDayByDate(date);
+        setDayData(closestDay);
+      };
+      getClosestDay();
+    }
+  }, [allDays.data]);
 
   useEffect(() => {
     if (typeof teamsList.data !== "undefined") {
