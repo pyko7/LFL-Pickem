@@ -20,7 +20,6 @@ export const getClosestDayFromNow = (array: Day[]) => {
   validDates.forEach((day) => {
     const diff = Math.abs(moment().diff(day.date, "minutes", true));
     times.push(diff);
-    console.log(times);
     const closestDate = Math.min(...times);
     date = moment()
       .add(closestDate, "minutes")
