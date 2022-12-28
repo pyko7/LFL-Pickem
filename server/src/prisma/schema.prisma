@@ -12,6 +12,7 @@ model User {
   email    String @unique
   userName String @unique
   points   Int    @default(0)
+  bets     Bet[]
 }
 
 model Team {
@@ -19,6 +20,7 @@ model Team {
   name       String @unique
   logo       String
   color      String
+  Bet        Bet[]
   FirstTeam  Game[] @relation("FirstTeam")
   SecondTeam Game[] @relation("SecondTeam")
 }
@@ -33,10 +35,21 @@ model Game {
   secondTeamId Int?
   Day          Day      @relation(fields: [dayId], references: [id], onDelete: NoAction, onUpdate: Cascade)
   dayId        Int      @default(0)
+  Bet          Bet[]
 }
 
 model Day {
   id    Int      @id @default(autoincrement())
   games Game[]
   date  DateTime @default(now())
+}
+
+model Bet {
+  id     Int    @id @default(autoincrement())
+  user   User   @relation(fields: [userId], references: [id])
+  game   Game   @relation(fields: [gameId], references: [id])
+  team   Team   @relation(fields: [teamId], references: [id])
+  userId String
+  gameId Int
+  teamId Int
 }
