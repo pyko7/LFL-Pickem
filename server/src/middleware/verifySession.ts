@@ -11,6 +11,8 @@ export const verifySession = async (
     await auth.verifySessionCookie(sessionCookie);
     next();
   } catch (error) {
+    res.clearCookie("session");
+    res.clearCookie("pid");
     return res.redirect("/login");
   }
 };
