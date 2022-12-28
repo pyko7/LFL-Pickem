@@ -18,6 +18,11 @@ export interface Team {
   color: string;
 }
 
+export interface TeamProps {
+  team: Team;
+  gameId: number;
+}
+
 export interface Day {
   id: number;
   date: string;
@@ -35,4 +40,9 @@ export interface Game {
 export interface DayId {
   dayId: number;
   setDayId: (dayId: number) => void;
+}
+
+export interface SelectedTeam {
+  gameId: number;
+  teamId: number;
 }
