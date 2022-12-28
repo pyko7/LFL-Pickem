@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { addSelectedTeams } from "../controllers/game/addSelectedTeams";
 import { getAllDays } from "../controllers/game/getAllDays";
 import { getAllTeams } from "../controllers/game/getAllTeams";
 import { getDayByDate } from "../controllers/game/getDayByDate";
@@ -11,3 +12,4 @@ gameRoutes.get("/teams", verifySession, getAllTeams);
 gameRoutes.get("/days", verifySession, getAllDays);
 gameRoutes.get("/days/:id", verifySession, getGamesByDay);
 gameRoutes.get("/day/:date", verifySession, getDayByDate);
+gameRoutes.post("/selected", verifySession, addSelectedTeams)
