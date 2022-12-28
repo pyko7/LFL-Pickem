@@ -4,16 +4,20 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import CardActionArea from "@mui/material/CardActionArea";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { Team } from "~/src/types/teams";
+import { TeamProps } from "~/src/types/teams";
 import Image from "next/image";
+import { useGameContext } from "~/context/GameContext";
+import { addSelectedTeams } from "~/src/utils/api/game/addSelectedTeams";
 
-type TeamProps = {
-  team: Team;
-};
-
-const SecondTeam = ({ team }: TeamProps) => {
+const SecondTeam = ({ team, gameId }: TeamProps) => {
   const theme = useTheme();
+  const { handleSelectedTeams } = useGameContext();
   const isBiggerThanMobile = useMediaQuery(theme.breakpoints.up("sm"));
+
+  const handleClick = () => {
+    handleSelectedTeams(gameId, team.id);
+    addSelectedTeams({ gameId: gameId, teamId: team.id });
+  };
 
   const Team = styled(Card)(({ theme }) => ({
     // width: selectedCard === 2 ? "75%" : "50%",
@@ -63,7 +67,7 @@ const SecondTeam = ({ team }: TeamProps) => {
 
   return (
     <Team>
-      <ActionArea>
+      <ActionArea onClick={handleClick}>
         <TeamContent>
           <Image
             loader={() => team.logo}

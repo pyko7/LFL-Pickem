@@ -31,8 +31,8 @@ const GameContainer = (props: Game) => {
 
   return (
     <Game>
-      {firstTeam ? <FirstTeam team={firstTeam} /> : null}
-      {secondTeam ? <SecondTeam team={secondTeam} /> : null}
+      {firstTeam ? <FirstTeam team={firstTeam} gameId={props.id} /> : null}
+      {secondTeam ? <SecondTeam team={secondTeam} gameId={props.id} /> : null}
     </Game>
   );
 };

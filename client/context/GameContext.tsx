@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useContext, useEffect, useState } from "react";
 import { ContextProps, GameContextInterface } from "~/src/types/context";
-import { TeamList, Game, Day } from "~/src/types/teams";
+import { TeamList, Game, Day, SelectedTeam } from "~/src/types/teams";
 import { getAllDays } from "~/src/utils/api/game/getAllDays";
 import { getAllTeams } from "~/src/utils/api/game/getAllTeams";
 import { getDayByDate } from "~/src/utils/api/game/getDayByDate";
@@ -18,9 +18,25 @@ export const GameProvider = ({ children }: ContextProps) => {
   const [teams, setTeams] = useState<TeamList | null>(null);
   const [dayData, setDayData] = useState<Day | null>(null);
   const [day, setDay] = useState<Game[] | null>(null);
+  const [selectedTeams, setSelectedTeams] = useState<SelectedTeam[]>([]);
 
   const allDays = useQuery(["allDays"], getAllDays);
   const teamsList = useQuery(["teams"], getAllTeams);
+
+  const handleSelectedTeams = (gameId: number, teamId: number) => {
+    const userSelection = {
+      gameId,
+      teamId,
+    };
+
+    if (selectedTeams.some((team) => team.teamId === userSelection.teamId)) {
+      setSelectedTeams(
+        selectedTeams.filter((team) => team.teamId !== userSelection.teamId)
+      );
+    } else {
+      setSelectedTeams(() => [...selectedTeams, userSelection]);
+    }
+  };
 
   useEffect(() => {
     if (typeof allDays.data !== "undefined") {
@@ -43,13 +59,14 @@ export const GameProvider = ({ children }: ContextProps) => {
     if (dayData === null) {
       return;
     }
-
     const setGames = async () => {
       const games = await getGamesByDay(dayData?.id);
       setDay(games);
     };
     setGames();
   }, [dayData?.id]);
+
+  useEffect(() => {}, [selectedTeams]);
 
   return (
     <GameContext.Provider
@@ -60,6 +77,9 @@ export const GameProvider = ({ children }: ContextProps) => {
         setDay,
         dayData,
         setDayData,
+        selectedTeams,
+        setSelectedTeams,
+        handleSelectedTeams,
       }}
     >
       {children}
