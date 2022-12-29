@@ -11,11 +11,11 @@ import { addSelectedTeams } from "~/src/utils/api/game/addSelectedTeams";
 
 const SecondTeam = ({ team, gameId }: TeamProps) => {
   const theme = useTheme();
-  const { handleSelectedTeams } = useGameContext();
+  // const { handleSelectedTeams } = useGameContext();
   const isBiggerThanMobile = useMediaQuery(theme.breakpoints.up("sm"));
 
   const handleClick = () => {
-    handleSelectedTeams(gameId, team.id);
+    // handleSelectedTeams(gameId, team.id);
     addSelectedTeams({ gameId: gameId, teamId: team.id });
   };
 

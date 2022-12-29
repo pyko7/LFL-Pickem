@@ -46,3 +46,8 @@ export interface SelectedTeam {
   gameId: number;
   teamId: number;
 }
+
+export interface UserSelection extends SelectedTeam {
+  id: number;
+  userId: string;
+}

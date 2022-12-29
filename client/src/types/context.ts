@@ -1,6 +1,6 @@
 import { UseQueryResult } from "@tanstack/react-query";
 import { ReactNode } from "react";
-import { Day, Game, SelectedTeam, TeamList } from "./teams";
+import { Day, Game, SelectedTeam, TeamList, UserSelection } from "./teams";
 import { User } from "./user";
 
 export type ContextProps = {
@@ -21,7 +21,9 @@ export interface GameContextInterface {
   setDay: (day: Game[] | null) => void;
   dayData: Day | null;
   setDayData: (dayData: Day | null) => void;
-  selectedTeams: SelectedTeam[];
-  setSelectedTeams: (selectedTeams: SelectedTeam[]) => void;
-  handleSelectedTeams: (gameId: number, teamId: number) => void;
+  // selectedTeams: SelectedTeam[];
+  // setSelectedTeams: (selectedTeams: SelectedTeam[]) => void;
+  selectedTeams: UserSelection[];
+  setSelectedTeams: (selectedTeams: UserSelection[]) => void;
+  // handleSelectedTeams: (gameId: number, teamId: number) => void;
 }
