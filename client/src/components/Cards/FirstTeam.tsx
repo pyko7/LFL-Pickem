@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -6,22 +7,35 @@ import CardActionArea from "@mui/material/CardActionArea";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { TeamProps } from "~/src/types/teams";
 import Image from "next/image";
-import { useGameContext } from "~/context/GameContext";
 import { addSelectedTeams } from "~/src/utils/api/game/addSelectedTeams";
+import { useGameContext } from "~/context/GameContext";
 
 const FirstTeam = ({ team, gameId }: TeamProps) => {
   const theme = useTheme();
-  // const { handleSelectedTeams } = useGameContext();
+  const { selectedTeamsList } = useGameContext();
   const isBiggerThanMobile = useMediaQuery(theme.breakpoints.up("sm"));
+  const [selectedCard, setSelectedCard] = useState(false);
 
   const handleClick = () => {
-    // handleSelectedTeams(gameId, team.id);
-    addSelectedTeams({ gameId: gameId, teamId: team.id });
+    addSelectedTeams({ gameId, teamId: team.id });
   };
 
+  useEffect(() => {
+    if (typeof selectedTeamsList.data !== "undefined") {
+      if (
+        selectedTeamsList.data?.filter(
+          (bet) => bet.gameId === gameId && bet.teamId === team.id
+        ).length > 0
+      ) {
+        setSelectedCard(true);
+      } else {
+        setSelectedCard(false);
+      }
+    }
+  }, [selectedTeamsList.data, gameId, team.id]);
+
   const Team = styled(Card)(({ theme }) => ({
-    // width: selectedCard === 1 ? "75%" : "50%",
-    width: "50%",
+    width: selectedCard ? "75%" : "50%",
     minWidth: "33%",
     heigth: 70,
     color: theme.palette.neutral.light,
