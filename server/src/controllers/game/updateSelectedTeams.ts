@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { auth } from "../../firebase";
 import { prisma } from "../../prisma";
 
-export const addSelectedTeams = async (req: Request, res: Response) => {
+export const updateSelectedTeams = async (req: Request, res: Response) => {
   try {
     const { gameId, teamId } = req.body;
     const sessionCookie = req.cookies.session;
@@ -25,19 +25,19 @@ export const addSelectedTeams = async (req: Request, res: Response) => {
       },
     });
 
-    if (isBet.length > 0) {
+    if (isBet[0].teamId === teamId) {
       throw new Error("Unauthorized request");
     }
-
-    await prisma.bet.create({
+    await prisma.bet.update({
+      where: {
+        id: isBet[0].id,
+      },
       data: {
-        userId: userId,
-        gameId: game.id,
         teamId: teamId,
       },
     });
 
-    res.status(200).json({ message: "Bet registered" });
+    res.status(200).json({ message: "Bet modified" });
   } catch (error) {
     res.status(400).json(error);
   }
