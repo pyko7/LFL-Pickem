@@ -49,7 +49,7 @@ const GameContainer = (props: Game) => {
         return setSelectedTeam(secondTeam.id);
       }
     }
-  }, [userSelection, props.id, firstTeam?.id, secondTeam?.id]);
+  }, [userSelection, props.id, firstTeam, secondTeam]);
 
   const handleClick = (currentTeamId: number, otherTeamId: number) => {
     if (selectedTeam === 0) {

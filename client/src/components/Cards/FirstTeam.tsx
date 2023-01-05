@@ -19,7 +19,7 @@ const FirstTeam = ({ team, notSelected }: TeamProps) => {
     } else {
       setVisible(true);
     }
-  }, [notSelected]);
+  }, [notSelected, team.id]);
 
   const Team = styled(Card)(({ theme }) => ({
     heigth: 60,

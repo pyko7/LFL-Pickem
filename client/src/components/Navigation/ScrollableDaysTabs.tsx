@@ -24,7 +24,7 @@ const ScrollableDaysTabs = () => {
     if (dayData === null) {
       setValue(0);
     }
-  }, [dayData?.id]);
+  }, [dayData]);
 
   const Container = styled(Box)(({ theme }) => ({
     position: "absolute",
