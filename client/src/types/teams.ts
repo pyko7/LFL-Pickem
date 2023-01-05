@@ -20,7 +20,7 @@ export interface Team {
 
 export interface TeamProps {
   team: Team;
-  gameId: number;
+  notSelected: number;
 }
 
 export interface Day {
