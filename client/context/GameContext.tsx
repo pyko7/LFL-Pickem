@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useContext, useEffect, useState } from "react";
 import { ContextProps, GameContextInterface } from "~/src/types/context";
-import { TeamList, Game, Day } from "~/src/types/teams";
+import { TeamList, Game, Day, UserSelection } from "~/src/types/teams";
 import { getAllDays } from "~/src/utils/api/game/getAllDays";
 import { getAllTeams } from "~/src/utils/api/game/getAllTeams";
 import { getDayByDate } from "~/src/utils/api/game/getDayByDate";
@@ -19,6 +19,7 @@ export const GameProvider = ({ children }: ContextProps) => {
   const [teams, setTeams] = useState<TeamList | null>(null);
   const [dayData, setDayData] = useState<Day | null>(null);
   const [day, setDay] = useState<Game[] | null>(null);
+  const [userSelection, setUserSelection] = useState<UserSelection[]>([]);
 
   const allDays = useQuery(["allDays"], getAllDays);
   const teamsList = useQuery(["teams"], getAllTeams);
@@ -52,6 +53,12 @@ export const GameProvider = ({ children }: ContextProps) => {
     setGames();
   }, [dayData?.id]);
 
+  useEffect(() => {
+    if (typeof selectedTeamsList.data !== "undefined") {
+      setUserSelection(selectedTeamsList.data);
+    }
+  }, [selectedTeamsList.data]);
+
   return (
     <GameContext.Provider
       value={{
@@ -62,6 +69,7 @@ export const GameProvider = ({ children }: ContextProps) => {
         setDay,
         dayData,
         setDayData,
+        userSelection,
       }}
     >
       {children}

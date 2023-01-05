@@ -1,66 +1,49 @@
 import { useState, useEffect } from "react";
 import { styled, useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import CardActionArea from "@mui/material/CardActionArea";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { TeamProps } from "~/src/types/teams";
 import Image from "next/image";
-import { addSelectedTeams } from "~/src/utils/api/game/addSelectedTeams";
-import { useGameContext } from "~/context/GameContext";
 
-const FirstTeam = ({ team, gameId }: TeamProps) => {
+const FirstTeam = ({ team, notSelected }: TeamProps) => {
   const theme = useTheme();
-  const { selectedTeamsList } = useGameContext();
   const isBiggerThanMobile = useMediaQuery(theme.breakpoints.up("sm"));
-  const [selectedCard, setSelectedCard] = useState(false);
-
-  const handleClick = () => {
-    addSelectedTeams({ gameId, teamId: team.id });
-  };
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    if (typeof selectedTeamsList.data !== "undefined") {
-      if (
-        selectedTeamsList.data?.filter(
-          (bet) => bet.gameId === gameId && bet.teamId === team.id
-        ).length > 0
-      ) {
-        setSelectedCard(true);
-      } else {
-        setSelectedCard(false);
-      }
+    if (notSelected === team.id) {
+      setVisible(false);
+    } else {
+      setVisible(true);
     }
-  }, [selectedTeamsList.data, gameId, team.id]);
+  }, [notSelected]);
 
   const Team = styled(Card)(({ theme }) => ({
-    width: selectedCard ? "75%" : "50%",
-    minWidth: "33%",
-    heigth: 70,
+    heigth: 60,
     color: theme.palette.neutral.light,
     backgroundColor: "#000",
     background: `linear-gradient(90deg, ${theme.palette.primary.dark} 0%, ${team.color} 75%)`,
-    transition: "width 1s ease-in-out",
-
-    [theme.breakpoints.up("sm")]: {
-      minWidth: "25%",
+    cursor: "pointer",
+    "& .MuiCardContent-root:last-child": {
+      paddingBottom: 10,
     },
   }));
 
-  const ActionArea = styled(CardActionArea)({
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    justifyContent: "flex-end",
-  });
-
-  const TeamContent = styled(CardContent)(({ theme }) => ({
+  const ContentContainer = styled(CardContent)({
     width: "100%",
     padding: 10,
     display: "flex",
+    justifyContent: visible ? "flex-end" : "center",
+  });
+
+  const TeamContent = styled(Box)(({ theme }) => ({
+    width: "100%",
+    display: "flex",
     alignItems: "center",
-    justifyContent: "flex-end",
+    justifyContent: "center",
     gap: 10,
     fontWeight: 700,
     [theme.breakpoints.up("sm")]: {
@@ -70,19 +53,18 @@ const FirstTeam = ({ team, gameId }: TeamProps) => {
     },
   }));
 
-  const TeamName = styled(Typography)(({ theme }) => ({
+  const TeamName = styled(Typography)({
     fontWeight: 700,
     fontSize: 16,
-    [theme.breakpoints.up("sm")]: {
-      fontSize: 18,
-    },
-  }));
+  });
 
   return (
     <Team>
-      <ActionArea onClick={handleClick}>
+      <ContentContainer>
         <TeamContent>
-          <TeamName variant="h2">{team.name}</TeamName>
+          {!isBiggerThanMobile && !visible ? null : (
+            <TeamName variant="h2">{team.name}</TeamName>
+          )}
           <Image
             loader={() => team.logo}
             unoptimized
@@ -92,7 +74,7 @@ const FirstTeam = ({ team, gameId }: TeamProps) => {
             height={isBiggerThanMobile ? 60 : 40}
           />
         </TeamContent>
-      </ActionArea>
+      </ContentContainer>
     </Team>
   );
 };

@@ -5,11 +5,19 @@ import FirstTeam from "../Cards/FirstTeam";
 import SecondTeam from "../Cards/SecondTeam";
 import { Game, Team } from "~/src/types/teams";
 import { useGameContext } from "~/context/GameContext";
+import {
+  addSelectedTeams,
+  updateSelectedTeams,
+  deleteSelectedTeams,
+} from "~/src/utils/api/game/handleSelectedTeams";
 
 const GameContainer = (props: Game) => {
   const [firstTeam, setFirstTeam] = useState<Team | undefined>();
   const [secondTeam, setSecondTeam] = useState<Team | undefined>();
-  const { teams } = useGameContext();
+
+  const { teams, userSelection } = useGameContext();
+  const [selectedTeam, setSelectedTeam] = useState(0);
+  const [notSelected, setNotSelected] = useState(0);
 
   useEffect(() => {
     teams?.teams.forEach((team) => {
@@ -22,6 +30,47 @@ const GameContainer = (props: Game) => {
     });
   });
 
+  useEffect(() => {
+    if (typeof userSelection !== "undefined" && firstTeam && secondTeam) {
+      if (
+        userSelection.filter(
+          (bet) => bet.gameId === props.id && bet.teamId === firstTeam.id
+        ).length > 0
+      ) {
+        setNotSelected(secondTeam.id);
+        return setSelectedTeam(firstTeam.id);
+      }
+      if (
+        userSelection.filter(
+          (bet) => bet.gameId === props.id && bet.teamId === secondTeam.id
+        ).length > 0
+      ) {
+        setNotSelected(firstTeam.id);
+        return setSelectedTeam(secondTeam.id);
+      }
+    }
+  }, [userSelection, props.id, firstTeam?.id, secondTeam?.id]);
+
+  const handleClick = (currentTeamId: number, otherTeamId: number) => {
+    if (selectedTeam === 0) {
+      addSelectedTeams({ gameId: props.id, teamId: currentTeamId });
+      setSelectedTeam(currentTeamId);
+      setNotSelected(otherTeamId);
+      return;
+    }
+    if (selectedTeam === currentTeamId) {
+      deleteSelectedTeams({ gameId: props.id, teamId: currentTeamId });
+      setSelectedTeam(0);
+      setNotSelected(0);
+      return;
+    } else {
+      updateSelectedTeams({ gameId: props.id, teamId: currentTeamId });
+      setSelectedTeam(currentTeamId);
+      setNotSelected(otherTeamId);
+      return;
+    }
+  };
+
   const Game = styled(Box)({
     width: "100%",
     display: "flex",
@@ -31,8 +80,36 @@ const GameContainer = (props: Game) => {
 
   return (
     <Game>
-      {firstTeam ? <FirstTeam team={firstTeam} gameId={props.id} /> : null}
-      {secondTeam ? <SecondTeam team={secondTeam} gameId={props.id} /> : null}
+      {firstTeam && secondTeam ? (
+        <Box
+          sx={{
+            width:
+              selectedTeam === firstTeam.id
+                ? "75%"
+                : selectedTeam === secondTeam.id
+                ? "33%"
+                : "50%",
+          }}
+          onClick={() => handleClick(firstTeam.id, secondTeam.id)}
+        >
+          <FirstTeam team={firstTeam} notSelected={notSelected} />
+        </Box>
+      ) : null}
+      {firstTeam && secondTeam ? (
+        <Box
+          sx={{
+            width:
+              selectedTeam === secondTeam.id
+                ? "75%"
+                : selectedTeam === firstTeam.id
+                ? "33%"
+                : "50%",
+          }}
+          onClick={() => handleClick(secondTeam.id, firstTeam.id)}
+        >
+          <SecondTeam team={secondTeam} notSelected={notSelected} />
+        </Box>
+      ) : null}
     </Game>
   );
 };
