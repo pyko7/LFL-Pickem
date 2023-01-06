@@ -55,9 +55,10 @@ export const GameProvider = ({ children }: ContextProps) => {
 
   useEffect(() => {
     if (typeof selectedTeamsList.data !== "undefined") {
+      selectedTeamsList.refetch();
       setUserSelection(selectedTeamsList.data);
     }
-  }, [selectedTeamsList.data]);
+  }, [selectedTeamsList.data, dayData]);
 
   return (
     <GameContext.Provider
