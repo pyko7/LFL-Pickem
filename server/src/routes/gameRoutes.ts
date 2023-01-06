@@ -7,6 +7,7 @@ import { getDayByDate } from "../controllers/game/getDayByDate";
 import { getGamesByDay } from "../controllers/game/getGamesByDay";
 import { getSelectedTeams } from "../controllers/game/getSelectedTeams";
 import { updateSelectedTeams } from "../controllers/game/updateSelectedTeams";
+import { verifyDate } from "../middleware/verifyDate";
 import { verifySession } from "../middleware/verifySession";
 
 export const gameRoutes = Router();
@@ -17,6 +18,6 @@ gameRoutes.get("/days/:id", verifySession, getGamesByDay);
 gameRoutes.get("/day/:date", verifySession, getDayByDate);
 gameRoutes.get("/selected", verifySession, getSelectedTeams);
 
-gameRoutes.post("/selected", verifySession, addSelectedTeams);
-gameRoutes.put("/selected", verifySession, updateSelectedTeams);
-gameRoutes.delete("/selected", verifySession, deleteSelectedTeams);
+gameRoutes.post("/selected", verifySession, verifyDate, addSelectedTeams);
+gameRoutes.put("/selected", verifySession, verifyDate, updateSelectedTeams);
+gameRoutes.delete("/selected", verifySession, verifyDate, deleteSelectedTeams);

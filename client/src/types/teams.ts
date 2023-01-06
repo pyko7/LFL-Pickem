@@ -45,6 +45,7 @@ export interface DayId {
 export interface SelectedTeam {
   gameId: number;
   teamId: number;
+  dayId: number;
 }
 
 export interface UserSelection extends SelectedTeam {

@@ -16,24 +16,36 @@ const GameContainer = (props: Game) => {
   const [firstTeam, setFirstTeam] = useState<Team | undefined>();
   const [secondTeam, setSecondTeam] = useState<Team | undefined>();
 
-  const { teams, userSelection, dayData } = useGameContext();
+  const { teams, userSelection } = useGameContext();
   const [selectedTeam, setSelectedTeam] = useState(0);
   const [notSelected, setNotSelected] = useState(0);
 
   const handleClick = (currentTeamId: number, otherTeamId: number) => {
     if (selectedTeam === 0) {
-      addSelectedTeams({ gameId: props.id, teamId: currentTeamId });
+      addSelectedTeams({
+        gameId: props.id,
+        teamId: currentTeamId,
+        dayId: props.dayId,
+      });
       setSelectedTeam(currentTeamId);
       setNotSelected(otherTeamId);
       return;
     }
     if (selectedTeam === currentTeamId) {
-      deleteSelectedTeams({ gameId: props.id, teamId: currentTeamId });
+      deleteSelectedTeams({
+        gameId: props.id,
+        teamId: currentTeamId,
+        dayId: props.dayId,
+      });
       setSelectedTeam(0);
       setNotSelected(0);
       return;
     } else {
-      updateSelectedTeams({ gameId: props.id, teamId: currentTeamId });
+      updateSelectedTeams({
+        gameId: props.id,
+        teamId: currentTeamId,
+        dayId: props.dayId,
+      });
       setSelectedTeam(currentTeamId);
       setNotSelected(otherTeamId);
       return;
