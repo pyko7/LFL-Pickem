@@ -10,46 +10,15 @@ import {
   updateSelectedTeams,
   deleteSelectedTeams,
 } from "~/src/utils/api/game/handleSelectedTeams";
+import { getUserSelection } from "~/src/utils/api/game/getUserSelection";
 
 const GameContainer = (props: Game) => {
   const [firstTeam, setFirstTeam] = useState<Team | undefined>();
   const [secondTeam, setSecondTeam] = useState<Team | undefined>();
 
-  const { teams, userSelection } = useGameContext();
+  const { teams, userSelection, dayData } = useGameContext();
   const [selectedTeam, setSelectedTeam] = useState(0);
   const [notSelected, setNotSelected] = useState(0);
-
-  useEffect(() => {
-    teams?.teams.forEach((team) => {
-      if (team.id === props.firstTeamId) {
-        setFirstTeam(team);
-      }
-      if (team.id === props.secondTeamId) {
-        setSecondTeam(team);
-      }
-    });
-  });
-
-  useEffect(() => {
-    if (typeof userSelection !== "undefined" && firstTeam && secondTeam) {
-      if (
-        userSelection.filter(
-          (bet) => bet.gameId === props.id && bet.teamId === firstTeam.id
-        ).length > 0
-      ) {
-        setNotSelected(secondTeam.id);
-        return setSelectedTeam(firstTeam.id);
-      }
-      if (
-        userSelection.filter(
-          (bet) => bet.gameId === props.id && bet.teamId === secondTeam.id
-        ).length > 0
-      ) {
-        setNotSelected(firstTeam.id);
-        return setSelectedTeam(secondTeam.id);
-      }
-    }
-  }, [userSelection, props.id, firstTeam, secondTeam]);
 
   const handleClick = (currentTeamId: number, otherTeamId: number) => {
     if (selectedTeam === 0) {
@@ -70,6 +39,42 @@ const GameContainer = (props: Game) => {
       return;
     }
   };
+
+  useEffect(() => {
+    teams?.teams.forEach((team) => {
+      if (team.id === props.firstTeamId) {
+        setFirstTeam(team);
+      }
+      if (team.id === props.secondTeamId) {
+        setSecondTeam(team);
+      }
+    });
+  });
+
+  useEffect(() => {
+    if (typeof userSelection !== "undefined" && firstTeam && secondTeam) {
+      const isFirstTeamSelected = getUserSelection(
+        userSelection,
+        props.id,
+        firstTeam
+      );
+      const isSecondTeamSelected = getUserSelection(
+        userSelection,
+        props.id,
+        secondTeam
+      );
+
+      if (isFirstTeamSelected) {
+        setNotSelected(secondTeam.id);
+        return setSelectedTeam(firstTeam.id);
+      }
+
+      if (isSecondTeamSelected) {
+        setNotSelected(firstTeam.id);
+        return setSelectedTeam(secondTeam.id);
+      }
+    }
+  }, [userSelection, props.id, firstTeam, secondTeam]);
 
   const Game = styled(Box)({
     width: "100%",
