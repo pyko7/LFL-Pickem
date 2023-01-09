@@ -20,7 +20,7 @@ export interface GameContextInterface {
   teams: TeamList | null;
   day: Game[] | null;
   setDay: (day: Game[] | null) => void;
-  dayData: Day | null;
-  setDayData: (dayData: Day | null) => void;
+  dayData: Day;
+  setDayData: (dayData: Day) => void;
   userSelection: UserSelection[];
 }
