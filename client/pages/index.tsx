@@ -12,13 +12,17 @@ import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { getUserById } from "~/src/utils/api/user/getUserById";
 import { User } from "~/src/types/user";
 import { useGameContext } from "~/context/GameContext";
-import moment from "moment";
+import { format, parseISO } from "date-fns";
+import { fr } from "date-fns/locale";
 
 const Home = () => {
   const theme = useTheme();
   const { user, setUser } = useAuthContext();
   const { allDays, day, dayData } = useGameContext();
-  const date = moment(dayData?.date).format("DD MMMM YYYY");
+
+  const date = format(parseISO(dayData?.date), "PPPP", {
+    locale: fr,
+  });
 
   const currentUser: UseQueryResult<User> | null = useQuery(
     ["user"],
@@ -50,7 +54,7 @@ const Home = () => {
     color: theme.palette.neutral.light,
   }));
 
-  const Date = styled(Typography)({
+  const CurrentDate = styled(Typography)({
     fontSize: 20,
     fontWeight: 700,
     textAlign: "center",
@@ -102,7 +106,7 @@ const Home = () => {
           >
             <ScrollableDaysTabs />
             <PageHeader>
-              <Date>{date}</Date>
+              <CurrentDate>{date}</CurrentDate>
               <PointsCounter>{user?.data?.points} pts</PointsCounter>
             </PageHeader>
             <Games>

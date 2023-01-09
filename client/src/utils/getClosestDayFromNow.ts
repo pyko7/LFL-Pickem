@@ -1,6 +1,9 @@
 import { Day } from "../types/teams";
-import moment from "moment";
-
+import {
+  addMilliseconds,
+  differenceInMilliseconds,
+  isAfter,
+} from "date-fns";
 /**
  * This function allows to display the closest when the user arrives on the homepage
  * With the closest day found we can fetch the games of this day
@@ -12,20 +15,23 @@ export const getClosestDayFromNow = (array: Day[]) => {
   let times: number[] = [];
   let date: any = "";
 
-  validDates = array.filter((day) => moment(day.date).isAfter());
+  validDates = array.filter((day) => isAfter(new Date(day.date), new Date()));
 
   if (validDates.length === 0) {
     return (date = array.pop()?.date);
   }
+
   validDates.forEach((day) => {
-    const diff = Math.abs(moment().diff(day.date, "minutes", true));
+    const diff = Math.abs(
+      differenceInMilliseconds(new Date(day.date), new Date())
+    );
     times.push(diff);
-    const closestDate = Math.min(...times);
-    date = moment()
-      .add(closestDate, "minutes")
-      .toDate()
-      .setUTCHours(0, 0, 0, 0);
-    date = new Date(date).toISOString();
+    const closestDateInMilliseconds = addMilliseconds(
+      new Date(),
+      Math.min(...times)
+    );
+
+    date = new Date(closestDateInMilliseconds).toISOString();
   });
   return date;
 };

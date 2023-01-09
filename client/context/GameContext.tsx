@@ -17,7 +17,10 @@ export const useGameContext = () => {
 
 export const GameProvider = ({ children }: ContextProps) => {
   const [teams, setTeams] = useState<TeamList | null>(null);
-  const [dayData, setDayData] = useState<Day | null>(null);
+  const [dayData, setDayData] = useState<Day>({
+    id: 1,
+    date: "2023-01-18T18:00:00.000Z",
+  });
   const [day, setDay] = useState<Game[] | null>(null);
   const [userSelection, setUserSelection] = useState<UserSelection[]>([]);
 
@@ -44,6 +47,7 @@ export const GameProvider = ({ children }: ContextProps) => {
 
   useEffect(() => {
     if (dayData === null) {
+      allDays.refetch();
       return;
     }
     const setGames = async () => {
