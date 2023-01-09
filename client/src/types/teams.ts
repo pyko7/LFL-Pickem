@@ -21,6 +21,7 @@ export interface Team {
 export interface TeamProps {
   team: Team;
   notSelected: number;
+  disabledDay: boolean;
 }
 
 export interface Day {
