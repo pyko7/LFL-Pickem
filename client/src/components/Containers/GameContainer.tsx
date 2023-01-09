@@ -11,16 +11,22 @@ import {
   deleteSelectedTeams,
 } from "~/src/utils/api/game/handleSelectedTeams";
 import { getUserSelection } from "~/src/utils/api/game/getUserSelection";
+import { utcToZonedTime } from "date-fns-tz";
+import { isBefore, parseISO } from "date-fns";
 
 const GameContainer = (props: Game) => {
   const [firstTeam, setFirstTeam] = useState<Team | undefined>();
   const [secondTeam, setSecondTeam] = useState<Team | undefined>();
+  const [disabledDay, setDisabledDay] = useState(false);
 
   const { teams, userSelection } = useGameContext();
   const [selectedTeam, setSelectedTeam] = useState(0);
   const [notSelected, setNotSelected] = useState(0);
 
   const handleClick = (currentTeamId: number, otherTeamId: number) => {
+    if (disabledDay) {
+      return;
+    }
     if (selectedTeam === 0) {
       addSelectedTeams({
         gameId: props.id,
@@ -51,6 +57,12 @@ const GameContainer = (props: Game) => {
       return;
     }
   };
+
+  useEffect(() => {
+    const dateInFrance = utcToZonedTime(new Date(), "Europe/Paris");
+    const isPast = isBefore(parseISO(props.date), dateInFrance);
+    return isPast ? setDisabledDay(true) : setDisabledDay(false);
+  }, [props.date]);
 
   useEffect(() => {
     teams?.teams.forEach((team) => {
@@ -109,7 +121,11 @@ const GameContainer = (props: Game) => {
           }}
           onClick={() => handleClick(firstTeam.id, secondTeam.id)}
         >
-          <FirstTeam team={firstTeam} notSelected={notSelected} />
+          <FirstTeam
+            team={firstTeam}
+            notSelected={notSelected}
+            disabledDay={disabledDay}
+          />
         </Box>
       ) : null}
       {firstTeam && secondTeam ? (
@@ -124,7 +140,11 @@ const GameContainer = (props: Game) => {
           }}
           onClick={() => handleClick(secondTeam.id, firstTeam.id)}
         >
-          <SecondTeam team={secondTeam} notSelected={notSelected} />
+          <SecondTeam
+            team={secondTeam}
+            notSelected={notSelected}
+            disabledDay={disabledDay}
+          />
         </Box>
       ) : null}
     </Game>

@@ -8,7 +8,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { TeamProps } from "~/src/types/teams";
 import Image from "next/image";
 
-const SecondTeam = ({ team, notSelected }: TeamProps) => {
+const SecondTeam = ({ team, notSelected, disabledDay }: TeamProps) => {
   const theme = useTheme();
   const isBiggerThanMobile = useMediaQuery(theme.breakpoints.up("sm"));
   const [visible, setVisible] = useState(true);
@@ -26,7 +26,8 @@ const SecondTeam = ({ team, notSelected }: TeamProps) => {
     color: theme.palette.neutral.light,
     backgroundColor: "#000",
     background: `linear-gradient(-90deg, ${theme.palette.primary.dark} 0%, ${team.color} 75%)`,
-    cursor: "pointer",
+    filter: disabledDay ? "grayscale(60%)" : "",
+    cursor: disabledDay ? "not-allowed" : "pointer",
     "& .MuiCardContent-root:last-child": {
       paddingBottom: 10,
     },
@@ -48,7 +49,7 @@ const SecondTeam = ({ team, notSelected }: TeamProps) => {
     fontWeight: 700,
     [theme.breakpoints.up("sm")]: {
       width: "65%",
-      justifyContent: "space-between",
+      justifyContent: visible ? "space-between" : "center",
       gap: 0,
     },
   }));
@@ -73,9 +74,7 @@ const SecondTeam = ({ team, notSelected }: TeamProps) => {
             width={isBiggerThanMobile ? 60 : 40}
             height={isBiggerThanMobile ? 60 : 40}
           />
-          {!isBiggerThanMobile && !visible ? null : (
-            <TeamName variant="h2">{team.name}</TeamName>
-          )}
+          {!visible ? null : <TeamName variant="h2">{team.name}</TeamName>}
         </TeamContent>
       </ContentContainer>
     </Team>
