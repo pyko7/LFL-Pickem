@@ -5,6 +5,7 @@ import Cookies from "js-cookie";
 import { verify } from "jsonwebtoken";
 import { useQuery } from "@tanstack/react-query";
 import { getLoginCsrfToken } from "~/src/utils/api/auth/getLoginCsrfToken";
+import Box from "@mui/material/Box";
 
 const AuthContext = createContext({} as AuthContextInterface);
 
@@ -17,7 +18,9 @@ export const AuthProvider = ({ children }: ContextProps) => {
   const { push } = useRouter();
   const pid = Cookies.get("pid");
 
-  useQuery(["token"], () => getLoginCsrfToken("/auth/login"));
+  const { isError } = useQuery(["token"], () =>
+    getLoginCsrfToken("/auth/login")
+  );
 
   const isAuth = () => {
     if (!pid) {
@@ -42,7 +45,24 @@ export const AuthProvider = ({ children }: ContextProps) => {
 
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>
-      {children}
+      {isError ? (
+        <Box
+          sx={{
+            width: 1,
+            height: "100vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            color: (theme) => theme.palette.neutral.light,
+            backgroundColor: (theme) => theme.palette.primary.main,
+            fontSize: 24,
+          }}
+        >
+          <p>Une erreur est survenue lors de votre demande...</p>
+        </Box>
+      ) : (
+        <>{children}</>
+      )}
     </AuthContext.Provider>
   );
 };

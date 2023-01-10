@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import CircularProgress from "@mui/material/CircularProgress";
+import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -56,9 +56,9 @@ const ScrollableDaysTabs = () => {
   return (
     <Container>
       {allDays.isLoading ? (
-        <CircularProgress color="secondary" />
+        <Skeleton variant="rectangular" height={48} />
       ) : allDays.isError ? (
-        <Typography>
+        <Typography sx={{ padding: "0 5px" }}>
           Une erreur est survenue, veuillez réessayer plus tard.
         </Typography>
       ) : (

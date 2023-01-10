@@ -3,7 +3,7 @@ import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import CircularProgress from "@mui/material/CircularProgress";
+import Skeleton from "@mui/material/Skeleton";
 import ScrollableDaysTabs from "~/src/components/Navigation/ScrollableDaysTabs";
 import GameContainer from "~/src/components/Containers/GameContainer";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
@@ -15,7 +15,7 @@ import { fr } from "date-fns/locale";
 
 const Home = () => {
   const theme = useTheme();
-  const { allDays, day, dayData } = useGameContext();
+  const { day, dayData } = useGameContext();
 
   const date = format(parseISO(dayData?.date), "PPPP", {
     locale: fr,
@@ -48,11 +48,12 @@ const Home = () => {
   }));
 
   const CurrentDate = styled(Typography)({
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 700,
     textAlign: "center",
     borderRadius: "8px 8px 0 0",
     [theme.breakpoints.up("sm")]: {
+      fontSize: 20,
       maxWidth: 395,
     },
     [theme.breakpoints.up("lg")]: {
@@ -85,31 +86,29 @@ const Home = () => {
         <meta property="og:title" content="Accueil - LFL-Pickem" />
       </Head>
 
-      {currentUser.isLoading || allDays?.isLoading ? (
-        <CircularProgress color="secondary" />
-      ) : currentUser.isError || allDays?.isError ? (
-        <Typography>
-          Une erreur est survenue, veuillez réessayer plus tard.
-        </Typography>
-      ) : (
-        <Page component="section">
-          <Container
-            maxWidth="md"
-            sx={{ display: "flex", flexDirection: "column", gap: 4 }}
-          >
-            <ScrollableDaysTabs />
-            <PageHeader>
-              <CurrentDate>{date}</CurrentDate>
+      <Page component="section">
+        <Container
+          maxWidth="md"
+          sx={{ display: "flex", flexDirection: "column", gap: 4 }}
+        >
+          <ScrollableDaysTabs />
+          <PageHeader>
+            <CurrentDate>{date}</CurrentDate>
+            {currentUser.isLoading ? (
+              <Skeleton variant="rounded" width={70} height={30} />
+            ) : currentUser.isError ? (
+              <PointsCounter>N/A pts </PointsCounter>
+            ) : (
               <PointsCounter>{currentUser.data.points} pts</PointsCounter>
-            </PageHeader>
-            <Games>
-              {day?.map((day) => (
-                <GameContainer {...day} key={day.id} />
-              ))}
-            </Games>
-          </Container>
-        </Page>
-      )}
+            )}
+          </PageHeader>
+          <Games>
+            {day?.map((day) => (
+              <GameContainer {...day} key={day.id} />
+            ))}
+          </Games>
+        </Container>
+      </Page>
     </>
   );
 };
