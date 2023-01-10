@@ -52,5 +52,12 @@ export const theme = createTheme({
         },
       },
     },
+    MuiSkeleton: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#36414A",
+        },
+      },
+    },
   },
 });
