@@ -1,7 +1,6 @@
 import { UseQueryResult } from "@tanstack/react-query";
 import { ReactNode } from "react";
 import { Day, Game, TeamList, UserSelection } from "./teams";
-import { User } from "./user";
 
 export type ContextProps = {
   children: ReactNode;
@@ -10,8 +9,6 @@ export type ContextProps = {
 export interface AuthContextInterface {
   auth: boolean;
   setAuth: (auth: boolean) => void;
-  user: UseQueryResult<User> | null;
-  setUser: (user: UseQueryResult<User> | null) => void;
 }
 
 export interface GameContextInterface {
