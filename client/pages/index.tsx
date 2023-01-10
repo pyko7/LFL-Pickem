@@ -6,8 +6,6 @@ import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import ScrollableDaysTabs from "~/src/components/Navigation/ScrollableDaysTabs";
 import GameContainer from "~/src/components/Containers/GameContainer";
-import { useEffect } from "react";
-import { useAuthContext } from "~/context/AuthContext";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { getUserById } from "~/src/utils/api/user/getUserById";
 import { User } from "~/src/types/user";
@@ -17,7 +15,6 @@ import { fr } from "date-fns/locale";
 
 const Home = () => {
   const theme = useTheme();
-  const { user, setUser } = useAuthContext();
   const { allDays, day, dayData } = useGameContext();
 
   const date = format(parseISO(dayData?.date), "PPPP", {
@@ -28,10 +25,6 @@ const Home = () => {
     ["user"],
     getUserById
   );
-
-  useEffect(() => {
-    setUser(currentUser);
-  }, []);
 
   const Page = styled(Box)(({ theme }) => ({
     position: "relative",
@@ -92,9 +85,9 @@ const Home = () => {
         <meta property="og:title" content="Accueil - LFL-Pickem" />
       </Head>
 
-      {currentUser?.isLoading || allDays?.isLoading ? (
+      {currentUser.isLoading || allDays?.isLoading ? (
         <CircularProgress color="secondary" />
-      ) : currentUser?.isError || allDays?.isError ? (
+      ) : currentUser.isError || allDays?.isError ? (
         <Typography>
           Une erreur est survenue, veuillez réessayer plus tard.
         </Typography>
@@ -107,7 +100,7 @@ const Home = () => {
             <ScrollableDaysTabs />
             <PageHeader>
               <CurrentDate>{date}</CurrentDate>
-              <PointsCounter>{user?.data?.points} pts</PointsCounter>
+              <PointsCounter>{currentUser.data.points} pts</PointsCounter>
             </PageHeader>
             <Games>
               {day?.map((day) => (

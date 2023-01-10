@@ -15,13 +15,22 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendEmailForm from "~/src/components/Forms/SendEmailForm";
 import ConfirmDelete from "~/src/components/Forms/ConfirmDelete";
-import { useAuthContext } from "~/context/AuthContext";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { User } from "~/src/types/user";
+import { getUserById } from "~/src/utils/api/user/getUserById";
+import { getLoginCsrfToken } from "~/src/utils/api/auth/getLoginCsrfToken";
 
 const Profile = () => {
   const theme = useTheme();
-  const { user } = useAuthContext();
   const [resetPassword, setResetPassword] = useState(false);
   const [deleteAccount, setDeleteAccount] = useState(false);
+
+  const csrfToken = useQuery(["token"], () => getLoginCsrfToken("/auth/login"));
+
+  const currentUser: UseQueryResult<User> | null = useQuery(
+    ["user"],
+    getUserById
+  );
 
   const resetPasswordProps = {
     open: resetPassword,
@@ -111,9 +120,9 @@ const Profile = () => {
       </Head>
 
       <Page component="section">
-        {user?.isLoading ? (
+        {currentUser.isLoading || csrfToken.isLoading ? (
           <CircularProgress color="secondary" />
-        ) : user?.isError ? (
+        ) : currentUser.isError || csrfToken.isError ? (
           <Typography>
             Une erreur est survenue, veuillez réessayer plus tard.
           </Typography>
@@ -121,17 +130,17 @@ const Profile = () => {
           <>
             <Container maxWidth="md">
               <ProfileHeader>
-                <UserName>{user?.data?.userName}</UserName>
-                <PointsCounter>{user?.data?.points} pts</PointsCounter>
+                <UserName>{currentUser.data.userName}</UserName>
+                <PointsCounter>{currentUser.data.points} pts</PointsCounter>
               </ProfileHeader>
               <SectionDivider />
 
               <ProfileList>
                 <ListItem disableGutters>
-                  <ListItemText primary="Classement actuel: 525" />
+                  <ListItemText primary="Classement actuel: N/A" />
                 </ListItem>
                 <ListItem disableGutters>
-                  <ListItemText primary="Top: 75%" />
+                  <ListItemText primary="Top: N/A" />
                 </ListItem>
               </ProfileList>
               <SectionDivider />
