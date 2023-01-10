@@ -37,14 +37,14 @@ const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
       name: "Accueil",
       pathname: "/",
     },
-    {
-      name: "Classement",
-      pathname: "/rank",
-    },
-    {
-      name: "Calendrier",
-      pathname: "/schedule",
-    },
+    // {
+    //   name: "Classement",
+    //   pathname: "/rank",
+    // },
+    // {
+    //   name: "Calendrier",
+    //   pathname: "/schedule",
+    // },
     {
       name: "Live",
       pathname: "https://www.twitch.tv/otplol_",
