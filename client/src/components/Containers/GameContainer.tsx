@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Box from "@mui/material/Box";
+import Skeleton from "@mui/material/Skeleton";
 import CircularProgress from "@mui/material/CircularProgress";
 import FirstTeam from "../Cards/FirstTeam";
 import SecondTeam from "../Cards/SecondTeam";
@@ -22,8 +23,8 @@ import CancelIcon from "@mui/icons-material/Cancel";
 
 const GameContainer = (props: Game) => {
   const theme = useTheme();
-  const [firstTeam, setFirstTeam] = useState<Team | undefined>();
-  const [secondTeam, setSecondTeam] = useState<Team | undefined>();
+  const [firstTeam, setFirstTeam] = useState<Team>();
+  const [secondTeam, setSecondTeam] = useState<Team>();
   const [disabledDay, setDisabledDay] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState(0);
   const [notSelected, setNotSelected] = useState(0);
@@ -31,7 +32,7 @@ const GameContainer = (props: Game) => {
   const [betError, setBetError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const { teams, userSelection } = useGameContext();
+  const { teamsList, userSelection } = useGameContext();
 
   const isBiggerThanMobile = useMediaQuery(theme.breakpoints.up("sm"));
 
@@ -122,7 +123,7 @@ const GameContainer = (props: Game) => {
   }, [props.date]);
 
   useEffect(() => {
-    teams?.teams.forEach((team) => {
+    teamsList.data?.teams.forEach((team) => {
       if (team.id === props.firstTeamId) {
         setFirstTeam(team);
       }
@@ -187,86 +188,100 @@ const GameContainer = (props: Game) => {
 
   return (
     <Game>
-      {firstTeam && secondTeam ? (
-        <>
-          <Box
-            sx={{
-              position: "relative",
-              width:
-                selectedTeam === firstTeam.id
-                  ? "75%"
-                  : selectedTeam === secondTeam.id
-                  ? "33%"
-                  : "50%",
-            }}
-            onClick={() => handleClick(firstTeam.id, secondTeam.id)}
-          >
-            {!disabledDay ? null : selectedTeam !==
-              firstTeam.id ? null : firstTeam.id === props.winner ? (
-              <SuccessIcon
+      <>
+        {teamsList.isLoading ? (
+          <Skeleton variant="rounded" width="50%" height={78} />
+        ) : (
+          <>
+            {firstTeam && secondTeam ? (
+              <Box
                 sx={{
-                  left: isBiggerThanMobile ? 15 : 5,
+                  position: "relative",
+                  width:
+                    selectedTeam === firstTeam.id
+                      ? "75%"
+                      : selectedTeam === secondTeam.id
+                      ? "33%"
+                      : "50%",
                 }}
-              />
-            ) : (
-              <FailIcon
-                sx={{
-                  left: isBiggerThanMobile ? 15 : 5,
-                }}
-              />
-            )}
-            <FirstTeam
-              team={firstTeam}
-              notSelected={notSelected}
-              disabledDay={disabledDay}
-            />
-          </Box>
-        </>
-      ) : null}
+                onClick={() => handleClick(firstTeam.id, secondTeam.id)}
+              >
+                {!disabledDay ? null : selectedTeam !==
+                  firstTeam.id ? null : firstTeam.id === props.winner ? (
+                  <SuccessIcon
+                    sx={{
+                      left: isBiggerThanMobile ? 15 : 5,
+                    }}
+                  />
+                ) : (
+                  <FailIcon
+                    sx={{
+                      left: isBiggerThanMobile ? 15 : 5,
+                    }}
+                  />
+                )}
+
+                <FirstTeam
+                  team={firstTeam}
+                  notSelected={notSelected}
+                  disabledDay={disabledDay}
+                />
+              </Box>
+            ) : null}
+          </>
+        )}
+      </>
+
       {createBet.isLoading || updateBet.isLoading || deleteBet.isLoading ? (
         <CircularProgress color="secondary" />
       ) : null}
-      {firstTeam && secondTeam ? (
-        <Box
-          sx={{
-            position: "relative",
-            width:
-              selectedTeam === secondTeam.id
-                ? "75%"
-                : selectedTeam === firstTeam.id
-                ? "33%"
-                : "50%",
-          }}
-          onClick={() => handleClick(secondTeam.id, firstTeam.id)}
-        >
-          <SecondTeam
-            team={secondTeam}
-            notSelected={notSelected}
-            disabledDay={disabledDay}
-          />
-          {!disabledDay ? null : selectedTeam !==
-            secondTeam.id ? null : secondTeam.id === props.winner ? (
-            <SuccessIcon
+      {teamsList.isLoading ? (
+        <Skeleton variant="rounded" width="50%" height={78} />
+      ) : (
+        <>
+          {firstTeam && secondTeam ? (
+            <Box
               sx={{
-                right: isBiggerThanMobile ? 15 : 5,
+                position: "relative",
+                width:
+                  selectedTeam === secondTeam.id
+                    ? "75%"
+                    : selectedTeam === firstTeam.id
+                    ? "33%"
+                    : "50%",
               }}
+              onClick={() => handleClick(secondTeam.id, firstTeam.id)}
+            >
+              <SecondTeam
+                team={secondTeam}
+                notSelected={notSelected}
+                disabledDay={disabledDay}
+              />
+              {!disabledDay ? null : selectedTeam !==
+                secondTeam.id ? null : secondTeam.id === props.winner ? (
+                <SuccessIcon
+                  sx={{
+                    right: isBiggerThanMobile ? 15 : 5,
+                  }}
+                />
+              ) : (
+                <FailIcon
+                  sx={{
+                    right: isBiggerThanMobile ? 15 : 5,
+                  }}
+                />
+              )}
+            </Box>
+          ) : null}
+          {betError ? (
+            <ErrorModal
+              betError={betError}
+              setBetError={setBetError}
+              errorMessage={errorMessage}
             />
-          ) : (
-            <FailIcon
-              sx={{
-                right: isBiggerThanMobile ? 15 : 5,
-              }}
-            />
-          )}
-        </Box>
-      ) : null}
-      {betError ? (
-        <ErrorModal
-          betError={betError}
-          setBetError={setBetError}
-          errorMessage={errorMessage}
-        />
-      ) : null}
+          ) : null}
+        </>
+      )}
     </Game>
   );
 };

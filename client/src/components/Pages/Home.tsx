@@ -14,7 +14,7 @@ import { fr } from "date-fns/locale";
 
 const Homepage = () => {
   const theme = useTheme();
-  const { day, dayData } = useGameContext();
+  const { day, dayData, teamsList } = useGameContext();
 
   const currentUser: UseQueryResult<User> | null = useQuery(
     ["user"],
@@ -83,9 +83,18 @@ const Homepage = () => {
         )}
       </PageHeader>
       <Games>
-        {day?.map((day) => (
-          <GameContainer {...day} key={day.id} />
-        ))}
+        {teamsList.isError ? (
+          <Typography sx={{ margin: "0 auto" }}>
+            Une erreur est survenue. Les matchs sont momentanément
+            indisponibles. Veuillez nous excuser pour la gêne occasionnée.
+          </Typography>
+        ) : (
+          <>
+            {day?.map((day) => (
+              <GameContainer {...day} key={day.id} />
+            ))}
+          </>
+        )}
       </Games>
     </Container>
   );

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useContext, useEffect, useState } from "react";
 import { ContextProps, GameContextInterface } from "~/src/types/context";
-import { TeamList, Game, Day, UserSelection } from "~/src/types/teams";
+import { Game, Day, UserSelection } from "~/src/types/teams";
 import { getUserScore } from "~/src/utils/api/user/getUserScore";
 import { getAllDays } from "~/src/utils/api/game/getAllDays";
 import { getAllTeams } from "~/src/utils/api/game/getAllTeams";
@@ -16,7 +16,6 @@ export const useGameContext = () => {
 };
 
 export const GameProvider = ({ children }: ContextProps) => {
-  const [teams, setTeams] = useState<TeamList | null>(null);
   const [dayData, setDayData] = useState<Day | null>(null);
 
   const [day, setDay] = useState<Game[] | null>(null);
@@ -44,12 +43,6 @@ export const GameProvider = ({ children }: ContextProps) => {
   }, [allDays.data]);
 
   useEffect(() => {
-    if (typeof teamsList.data !== "undefined") {
-      setTeams(teamsList.data);
-    }
-  }, [teamsList]);
-
-  useEffect(() => {
     if (dayData === null) {
       allDays.refetch();
       return;
@@ -73,7 +66,7 @@ export const GameProvider = ({ children }: ContextProps) => {
       value={{
         allDays,
         selectedTeamsList,
-        teams,
+        teamsList,
         day,
         setDay,
         dayData,
