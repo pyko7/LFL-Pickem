@@ -3,7 +3,6 @@ import Head from "next/head";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import Header from "./Navigation/Header";
-import { GameProvider } from "~/context/GameContext";
 
 const Layout = ({ children }: { children?: ReactNode }) => {
   const Layout = styled(Box)(({ theme }) => ({
@@ -44,12 +43,10 @@ const Layout = ({ children }: { children?: ReactNode }) => {
           content="Bienvenue dans LFL-Pickem ! Pariez sur les victoires des équipes à chaque journée de LFL"
         />
       </Head>
-      <GameProvider>
-        <Layout>
-          <Header />
-          <MainContainer component="main">{children}</MainContainer>
-        </Layout>
-      </GameProvider>
+      <Layout>
+        <Header />
+        <MainContainer component="main">{children}</MainContainer>
+      </Layout>
     </>
   );
 };

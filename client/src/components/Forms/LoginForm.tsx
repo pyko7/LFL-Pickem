@@ -17,12 +17,14 @@ import { logUserSchema } from "~/src/validations/authValidation";
 import { useMutation } from "@tanstack/react-query";
 import { logUser } from "~/src/utils/api/auth/logUser";
 import { useRouter } from "next/router";
+import { useAuthContext } from "~/context/AuthContext";
 
 type Props = {
   setOpen: (open: boolean) => void;
 };
 
 const LoginForm = ({ setOpen }: Props) => {
+  const { setAuth } = useAuthContext();
   const { push } = useRouter();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -51,9 +53,11 @@ const LoginForm = ({ setOpen }: Props) => {
           push("/signup/confirm-email");
         }
         setErrorMessage(error.message);
+        setAuth(false);
       }
     },
     onSuccess: () => {
+      setAuth(true);
       push("/");
     },
   });
@@ -161,7 +165,9 @@ const LoginForm = ({ setOpen }: Props) => {
         {mutation.isError ? (
           <ErrorMessage>{errorMessage}</ErrorMessage>
         ) : errors.email || errors.password ? (
-          <ErrorMessage>Adresse email et/ou mot de passe incorrect</ErrorMessage>
+          <ErrorMessage>
+            Adresse email et/ou mot de passe incorrect
+          </ErrorMessage>
         ) : null}
       </Inputs>
       <SubmitButton variant="contained" type="submit">
