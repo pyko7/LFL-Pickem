@@ -17,7 +17,7 @@ export interface GameContextInterface {
   teams: TeamList | null;
   day: Game[] | null;
   setDay: (day: Game[] | null) => void;
-  dayData: Day;
+  dayData: Day | null;
   setDayData: (dayData: Day) => void;
   userSelection: UserSelection[];
 }
