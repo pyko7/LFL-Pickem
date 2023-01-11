@@ -5,7 +5,6 @@ import { TeamList, Game, Day, UserSelection } from "~/src/types/teams";
 import { getUserScore } from "~/src/utils/api/user/getUserScore";
 import { getAllDays } from "~/src/utils/api/game/getAllDays";
 import { getAllTeams } from "~/src/utils/api/game/getAllTeams";
-import { getDayByDate } from "~/src/utils/api/game/getDayByDate";
 import { getGamesByDay } from "~/src/utils/api/game/getGamesByDay";
 import { getSelectedTeams } from "~/src/utils/api/game/getSelectedTeams";
 import { getClosestDayFromNow } from "~/src/utils/getClosestDayFromNow";
@@ -18,13 +17,10 @@ export const useGameContext = () => {
 
 export const GameProvider = ({ children }: ContextProps) => {
   const [teams, setTeams] = useState<TeamList | null>(null);
-  const [dayData, setDayData] = useState<Day>({
-    id: 1,
-    date: "2023-01-18T18:00:00.000Z",
-  });
+  const [dayData, setDayData] = useState<Day | null>(null);
+
   const [day, setDay] = useState<Game[] | null>(null);
   const [userSelection, setUserSelection] = useState<UserSelection[]>([]);
-
   const allDays = useQuery(["allDays"], getAllDays);
   const teamsList = useQuery(["teams"], getAllTeams);
   const selectedTeamsList = useQuery(["selectedTeams"], getSelectedTeams);
@@ -37,8 +33,11 @@ export const GameProvider = ({ children }: ContextProps) => {
     if (typeof allDays.data !== "undefined") {
       const getClosestDay = async () => {
         const date = getClosestDayFromNow(allDays.data);
-        const closestDay = await getDayByDate(date);
-        setDayData(closestDay);
+        allDays.data.map((day) => {
+          if (day.date == date) {
+            return setDayData(day);
+          }
+        });
       };
       getClosestDay();
     }
