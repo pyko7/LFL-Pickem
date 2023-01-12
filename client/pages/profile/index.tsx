@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
+import Skeleton from "@mui/material/Skeleton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -120,9 +121,7 @@ const Profile = () => {
       </Head>
 
       <Page component="section">
-        {currentUser.isLoading || csrfToken.isLoading ? (
-          <CircularProgress color="secondary" />
-        ) : currentUser.isError || csrfToken.isError ? (
+        {csrfToken.isError ? (
           <Typography>
             Une erreur est survenue, veuillez réessayer plus tard.
           </Typography>
@@ -130,8 +129,22 @@ const Profile = () => {
           <>
             <Container maxWidth="md">
               <ProfileHeader>
-                <UserName>{currentUser.data.userName}</UserName>
-                <PointsCounter>{currentUser.data.points} pts</PointsCounter>
+                {currentUser.isLoading || csrfToken.isLoading ? (
+                  <>
+                    <Skeleton variant="text" width={120} height={30} />
+                    <Skeleton variant="rounded" width={70} height={30} />
+                  </>
+                ) : currentUser.isError ? (
+                  <>
+                    <UserName>User</UserName>
+                    <PointsCounter>N/A pts </PointsCounter>
+                  </>
+                ) : (
+                  <>
+                    <UserName>{currentUser.data.userName}</UserName>
+                    <PointsCounter>{currentUser.data.points} pts</PointsCounter>
+                  </>
+                )}
               </ProfileHeader>
               <SectionDivider />
 
