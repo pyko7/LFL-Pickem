@@ -12,3 +12,9 @@ export interface User {
   userName: string;
   points: number;
 }
+
+export interface UserRank {
+  userRank: number;
+  top: number;
+  ranking: number;
+}

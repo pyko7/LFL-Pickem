@@ -11,15 +11,15 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import CircularProgress from "@mui/material/CircularProgress";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendEmailForm from "~/src/components/Forms/SendEmailForm";
 import ConfirmDelete from "~/src/components/Forms/ConfirmDelete";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { User } from "~/src/types/user";
+import { User, UserRank } from "~/src/types/user";
 import { getUserById } from "~/src/utils/api/user/getUserById";
 import { getLoginCsrfToken } from "~/src/utils/api/auth/getLoginCsrfToken";
+import { getUserRank } from "~/src/utils/api/user/getUserRank";
 
 const Profile = () => {
   const theme = useTheme();
@@ -28,10 +28,9 @@ const Profile = () => {
 
   const csrfToken = useQuery(["token"], () => getLoginCsrfToken("/auth/login"));
 
-  const currentUser: UseQueryResult<User> | null = useQuery(
-    ["user"],
-    getUserById
-  );
+  const currentUser: UseQueryResult<User> = useQuery(["user"], getUserById);
+
+  const userRank: UseQueryResult<UserRank> = useQuery(["rank"], getUserRank);
 
   const resetPasswordProps = {
     open: resetPassword,
@@ -150,16 +149,30 @@ const Profile = () => {
 
               <ProfileList>
                 <ListItem disableGutters>
-                  <ListItemText primary="Classement actuel: N/A" />
+                  {userRank.isLoading ? (
+                    <Skeleton variant="rounded" width={200} height={30} />
+                  ) : userRank.isError ? (
+                    <ListItemText primary={`Classement actuel: N/A`} />
+                  ) : (
+                    <ListItemText
+                      primary={`Classement actuel: ${userRank.data.userRank}`}
+                    />
+                  )}
                 </ListItem>
                 <ListItem disableGutters>
-                  <ListItemText primary="Top: N/A" />
+                  {userRank.isLoading ? (
+                    <Skeleton variant="rounded" width={100} height={30} />
+                  ) : userRank.isError ? (
+                    <ListItemText primary={`Top: N/A`} />
+                  ) : (
+                    <ListItemText primary={`Top: ${userRank.data.top}%`} />
+                  )}
                 </ListItem>
               </ProfileList>
               <SectionDivider />
 
               <ProfileList>
-                <ListItem disableGutters>
+                <ListItem disableGutters sx={{ width: "fit-content" }}>
                   <ListItemButton disableGutters onClick={handlePasswordClick}>
                     <ListIcon>
                       <EditIcon />
@@ -167,7 +180,7 @@ const Profile = () => {
                     <ListItemText primary="Modifier le mot de passe" />
                   </ListItemButton>
                 </ListItem>
-                <ListItem disableGutters>
+                <ListItem disableGutters sx={{ width: "fit-content" }}>
                   <ListItemButton
                     disableGutters
                     onClick={handleDeleteAccountClick}
