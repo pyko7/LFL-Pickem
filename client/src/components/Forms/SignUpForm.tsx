@@ -31,8 +31,9 @@ const SignUpForm = () => {
       ? setPasswordVisible(false)
       : setPasswordVisible(true);
   };
+
   const handleClickShowConfirmPassword = () => {
-    return passwordVisible
+    return confirmPasswordVisible
       ? setConfirmPasswordVisible(false)
       : setConfirmPasswordVisible(true);
   };
@@ -194,7 +195,7 @@ const SignUpForm = () => {
 
       <Inputs>
         <TextField
-          type="password"
+          type={confirmPasswordVisible ? "text" : "password"}
           variant="filled"
           label="Confirmer le mot de passe"
           {...register("confirmPassword")}
