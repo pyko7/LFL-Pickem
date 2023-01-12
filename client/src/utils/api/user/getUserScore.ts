@@ -9,13 +9,13 @@ export const getUserScore = async () => {
     });
     const data = await res.json();
     if (!res.ok) {
-      console.log("erreur");
+      throw new Error("Une erreur est survenue");
     }
     return data;
   } catch (error) {
     if (error instanceof Error) {
-      console.log(error.message);
+      throw new Error(error.message);
     }
-    return error;
+    throw new Error("Une erreur est survenue");
   }
 };
