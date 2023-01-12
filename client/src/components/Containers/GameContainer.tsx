@@ -193,7 +193,7 @@ const GameContainer = (props: Game) => {
   return (
     <Game>
       <>
-        {teamsList.isLoading ? (
+        {teamsList.isLoading || selectedTeamsList.isLoading ? (
           <Skeleton variant="rounded" width="50%" height={78} />
         ) : (
           <>
@@ -239,7 +239,7 @@ const GameContainer = (props: Game) => {
       {createBet.isLoading || updateBet.isLoading || deleteBet.isLoading ? (
         <CircularProgress color="secondary" />
       ) : null}
-      {teamsList.isLoading ? (
+      {teamsList.isLoading || selectedTeamsList.isLoading ? (
         <Skeleton variant="rounded" width="50%" height={78} />
       ) : (
         <>

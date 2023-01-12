@@ -11,15 +11,25 @@ import { User } from "~/src/types/user";
 import { useGameContext } from "~/context/GameContext";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
+import ErrorSnackbar from "../Feedbacks/ErrorSnackbar";
+import { useEffect, useState } from "react";
 
 const Homepage = () => {
   const theme = useTheme();
-  const { day, dayData, teamsList } = useGameContext();
+  const { day, dayData, teamsList, selectedTeamsList } = useGameContext();
+  const [errorMessage, setErrorMessage] = useState(false);
 
   const currentUser: UseQueryResult<User> | null = useQuery(
     ["user"],
     getUserById
   );
+
+  useEffect(() => {
+    if (selectedTeamsList.isError) {
+      return setErrorMessage(true);
+    }
+    setErrorMessage(false);
+  }, [selectedTeamsList]);
 
   const PageHeader = styled(Box)(({ theme }) => ({
     width: "100%",
@@ -96,6 +106,13 @@ const Homepage = () => {
           </>
         )}
       </Games>
+      {selectedTeamsList.error ? (
+        <ErrorSnackbar
+          open={errorMessage}
+          setOpen={setErrorMessage}
+          message="Impossible d'afficher votre sélection pour le moment "
+        />
+      ) : null}
     </Container>
   );
 };
