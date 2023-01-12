@@ -32,7 +32,7 @@ const GameContainer = (props: Game) => {
   const [betError, setBetError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const { teamsList, userSelection } = useGameContext();
+  const { teamsList, selectedTeamsList } = useGameContext();
 
   const isBiggerThanMobile = useMediaQuery(theme.breakpoints.up("sm"));
 
@@ -134,14 +134,18 @@ const GameContainer = (props: Game) => {
   });
 
   useEffect(() => {
-    if (typeof userSelection !== "undefined" && firstTeam && secondTeam) {
+    if (
+      typeof selectedTeamsList.data !== "undefined" &&
+      firstTeam &&
+      secondTeam
+    ) {
       const isFirstTeamSelected = getUserSelection(
-        userSelection,
+        selectedTeamsList.data,
         props.id,
         firstTeam
       );
       const isSecondTeamSelected = getUserSelection(
-        userSelection,
+        selectedTeamsList.data,
         props.id,
         secondTeam
       );
@@ -156,7 +160,7 @@ const GameContainer = (props: Game) => {
         return setSelectedTeam(secondTeam.id);
       }
     }
-  }, [userSelection, props.id, firstTeam, secondTeam]);
+  }, [selectedTeamsList.data, props.id, firstTeam, secondTeam]);
 
   const Game = styled(Box)({
     width: "100%",
