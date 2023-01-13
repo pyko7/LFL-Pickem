@@ -160,7 +160,7 @@ const GameContainer = (props: Game) => {
         return setSelectedTeam(secondTeam.id);
       }
     }
-  }, [userSelection, props.id, firstTeam, secondTeam]);
+  }, [userSelection, selectedTeamsList.data, props.id, firstTeam, secondTeam]);
 
   const Game = styled(Box)({
     width: "100%",
