@@ -15,17 +15,31 @@ export const useGameContext = () => {
   return useContext(GameContext);
 };
 
-export const GameProvider = ({ children }: ContextProps) => {
+export async function getServerSideProps() {
+  const schedule = await getAllDays();
+  const teams = await getAllTeams();
+
+  return {
+    props: {
+      schedule,
+      teams,
+    },
+  };
+}
+
+export const GameProvider = (props: ContextProps) => {
   const [dayData, setDayData] = useState<Day | null>(null);
   const [userSelection, setUserSelection] = useState<UserSelection[]>([]);
 
   const [day, setDay] = useState<Game[] | null>(null);
 
   const allDays = useQuery(["allDays"], getAllDays, {
+    initialData: props.schedule,
     staleTime: 10 * (60 * 1000), // 10 mins
     cacheTime: 15 * (60 * 1000), // 15 mins
   });
   const teamsList = useQuery(["teams"], getAllTeams, {
+    initialData: props.teams,
     staleTime: 30 * (60 * 1000), // 30 mins
     cacheTime: 45 * (60 * 1000), // 45 mins
   });
@@ -81,7 +95,7 @@ export const GameProvider = ({ children }: ContextProps) => {
         userSelection,
       }}
     >
-      {children}
+      {props.children}
     </GameContext.Provider>
   );
 };

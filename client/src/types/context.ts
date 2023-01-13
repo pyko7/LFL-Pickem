@@ -2,9 +2,11 @@ import { UseQueryResult } from "@tanstack/react-query";
 import { ReactNode } from "react";
 import { Day, Game, TeamList, UserSelection } from "./teams";
 
-export type ContextProps = {
+export interface ContextProps {
   children: ReactNode;
-};
+  schedule: Day[];
+  teams: TeamList;
+}
 
 export interface AuthContextInterface {
   auth: boolean;
