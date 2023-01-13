@@ -71,6 +71,9 @@ const FirstTeam = ({ team, notSelected, disabledDay }: TeamProps) => {
             alt={team.name}
             width={isBiggerThanMobile ? 60 : 40}
             height={isBiggerThanMobile ? 60 : 40}
+            style={{
+              objectFit: "contain",
+            }}
           />
         </TeamContent>
       </ContentContainer>
