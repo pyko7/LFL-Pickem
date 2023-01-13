@@ -6,7 +6,7 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import lflLogo from "~/public/white_lfl.webp";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import NavigationDrawer from "./NavigationDrawer";
 
 const Header = () => {
@@ -35,7 +35,7 @@ const Header = () => {
           }}
         >
           <ImageContainer href="/">
-            <Image src={lflLogo} alt="logo" layout="responsive" priority />
+            <Image src={lflLogo} alt="logo" width={65} height={65} priority />
           </ImageContainer>
           <IconButton
             sx={{ padding: 0 }}
