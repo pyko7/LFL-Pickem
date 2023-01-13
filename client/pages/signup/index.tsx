@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import SignUpForm from "~/src/components/Forms/SignUpForm";
 import Typography from "@mui/material/Typography";
-import lflLogo from "~/public/white_lfl.png";
+import lflLogo from "~/public/white_lfl.webp";
 import Image from "next/image";
 import Link from "next/link";
 

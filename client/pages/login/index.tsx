@@ -6,7 +6,7 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import LoginForm from "~/src/components/Forms/LoginForm";
-import lflLogo from "~/public/white_lfl.png";
+import lflLogo from "~/public/white_lfl.webp";
 import Image from "next/image";
 import Link from "next/link";
 import SendEmailForm from "~/src/components/Forms/SendEmailForm";
