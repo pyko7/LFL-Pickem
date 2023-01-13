@@ -73,6 +73,7 @@ const SecondTeam = ({ team, notSelected, disabledDay }: TeamProps) => {
             alt={team.name}
             width={isBiggerThanMobile ? 60 : 40}
             height={isBiggerThanMobile ? 60 : 40}
+            sizes="100vw"
             style={{
               objectFit: "contain",
             }}
