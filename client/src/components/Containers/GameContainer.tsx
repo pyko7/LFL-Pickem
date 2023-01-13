@@ -32,7 +32,7 @@ const GameContainer = (props: Game) => {
   const [betError, setBetError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const { teamsList, selectedTeamsList } = useGameContext();
+  const { teamsList, selectedTeamsList, userSelection } = useGameContext();
 
   const isBiggerThanMobile = useMediaQuery(theme.breakpoints.up("sm"));
 
@@ -140,12 +140,12 @@ const GameContainer = (props: Game) => {
       secondTeam
     ) {
       const isFirstTeamSelected = getUserSelection(
-        selectedTeamsList.data,
+        userSelection,
         props.id,
         firstTeam
       );
       const isSecondTeamSelected = getUserSelection(
-        selectedTeamsList.data,
+        userSelection,
         props.id,
         secondTeam
       );
@@ -160,7 +160,7 @@ const GameContainer = (props: Game) => {
         return setSelectedTeam(secondTeam.id);
       }
     }
-  }, [selectedTeamsList.data, props.id, firstTeam, secondTeam]);
+  }, [userSelection, props.id, firstTeam, secondTeam]);
 
   const Game = styled(Box)({
     width: "100%",

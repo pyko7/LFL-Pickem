@@ -21,7 +21,11 @@ const Homepage = () => {
 
   const currentUser: UseQueryResult<User> | null = useQuery(
     ["user"],
-    getUserById
+    getUserById,
+    {
+      staleTime: 10 * (60 * 1000), // 10 mins
+      cacheTime: 15 * (60 * 1000), // 15 mins
+    }
   );
 
   useEffect(() => {

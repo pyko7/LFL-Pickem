@@ -28,9 +28,15 @@ const Profile = () => {
 
   const csrfToken = useQuery(["token"], () => getLoginCsrfToken("/auth/login"));
 
-  const currentUser: UseQueryResult<User> = useQuery(["user"], getUserById);
+  const currentUser: UseQueryResult<User> = useQuery(["user"], getUserById, {
+    staleTime: 10 * (60 * 1000), // 10 mins
+    cacheTime: 15 * (60 * 1000), // 15 mins
+  });
 
-  const userRank: UseQueryResult<UserRank> = useQuery(["rank"], getUserRank);
+  const userRank: UseQueryResult<UserRank> = useQuery(["rank"], getUserRank, {
+    staleTime: 10 * (60 * 1000), // 10 mins
+    cacheTime: 15 * (60 * 1000), // 15 mins
+  });
 
   const resetPasswordProps = {
     open: resetPassword,

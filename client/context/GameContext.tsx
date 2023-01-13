@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useContext, useEffect, useState } from "react";
 import { ContextProps, GameContextInterface } from "~/src/types/context";
-import { Game, Day } from "~/src/types/teams";
+import { Game, Day, UserSelection } from "~/src/types/teams";
 import { getUserScore } from "~/src/utils/api/user/getUserScore";
 import { getAllDays } from "~/src/utils/api/game/getAllDays";
 import { getAllTeams } from "~/src/utils/api/game/getAllTeams";
@@ -17,16 +17,30 @@ export const useGameContext = () => {
 
 export const GameProvider = ({ children }: ContextProps) => {
   const [dayData, setDayData] = useState<Day | null>(null);
+  const [userSelection, setUserSelection] = useState<UserSelection[]>([]);
 
   const [day, setDay] = useState<Game[] | null>(null);
 
-  const allDays = useQuery(["allDays"], getAllDays);
-  const teamsList = useQuery(["teams"], getAllTeams);
+  const allDays = useQuery(["allDays"], getAllDays, {
+    staleTime: 10 * (60 * 1000), // 10 mins
+    cacheTime: 15 * (60 * 1000), // 15 mins
+  });
+  const teamsList = useQuery(["teams"], getAllTeams, {
+    staleTime: 30 * (60 * 1000), // 30 mins
+    cacheTime: 45 * (60 * 1000), // 45 mins
+  });
   const selectedTeamsList = useQuery(["selectedTeams"], getSelectedTeams);
 
   useEffect(() => {
     getUserScore();
   }, []);
+
+  useEffect(() => {
+    if (typeof selectedTeamsList.data !== "undefined") {
+      selectedTeamsList.refetch();
+      setUserSelection(selectedTeamsList.data);
+    }
+  }, [selectedTeamsList.data, dayData]);
 
   useEffect(() => {
     if (typeof allDays.data !== "undefined") {
@@ -64,6 +78,7 @@ export const GameProvider = ({ children }: ContextProps) => {
         setDay,
         dayData,
         setDayData,
+        userSelection,
       }}
     >
       {children}
