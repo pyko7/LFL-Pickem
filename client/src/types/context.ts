@@ -4,8 +4,6 @@ import { Day, Game, TeamList, UserSelection } from "./teams";
 
 export interface ContextProps {
   children: ReactNode;
-  schedule: Day[];
-  teams: TeamList;
 }
 
 export interface AuthContextInterface {

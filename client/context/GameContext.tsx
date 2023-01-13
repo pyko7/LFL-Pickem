@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useContext, useEffect, useState } from "react";
-import { ContextProps, GameContextInterface } from "~/src/types/context";
+import { GameContextInterface } from "~/src/types/context";
 import { Game, Day, UserSelection } from "~/src/types/teams";
 import { getUserScore } from "~/src/utils/api/user/getUserScore";
 import { getAllDays } from "~/src/utils/api/game/getAllDays";
@@ -27,19 +27,19 @@ export async function getServerSideProps() {
   };
 }
 
-export const GameProvider = (props: ContextProps) => {
+export const GameProvider = ({ children, schedule, teams }: any) => {
   const [dayData, setDayData] = useState<Day | null>(null);
   const [userSelection, setUserSelection] = useState<UserSelection[]>([]);
 
   const [day, setDay] = useState<Game[] | null>(null);
 
   const allDays = useQuery(["allDays"], getAllDays, {
-    initialData: props.schedule,
+    initialData: schedule,
     staleTime: 10 * (60 * 1000), // 10 mins
     cacheTime: 15 * (60 * 1000), // 15 mins
   });
   const teamsList = useQuery(["teams"], getAllTeams, {
-    initialData: props.teams,
+    initialData: teams,
     staleTime: 30 * (60 * 1000), // 30 mins
     cacheTime: 45 * (60 * 1000), // 45 mins
   });
@@ -60,7 +60,7 @@ export const GameProvider = (props: ContextProps) => {
     if (typeof allDays.data !== "undefined") {
       const getClosestDay = async () => {
         const date = getClosestDayFromNow(allDays.data);
-        allDays.data.map((day) => {
+        allDays.data.map((day: Day) => {
           if (day.date == date) {
             return setDayData(day);
           }
@@ -95,7 +95,7 @@ export const GameProvider = (props: ContextProps) => {
         userSelection,
       }}
     >
-      {props.children}
+      {children}
     </GameContext.Provider>
   );
 };
