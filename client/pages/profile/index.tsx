@@ -26,7 +26,7 @@ const Profile = () => {
   const [resetPassword, setResetPassword] = useState(false);
   const [deleteAccount, setDeleteAccount] = useState(false);
 
-  const csrfToken = useQuery(["token"], () => getLoginCsrfToken("/auth/login"));
+  const csrfToken = useQuery(["token"], getLoginCsrfToken);
 
   const currentUser: UseQueryResult<User> = useQuery(["user"], getUserById, {
     staleTime: 10 * (60 * 1000), // 10 mins

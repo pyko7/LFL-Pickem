@@ -1,7 +1,7 @@
 import { doubleCsrf } from "csrf-csrf";
 import { Request, Response } from "express";
 
-export const { generateToken, doubleCsrfProtection } = doubleCsrf({
+const { generateToken } = doubleCsrf({
   getSecret: () => `${process.env.SECRET_SESSION}`,
   cookieName: "__Host.x-csrf-token",
   cookieOptions: {

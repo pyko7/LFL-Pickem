@@ -31,9 +31,7 @@ const LoginPage = () => {
   };
   const theme = useTheme();
 
-  const { isLoading, isError } = useQuery(["token"], () =>
-    getLoginCsrfToken("/auth/login")
-  );
+  const { isLoading, isError } = useQuery(["token"], () => getLoginCsrfToken);
 
   const Page = styled(Box)({
     position: "absolute",

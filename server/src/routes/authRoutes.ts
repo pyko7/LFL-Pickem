@@ -9,7 +9,7 @@ import { verifyUserEmail } from "../middleware/verifyUserEmail";
 
 export const authRoutes = Router();
 
-authRoutes.get("/login", createCsrf);
+authRoutes.get("/csrf", createCsrf);
 authRoutes.post("/signup", createUser);
 authRoutes.post("/sessionLogin", verifyUserEmail, createSessionCookie);
 authRoutes.post("/confirm-email", resendVerificationEmail);
