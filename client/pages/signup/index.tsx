@@ -5,7 +5,7 @@ import Container from "@mui/material/Container";
 import SignUpForm from "~/src/components/Forms/SignUpForm";
 import Typography from "@mui/material/Typography";
 import lflLogo from "~/public/white_lfl.png";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import Link from "next/link";
 
 const SignUp = () => {
@@ -22,23 +22,6 @@ const SignUp = () => {
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: theme.palette.primary.main,
-  });
-
-  const ImageContainer = styled(Box)({
-    width: 80,
-    height: 80,
-    marginBottom: 25,
-
-    [theme.breakpoints.up("sm")]: {
-      top: 25,
-      width: 100,
-      height: 100,
-    },
-    [theme.breakpoints.up("md")]: {
-      top: 25,
-      width: 125,
-      height: 125,
-    },
   });
 
   const FormContainer = styled(Container)({
@@ -89,9 +72,8 @@ const SignUp = () => {
       </Head>
       <Page component="section">
         <FormContainer>
-          <ImageContainer>
-            <Image src={lflLogo} alt="logo" layout="responsive" priority />
-          </ImageContainer>
+          <Image src={lflLogo} alt="logo" width={100} height={100} priority />
+
           <Title variant="h1">Inscription</Title>
 
           <SignUpForm />
