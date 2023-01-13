@@ -19,7 +19,9 @@ const Custom404 = () => {
       <Typography variant="h1" sx={{ fontSize: 52 }}>
         Oops
       </Typography>
-      <Typography sx={{ fontSize: 28 }}>Cette page n'existe pas </Typography>
+      <Typography sx={{ fontSize: 28 }}>
+        Cette page n&apos;existe pas{" "}
+      </Typography>
 
       <Link
         href="/"
