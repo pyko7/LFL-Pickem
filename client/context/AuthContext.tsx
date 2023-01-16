@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }: ContextProps) => {
   const { push } = useRouter();
   const pid = Cookies.get("pid");
 
-  const { isError } = useQuery(["token"], () => getLoginCsrfToken);
+  const { isError } = useQuery(["token"], getLoginCsrfToken);
 
   const isAuth = () => {
     if (!pid) {
