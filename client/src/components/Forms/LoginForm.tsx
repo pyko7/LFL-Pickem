@@ -67,8 +67,10 @@ const LoginForm = ({ setOpen }: Props) => {
   };
 
   const Form = styled(Box)(({ theme }) => ({
-    width: "100%",
-    margin: 0,
+    width: "90%",
+    maxWidth: 375,
+    height: "100%",
+    marginTop: "-1px",
     padding: 20,
     display: "flex",
     flexDirection: "column",

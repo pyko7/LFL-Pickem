@@ -1,42 +1,34 @@
 import Head from "next/head";
+import dynamic from "next/dynamic";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
-import SignUpForm from "~/src/components/Forms/SignUpForm";
 import Typography from "@mui/material/Typography";
 import lflLogo from "~/public/white_lfl.webp";
 import Image from "next/image";
 import Link from "next/link";
 
+const DynamicForm = dynamic(
+  () => import("../../src/components/Forms/SignUpForm")
+);
+
 const SignUp = () => {
   const theme = useTheme();
   const Page = styled(Box)({
     position: "absolute",
-    top: 0,
-    left: 0,
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%,-50%)",
     width: "100%",
-    minHeight: "100vh",
-    height: "100vh",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center",
     backgroundColor: theme.palette.primary.main,
   });
 
-  const FormContainer = styled(Container)({
-    width: "100%",
-    maxWidth: 400,
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    flexBasis: "75%",
-  });
-
   const Title = styled(Typography)({
-    width: "100%",
-    paddingTop: 25,
+    width: "90%",
+    maxWidth: 375,
+    paddingTop: 20,
     fontSize: 32,
     fontWeight: 700,
     textAlign: "center",
@@ -71,26 +63,24 @@ const SignUp = () => {
         />
       </Head>
       <Page component="section">
-        <FormContainer>
-          <Image src={lflLogo} alt="logo" width={100} height={100} priority />
+        <Image src={lflLogo} alt="logo" width={85} height={85} priority />
 
-          <Title variant="h1">Inscription</Title>
+        <Title variant="h1">Inscription</Title>
 
-          <SignUpForm />
-          <Box sx={{ marginTop: 2, textAlign: "center" }}>
-            <Typography>Vous avez déjà un compte ?</Typography>
-            <Link
-              href="/login"
-              style={{
-                color: theme.palette.secondary.main,
-                fontWeight: 700,
-                textDecoration: "none",
-              }}
-            >
-              Connectez-vous
-            </Link>
-          </Box>
-        </FormContainer>
+        <DynamicForm />
+        <Box sx={{ marginY: 2, textAlign: "center" }}>
+          <Typography>Vous avez déjà un compte ?</Typography>
+          <Link
+            href="/login"
+            style={{
+              color: theme.palette.secondary.main,
+              fontWeight: 700,
+              textDecoration: "none",
+            }}
+          >
+            Connectez-vous
+          </Link>
+        </Box>
       </Page>
     </>
   );
