@@ -20,11 +20,13 @@ const ScrollableDaysTabs = () => {
     left: "50%",
     transform: "translateX(-50%)",
     width: "100%",
+    height: 48,
     maxWidth: 900,
     backgroundColor: theme.palette.primary.light,
   }));
 
   const Days = styled(Tabs)(({ theme }) => ({
+    height: "100%",
     "& .MuiTabs-indicator": {
       backgroundColor: theme.palette.secondary.light,
       height: 3,
@@ -36,6 +38,7 @@ const ScrollableDaysTabs = () => {
   }));
 
   const Day = styled(Tab)(({ theme }) => ({
+    height: "100%",
     padding: "0 20px",
     textTransform: "none",
     color: theme.palette.neutral.light,
