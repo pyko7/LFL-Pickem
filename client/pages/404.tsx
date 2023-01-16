@@ -1,12 +1,10 @@
 import Link from "next/link";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
 
 const Custom404 = () => {
   return (
-    <Container
-      sx={{
-        width: 1,
+    <div
+      style={{
+        width: "100%",
         height: "100vh",
         display: "flex",
         flexDirection: "column",
@@ -16,12 +14,8 @@ const Custom404 = () => {
         color: "#fff",
       }}
     >
-      <Typography variant="h1" sx={{ fontSize: 52 }}>
-        Oops
-      </Typography>
-      <Typography sx={{ fontSize: 28 }}>
-        Cette page n&apos;existe pas{" "}
-      </Typography>
+      <h1 style={{ fontSize: 52 }}>Oops</h1>
+      <p style={{ fontSize: 28 }}>Cette page n&apos;existe pas </p>
 
       <Link
         href="/"
@@ -37,7 +31,7 @@ const Custom404 = () => {
       >
         Accueil
       </Link>
-    </Container>
+    </div>
   );
 };
 
