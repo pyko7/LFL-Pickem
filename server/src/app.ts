@@ -23,6 +23,7 @@ app.use(
     },
   })
 );
+app.disable("x-powered-by");
 app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, "assets/images/logos")));
