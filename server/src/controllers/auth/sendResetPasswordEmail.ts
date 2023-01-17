@@ -1,15 +1,12 @@
 import { Request, Response } from "express";
 import { auth } from "../../firebase";
-import nodemailer from "nodemailer";
+import { createTransport } from "nodemailer";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-export const sendResetPasswordEmail = async (
-  req: Request,
-  res: Response
-) => {
-  const { email } = req.body;
-  const transporter = nodemailer.createTransport({
+export const sendResetPasswordEmail = async (req: Request, res: Response) => {
+  const { user } = req.body;
+  const transporter = createTransport({
     service: "gmail",
     auth: {
       user: process.env.CONTACTEMAIL,
@@ -17,11 +14,11 @@ export const sendResetPasswordEmail = async (
     },
   });
   try {
-    const link = await auth.generatePasswordResetLink(email);
+    const link = await auth.generatePasswordResetLink(user.email);
 
     const data = {
       from: "LFL-Pickem <noreply@lflpickem.com>",
-      to: email,
+      to: user.email,
       subject: "Réinitialisez votre mot de passe",
       text: `Réinitialisation du mot de passe: cliquez sur le lien pour réinitialiser votre mot de passe: ${link}`,
       html: `

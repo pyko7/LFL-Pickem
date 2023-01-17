@@ -3,7 +3,6 @@ import Cookies from "js-cookie";
 
 export const sendAuthEmail = async (user: AuthForm, url: string) => {
   const csrfToken = Cookies.get("__Host.x-csrf-token");
-  const { email } = user;
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${url}`, {
       method: "POST",
@@ -11,7 +10,7 @@ export const sendAuthEmail = async (user: AuthForm, url: string) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, csrfToken }),
+      body: JSON.stringify({ user, csrfToken }),
     });
     const data = await res.json();
     if (!res.ok) {
