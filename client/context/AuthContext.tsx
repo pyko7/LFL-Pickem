@@ -15,12 +15,15 @@ export const useAuthContext = () => {
 
 export const AuthProvider = ({ children }: ContextProps) => {
   const [auth, setAuth] = useState(false);
-  const { push } = useRouter();
+  const { push, pathname } = useRouter();
   const pid = Cookies.get("pid");
 
   const { isError } = useQuery(["token"], getLoginCsrfToken);
 
   const isAuth = () => {
+    if (pathname === "/signup") {
+      return push("/signup");
+    }
     if (!pid) {
       setAuth(false);
       return push("/login");
