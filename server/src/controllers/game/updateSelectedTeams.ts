@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { auth } from "../../firebase";
-import { prisma } from "../../prisma";
+import prisma from "../../prisma";
 
 export const updateSelectedTeams = async (req: Request, res: Response) => {
   try {

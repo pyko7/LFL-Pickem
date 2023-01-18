@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { auth } from "../../firebase";
-import { prisma } from "../../prisma";
+import prisma from "../../prisma";
+import { getUserRankById } from "../../utils/users/getUserRankById";
 export const getUserRank = async (req: Request, res: Response) => {
   const sessionId = req.cookies.session;
-  let userRank = 0;
 
   try {
     const decodedToken = await auth.verifySessionCookie(sessionId);
@@ -19,25 +19,7 @@ export const getUserRank = async (req: Request, res: Response) => {
       throw new Error("Unauthorized request");
     }
 
-    const ranking = allUsers.sort((a, b) => {
-      return b.points - a.points || a.id.localeCompare(b.id);
-    });
-
-    const isUserRanked = ranking.find((user) => user.id === currentUser.id);
-
-    if (!isUserRanked) {
-      return (userRank = ranking.length - 1);
-    }
-
-    userRank = ranking.indexOf(isUserRanked) + 1;
-
-    const userTopPercentile = (userRank / ranking.length) * 100;
-
-    const user = {
-      userRank,
-      top: userTopPercentile,
-      ranking: ranking.length,
-    };
+    const user = getUserRankById(allUsers, currentUser);
 
     res.status(200).json(user);
   } catch (error) {
