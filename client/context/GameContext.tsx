@@ -15,31 +15,17 @@ export const useGameContext = () => {
   return useContext(GameContext);
 };
 
-export async function getServerSideProps() {
-  const schedule = await getAllDays();
-  const teams = await getAllTeams();
-
-  return {
-    props: {
-      schedule,
-      teams,
-    },
-  };
-}
-
-export const GameProvider = ({ children, schedule, teams }: any) => {
+export const GameProvider = ({ children }: any) => {
   const [dayData, setDayData] = useState<Day | null>(null);
   const [userSelection, setUserSelection] = useState<UserSelection[]>([]);
 
   const [day, setDay] = useState<Game[] | null>(null);
 
   const allDays = useQuery(["allDays"], getAllDays, {
-    initialData: schedule,
     staleTime: 10 * (60 * 1000), // 10 mins
     cacheTime: 15 * (60 * 1000), // 15 mins
   });
   const teamsList = useQuery(["teams"], getAllTeams, {
-    initialData: teams,
     staleTime: 30 * (60 * 1000), // 30 mins
     cacheTime: 45 * (60 * 1000), // 45 mins
   });
@@ -61,7 +47,7 @@ export const GameProvider = ({ children, schedule, teams }: any) => {
       const getClosestDay = async () => {
         const date = getClosestDayFromNow(allDays.data);
         allDays.data.map((day: Day) => {
-          if (day.date == date) {
+          if (new Date(day.date).toDateString() == date) {
             return setDayData(day);
           }
         });

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
@@ -9,10 +10,23 @@ import { Day } from "~/src/types/teams";
 
 const ScrollableDaysTabs = () => {
   const { allDays, dayData, setDayData } = useGameContext();
+  const [value, setValue] = useState(0);
 
   const handleClick = (day: Day) => {
     setDayData(day);
   };
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
+  useEffect(() => {
+    if (!dayData) {
+      setValue(0);
+    } else {
+      setValue(dayData?.id! - 1);
+    }
+  }, [dayData]);
 
   const Container = styled(Box)(({ theme }) => ({
     position: "absolute",
@@ -54,7 +68,8 @@ const ScrollableDaysTabs = () => {
         </Typography>
       ) : (
         <Days
-          value={dayData?.id! - 1}
+          value={value}
+          onChange={handleChange}
           variant="scrollable"
           scrollButtons="auto"
           aria-label="Selecteur de journée"
