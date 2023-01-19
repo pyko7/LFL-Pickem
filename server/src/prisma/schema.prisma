@@ -46,7 +46,7 @@ model Day {
 
 model Bet {
   id     Int    @id @default(autoincrement())
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   game   Game   @relation(fields: [gameId], references: [id])
   team   Team   @relation(fields: [teamId], references: [id])
   userId String
