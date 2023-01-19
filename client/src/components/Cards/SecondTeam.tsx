@@ -71,9 +71,8 @@ const SecondTeam = ({ team, notSelected, disabledDay }: TeamProps) => {
             unoptimized
             src={team.logo}
             alt={team.name}
-            width={isBiggerThanMobile ? 60 : 40}
-            height={isBiggerThanMobile ? 60 : 40}
-            sizes="100vw"
+            width={isBiggerThanMobile ? 50 : 40}
+            height={isBiggerThanMobile ? 50 : 40}
             style={{
               objectFit: "contain",
             }}
