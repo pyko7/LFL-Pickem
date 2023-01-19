@@ -19,7 +19,7 @@ export const createUserSchema = yup.object({
     .string()
     .matches(/((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,})/g, {
       message:
-        "Le mot doit contenir au minimum 8 caractères, une majuscule, une minuscule, un chiffre ainsi qu'un caractère spécial ",
+        "Le mot de passe doit contenir au minimum 8 caractères, une majuscule, une minuscule, un chiffre ainsi qu'un caractère spécial ",
       excludeEmptyString: true,
     })
     .required("Veuillez remplir ce champ"),
