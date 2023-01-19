@@ -46,8 +46,6 @@ const Homepage = () => {
   const CurrentDate = styled(Typography)({
     fontSize: 18,
     fontWeight: 700,
-    textAlign: "center",
-    borderRadius: "8px 8px 0 0",
     [theme.breakpoints.up("sm")]: {
       fontSize: 20,
       maxWidth: 395,
@@ -81,7 +79,7 @@ const Homepage = () => {
     >
       <ScrollableDaysTabs />
       <PageHeader>
-        <CurrentDate>
+        <CurrentDate variant="h1">
           {dayData === null
             ? "Journée"
             : format(parseISO(dayData?.date!), "PPPP", {
