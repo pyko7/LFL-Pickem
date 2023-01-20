@@ -36,9 +36,7 @@ const ErrorModal = ({
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <DialogContentText sx={{ padding: 2, textAlign: "center" }}>
-        {errorMessage}
-      </DialogContentText>
+      <DialogContentText sx={{ padding: 2 }}>{errorMessage}</DialogContentText>
     </Dialog>
   );
 };
