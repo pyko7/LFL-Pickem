@@ -40,8 +40,13 @@ const GameContainer = (props: Game) => {
     mutationFn: addSelectedTeams,
     onError: (error) => {
       if (error instanceof Error) {
+        console.log(error);
         if (error.message === "Unauthorized") {
           setErrorMessage("Vous n'êtes pas autorisé à réaliser cette action");
+        } else if (error.message === "Too Many Requests") {
+          setErrorMessage(
+            "Vous avez effectuer trop de requête, veuillez patienter avant quelques instants avant de pouvoir refaire un choix"
+          );
         } else {
           setErrorMessage("Une erreur s'est produite");
         }
@@ -56,6 +61,10 @@ const GameContainer = (props: Game) => {
       if (error instanceof Error) {
         if (error.message === "Unauthorized") {
           setErrorMessage("Vous n'êtes pas autorisé à réaliser cette action");
+        } else if (error.message == "Too Many Requests") {
+          setErrorMessage(
+            "Vous avez effectuer trop de requête, veuillez patienter avant quelques instants avant de pouvoir refaire un choix"
+          );
         } else {
           setErrorMessage("Une erreur s'est produite");
         }
@@ -70,6 +79,10 @@ const GameContainer = (props: Game) => {
       if (error instanceof Error) {
         if (error.message === "Unauthorized") {
           setErrorMessage("Vous n'êtes pas autorisé à réaliser cette action");
+        } else if (error.message == "Too Many Requests") {
+          setErrorMessage(
+            "Vous avez effectuer trop de requête, veuillez patienter avant quelques instants avant de pouvoir refaire un choix"
+          );
         } else {
           setErrorMessage("Une erreur s'est produite");
         }
