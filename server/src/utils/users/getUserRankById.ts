@@ -1,5 +1,11 @@
-import { User } from "@prisma/client";
 import { UserRank } from "../../types/user";
+
+interface User {
+  id: string;
+  email: string;
+  userName: string;
+  points: number;
+}
 
 export const getUserRankById = (
   allUsers: User[],
