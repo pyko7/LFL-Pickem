@@ -1,15 +1,9 @@
+import { PrismaUser } from "../../types/prisma";
 import { UserRank } from "../../types/user";
 
-interface User {
-  id: string;
-  email: string;
-  userName: string;
-  points: number;
-}
-
 export const getUserRankById = (
-  allUsers: User[],
-  currentUser: User
+  allUsers: PrismaUser[],
+  currentUser: PrismaUser
 ): UserRank | number => {
   let userRank = 0;
 

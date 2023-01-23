@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { auth } from "../../firebase";
 import prisma from "../../prisma";
+import { PrismaBet, PrismaGame } from "../../types/prisma";
 
 export const getUserScore = async (req: Request, res: Response) => {
   const sessionId = req.cookies.session;
@@ -23,9 +24,13 @@ export const getUserScore = async (req: Request, res: Response) => {
       return;
     }
 
-    user.bets.map((bet) => {
-      const betGames = allGames.filter((game) => bet.gameId === game.id);
-      const winnerBet = betGames.filter((game) => bet.teamId === game.winner);
+    user.bets.map((bet: PrismaBet) => {
+      const betGames = allGames.filter(
+        (game: PrismaGame) => bet.gameId === game.id
+      );
+      const winnerBet = betGames.filter(
+        (game: PrismaGame) => bet.teamId === game.winner
+      );
       for (let i = 0; i < winnerBet.length; i++) {
         userScore = userScore + 5;
       }
