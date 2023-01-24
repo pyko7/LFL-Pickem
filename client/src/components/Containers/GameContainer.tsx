@@ -6,14 +6,14 @@ import Skeleton from "@mui/material/Skeleton";
 import CircularProgress from "@mui/material/CircularProgress";
 import FirstTeam from "../Cards/FirstTeam";
 import SecondTeam from "../Cards/SecondTeam";
-import { Game, Team } from "~/src/types/teams";
-import { useGameContext } from "~/context/GameContext";
+import { Game, Team } from "@/src/types/teams";
+import { useGameContext } from "@/context/GameContext";
 import {
   addSelectedTeams,
   updateSelectedTeams,
   deleteSelectedTeams,
-} from "~/src/utils/api/game/handleSelectedTeams";
-import { getUserSelection } from "~/src/utils/api/game/getUserSelection";
+} from "@/src/utils/api/game/handleSelectedTeams";
+import { getUserSelection } from "@/src/utils/api/game/getUserSelection";
 import { utcToZonedTime } from "date-fns-tz";
 import { isBefore, parseISO } from "date-fns";
 import { useMutation } from "@tanstack/react-query";

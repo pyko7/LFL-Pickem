@@ -1,4 +1,4 @@
-import { AuthForm } from "~/src/types/forms";
+import { AuthForm } from "@/src/types/forms";
 import Cookies from "js-cookie";
 
 export const sendAuthEmail = async (user: AuthForm, url: string) => {

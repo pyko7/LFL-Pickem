@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { Day } from "~/src/types/teams";
+import { Day } from "@/src/types/teams";
 import { getClosestDayFromNow } from "../../../src/utils/getClosestDayFromNow";
 
 describe("It should get the date of the closest game day", () => {

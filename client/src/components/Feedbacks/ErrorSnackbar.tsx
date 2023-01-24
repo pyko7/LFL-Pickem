@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
-import { SnackbarProps } from "~/src/types/feedbacks";
+import { SnackbarProps } from "@/src/types/feedbacks";
 
 const ErrorSnackbar = ({ open, setOpen, message }: SnackbarProps) => {
   const handleClose = () => {

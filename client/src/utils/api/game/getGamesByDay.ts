@@ -1,4 +1,4 @@
-import { Game } from "~/src/types/teams";
+import { Game } from "@/src/types/teams";
 
 export const getGamesByDay = async (id: number): Promise<Game[]> => {
   try {

@@ -1,5 +1,5 @@
-import { AuthForm } from "~/src/types/forms";
-import { auth } from "~/firebase";
+import { AuthForm } from "@/src/types/forms";
+import { auth } from "@/firebase";
 import Cookies from "js-cookie";
 import {
   signInWithEmailAndPassword,

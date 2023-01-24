@@ -5,8 +5,8 @@ import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import { useGameContext } from "~/context/GameContext";
-import { Day } from "~/src/types/teams";
+import { useGameContext } from "@/context/GameContext";
+import { Day } from "@/src/types/teams";
 
 const ScrollableDaysTabs = () => {
   const { allDays, dayData, setDayData } = useGameContext();

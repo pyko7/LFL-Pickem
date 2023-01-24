@@ -1,4 +1,4 @@
-import { Team, UserSelection } from "~/src/types/teams";
+import { Team, UserSelection } from "@/src/types/teams";
 
 /**
  * 

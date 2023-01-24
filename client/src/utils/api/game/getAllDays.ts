@@ -1,4 +1,4 @@
-import { Day } from "~/src/types/teams";
+import { Day } from "@/src/types/teams";
 
 export const getAllDays = async (): Promise<Day[]> => {
   try {

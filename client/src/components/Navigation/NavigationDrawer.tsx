@@ -1,6 +1,6 @@
 import { useTheme, styled } from "@mui/material/styles";
 import Drawer from "@mui/material/Drawer";
-import { DrawerProps } from "~/src/types/navigation";
+import { DrawerProps } from "@/src/types/navigation";
 import CloseIcon from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
@@ -9,7 +9,7 @@ import ListItem from "@mui/material/ListItem";
 import Button from "@mui/material/Button";
 import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
-import { logoutUser } from "~/src/utils/api/auth/logoutUser";
+import { logoutUser } from "@/src/utils/api/auth/logoutUser";
 import { useRouter } from "next/router";
 
 const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {

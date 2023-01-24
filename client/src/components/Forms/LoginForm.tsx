@@ -12,12 +12,12 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { AuthForm } from "~/src/types/forms";
-import { logUserSchema } from "~/src/validations/authValidation";
+import { AuthForm } from "@/src/types/forms";
+import { logUserSchema } from "@/src/validations/authValidation";
 import { useMutation } from "@tanstack/react-query";
-import { logUser } from "~/src/utils/api/auth/logUser";
+import { logUser } from "@/src/utils/api/auth/logUser";
 import { useRouter } from "next/router";
-import { useAuthContext } from "~/context/AuthContext";
+import { useAuthContext } from "@/context/AuthContext";
 
 type Props = {
   setOpen: (open: boolean) => void;

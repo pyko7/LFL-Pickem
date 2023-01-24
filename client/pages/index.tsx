@@ -1,9 +1,9 @@
 import Head from "next/head";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import Homepage from "~/src/components/Pages/Home";
-import { GameProvider } from "~/context/GameContext";
-import { useAuthContext } from "~/context/AuthContext";
+import Homepage from "@/src/components/Pages/Home";
+import { GameProvider } from "@/context/GameContext";
+import { useAuthContext } from "@/context/AuthContext";
 
 const Home = () => {
   const { auth } = useAuthContext();

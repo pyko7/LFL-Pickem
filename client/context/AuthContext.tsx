@@ -1,10 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { ContextProps, AuthContextInterface } from "~/src/types/context";
+import { ContextProps, AuthContextInterface } from "@/src/types/context";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import { verify } from "jsonwebtoken";
 import { useQuery } from "@tanstack/react-query";
-import { getLoginCsrfToken } from "~/src/utils/api/auth/getLoginCsrfToken";
+import { getLoginCsrfToken } from "@/src/utils/api/auth/getLoginCsrfToken";
 import Box from "@mui/material/Box";
 
 const AuthContext = createContext({} as AuthContextInterface);

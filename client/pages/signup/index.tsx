@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import lflLogo from "~/public/white_lfl.webp";
+import lflLogo from "@/public/white_lfl.webp";
 import Image from "next/image";
 import Link from "next/link";
 

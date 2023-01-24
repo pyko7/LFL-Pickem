@@ -1,4 +1,4 @@
-import { TeamList } from "~/src/types/teams";
+import { TeamList } from "@/src/types/teams";
 
 export const getAllTeams = async (): Promise<TeamList> => {
   try {

@@ -1,4 +1,4 @@
-import { AuthForm } from "~/src/types/forms";
+import { AuthForm } from "@/src/types/forms";
 
 export const createUser = async (user: AuthForm) => {
   try {

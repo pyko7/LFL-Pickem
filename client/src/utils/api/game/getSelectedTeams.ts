@@ -1,4 +1,4 @@
-import { UserSelection } from "~/src/types/teams";
+import { UserSelection } from "@/src/types/teams";
 
 export const getSelectedTeams = async (): Promise<UserSelection[]> => {
   try {

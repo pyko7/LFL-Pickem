@@ -1,4 +1,4 @@
-import { SelectedTeam } from "~/src/types/teams";
+import { SelectedTeam } from "@/src/types/teams";
 
 export const addSelectedTeams = async (team: SelectedTeam) => {
   try {

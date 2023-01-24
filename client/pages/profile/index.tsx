@@ -13,13 +13,13 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import SendEmailForm from "~/src/components/Forms/SendEmailForm";
-import ConfirmDelete from "~/src/components/Forms/ConfirmDelete";
+import SendEmailForm from "@/src/components/Forms/SendEmailForm";
+import ConfirmDelete from "@/src/components/Forms/ConfirmDelete";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { User, UserRank } from "~/src/types/user";
-import { getUserById } from "~/src/utils/api/user/getUserById";
-import { getLoginCsrfToken } from "~/src/utils/api/auth/getLoginCsrfToken";
-import { getUserRank } from "~/src/utils/api/user/getUserRank";
+import { User, UserRank } from "@/src/types/user";
+import { getUserById } from "@/src/utils/api/user/getUserById";
+import { getLoginCsrfToken } from "@/src/utils/api/auth/getLoginCsrfToken";
+import { getUserRank } from "@/src/utils/api/user/getUserRank";
 
 const Profile = () => {
   const theme = useTheme();

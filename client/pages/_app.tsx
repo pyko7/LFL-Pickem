@@ -4,7 +4,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Layout from "../src/components/Layout";
 import { theme } from "../src/style/theme";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { AuthProvider } from "~/context/AuthContext";
+import { AuthProvider } from "@/context/AuthContext";
 
 type AppProps<P = any> = {
   pageProps: P;

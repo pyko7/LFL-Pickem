@@ -5,7 +5,7 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import lflLogo from "~/public/white_lfl.webp";
+import lflLogo from "@/public/white_lfl.webp";
 import Image from "next/image";
 import NavigationDrawer from "./NavigationDrawer";
 

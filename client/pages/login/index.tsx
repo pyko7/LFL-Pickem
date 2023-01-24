@@ -6,13 +6,13 @@ import Box from "@mui/material/Box";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Typography from "@mui/material/Typography";
 import Skeleton from "@mui/material/Skeleton";
-import lflLogo from "~/public/white_lfl.webp";
+import lflLogo from "@/public/white_lfl.webp";
 import Image from "next/image";
 import Link from "next/link";
-import SendEmailForm from "~/src/components/Forms/SendEmailForm";
-import { getLoginCsrfToken } from "~/src/utils/api/auth/getLoginCsrfToken";
+import SendEmailForm from "@/src/components/Forms/SendEmailForm";
+import { getLoginCsrfToken } from "@/src/utils/api/auth/getLoginCsrfToken";
 import { useQuery } from "@tanstack/react-query";
-import ErrorSnackbar from "~/src/components/Feedbacks/ErrorSnackbar";
+import ErrorSnackbar from "@/src/components/Feedbacks/ErrorSnackbar";
 
 const DynamicForm = dynamic(
   () => import("../../src/components/Forms/LoginForm")

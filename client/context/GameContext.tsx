@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useContext, useEffect, useState } from "react";
-import { GameContextInterface } from "~/src/types/context";
-import { Game, Day, UserSelection } from "~/src/types/teams";
-import { getUserScore } from "~/src/utils/api/user/getUserScore";
-import { getAllDays } from "~/src/utils/api/game/getAllDays";
-import { getAllTeams } from "~/src/utils/api/game/getAllTeams";
-import { getGamesByDay } from "~/src/utils/api/game/getGamesByDay";
-import { getSelectedTeams } from "~/src/utils/api/game/getSelectedTeams";
-import { getClosestDayFromNow } from "~/src/utils/getClosestDayFromNow";
+import { GameContextInterface } from "@/src/types/context";
+import { Game, Day, UserSelection } from "@/src/types/teams";
+import { getUserScore } from "@/src/utils/api/user/getUserScore";
+import { getAllDays } from "@/src/utils/api/game/getAllDays";
+import { getAllTeams } from "@/src/utils/api/game/getAllTeams";
+import { getGamesByDay } from "@/src/utils/api/game/getGamesByDay";
+import { getSelectedTeams } from "@/src/utils/api/game/getSelectedTeams";
+import { getClosestDayFromNow } from "@/src/utils/getClosestDayFromNow";
 
 const GameContext = createContext({} as GameContextInterface);
 
