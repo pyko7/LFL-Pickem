@@ -15,7 +15,7 @@ export const logUser = async (userData: AuthForm) => {
     const user = await signInWithEmailAndPassword(auth, email, password);
     const idToken = await user.user.getIdToken();
 
-    const csrfToken = Cookies.get("__Host.x-csrf-token");
+    const csrfToken = Cookies.get("__Host-.x-csrf-token");
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/auth/sessionLogin`,
       {

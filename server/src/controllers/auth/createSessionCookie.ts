@@ -9,7 +9,7 @@ export const createSessionCookie = async (req: Request, res: Response) => {
   const csrfToken = req.body.csrfToken.toString();
   const expiresIn = 3600000;
 
-  if (csrfToken !== req.cookies["__Host.x-csrf-token"]) {
+  if (csrfToken !== req.cookies["__Host-.x-csrf-token"]) {
     res.status(401).send("UNAUTHORIZED REQUEST!");
     return;
   }

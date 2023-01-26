@@ -1,11 +1,11 @@
 import { doubleCsrf } from "csrf-csrf";
 import { Request, Response } from "express";
 
-const { generateToken } = doubleCsrf({
+export const { generateToken, doubleCsrfProtection } = doubleCsrf({
   getSecret: () => `${process.env.SECRET_SESSION}`,
   cookieName: "__Host-.x-csrf-token",
   cookieOptions: {
-    // httpOnly: true,
+    httpOnly: false,
     secure: true,
     sameSite: "lax",
     path: "/",
@@ -15,6 +15,5 @@ const { generateToken } = doubleCsrf({
 
 export const createCsrf = async (req: Request, res: Response) => {
   const csrfToken = generateToken(res, req);
-  console.log(csrfToken);
   res.json({ csrfToken });
 };

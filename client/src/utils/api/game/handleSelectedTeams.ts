@@ -1,6 +1,9 @@
 import { SelectedTeam } from "@/src/types/teams";
+import Cookies from "js-cookie";
 
 export const addSelectedTeams = async (team: SelectedTeam) => {
+  const csrfToken = Cookies.get("__Host-.x-csrf-token");
+
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/game/selected`,
@@ -8,6 +11,7 @@ export const addSelectedTeams = async (team: SelectedTeam) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "x-csrf-token": `${csrfToken}`,
         },
         credentials: "include",
         body: JSON.stringify(team),
