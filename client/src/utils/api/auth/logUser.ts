@@ -1,6 +1,5 @@
 import { AuthForm } from "@/src/types/forms";
 import { auth } from "@/firebase";
-import Cookies from "js-cookie";
 import {
   signInWithEmailAndPassword,
   setPersistence,
@@ -15,17 +14,15 @@ export const logUser = async (userData: AuthForm) => {
     const user = await signInWithEmailAndPassword(auth, email, password);
     const idToken = await user.user.getIdToken();
 
-    const csrfToken = Cookies.get("__Host-.x-csrf-token");
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/auth/sessionLogin`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-csrf-token": `${csrfToken}`,
         },
         credentials: "include",
-        body: JSON.stringify({ idToken, csrfToken }),
+        body: JSON.stringify({ idToken }),
       }
     );
     const data = await res.json();

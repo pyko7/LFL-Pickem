@@ -10,7 +10,6 @@ import lflLogo from "@/public/white_lfl.webp";
 import Image from "next/image";
 import Link from "next/link";
 import SendEmailForm from "@/src/components/Forms/SendEmailForm";
-import { getLoginCsrfToken } from "@/src/utils/api/auth/getLoginCsrfToken";
 import { useQuery } from "@tanstack/react-query";
 import ErrorSnackbar from "@/src/components/Feedbacks/ErrorSnackbar";
 
@@ -35,8 +34,6 @@ const LoginPage = () => {
     setOpen: setOpenError,
     message: "Une erreur est survenue, veuillez réessayer plus tard",
   };
-
-  const { isLoading, isError } = useQuery(["token"], getLoginCsrfToken);
 
   const Page = styled(Box)({
     position: "absolute",
@@ -95,7 +92,7 @@ const LoginPage = () => {
           sizes="100vw"
           priority
         />
-        {isLoading ? (
+        {/* {isLoading ? (
           <Skeleton
             variant="rounded"
             width={isBiggerThanMobile ? 445 : 315}
@@ -105,27 +102,27 @@ const LoginPage = () => {
           <Typography>
             Une erreur est survenue, veuillez réessayer plus tard.
           </Typography>
-        ) : (
-          <>
-            <Title variant="h1">Connexion</Title>
-            <DynamicForm setOpen={setOpen} />
-            <Box sx={{ marginTop: 2, textAlign: "center" }}>
-              <Typography>Vous n&apos;avez pas de compte ?</Typography>
-              <Link
-                href="/signup"
-                style={{
-                  color: theme.palette.secondary.main,
-                  fontWeight: 700,
-                  textDecoration: "none",
-                }}
-              >
-                Inscrivez-vous
-              </Link>
-            </Box>
-          </>
-        )}
+        ) : ( */}
+        <>
+          <Title variant="h1">Connexion</Title>
+          <DynamicForm setOpen={setOpen} />
+          <Box sx={{ marginTop: 2, textAlign: "center" }}>
+            <Typography>Vous n&apos;avez pas de compte ?</Typography>
+            <Link
+              href="/signup"
+              style={{
+                color: theme.palette.secondary.main,
+                fontWeight: 700,
+                textDecoration: "none",
+              }}
+            >
+              Inscrivez-vous
+            </Link>
+          </Box>
+        </>
+        {/* )} */}
       </Page>
-      {isError ? <ErrorSnackbar {...errorProps} /> : null}
+      {/* {isError ? <ErrorSnackbar {...errorProps} /> : null} */}
 
       <SendEmailForm {...formProps} />
     </>

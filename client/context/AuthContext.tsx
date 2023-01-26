@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import { verify } from "jsonwebtoken";
 import { useQuery } from "@tanstack/react-query";
-import { getLoginCsrfToken } from "@/src/utils/api/auth/getLoginCsrfToken";
+
 import Box from "@mui/material/Box";
 
 const AuthContext = createContext({} as AuthContextInterface);
@@ -17,8 +17,6 @@ export const AuthProvider = ({ children }: ContextProps) => {
   const [auth, setAuth] = useState(false);
   const { push, pathname } = useRouter();
   const pid = Cookies.get("pid");
-
-  const { isError } = useQuery(["token"], getLoginCsrfToken);
 
   const isAuth = () => {
     if (pathname === "/signup") {
@@ -46,7 +44,7 @@ export const AuthProvider = ({ children }: ContextProps) => {
 
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>
-      {isError ? (
+      {/* {isError ? (
         <Box
           sx={{
             width: 1,
@@ -61,9 +59,8 @@ export const AuthProvider = ({ children }: ContextProps) => {
         >
           <p>Une erreur est survenue lors de votre demande...</p>
         </Box>
-      ) : (
-        <>{children}</>
-      )}
+      ) : ( */}
+      <>{children}</>
     </AuthContext.Provider>
   );
 };

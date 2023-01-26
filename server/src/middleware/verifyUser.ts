@@ -10,19 +10,17 @@ export const verifyUser = async (
   next: NextFunction
 ) => {
   const { session, pid } = req.cookies;
-  const csrfToken = req.body.csrfToken.toString();
   const { user } = req.body;
-
-  if (csrfToken !== req.cookies["__Host-.x-csrf-token"]) {
-    return res.status(401).send("UNAUTHORIZED REQUEST!");
-  }
 
   try {
     const userToken = verify(pid, `${process.env.JWT_SECRET_KEY}`);
     const decodedToken = await auth.verifySessionCookie(session);
 
     if (typeof userToken === "object") {
-      if (user.email !== decodedToken.email || userToken.pid !== decodedToken.uid) {
+      if (
+        user.email !== decodedToken.email ||
+        userToken.pid !== decodedToken.uid
+      ) {
         throw Error("Forbidden access");
       }
     }

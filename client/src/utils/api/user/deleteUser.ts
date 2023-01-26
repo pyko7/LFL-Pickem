@@ -1,10 +1,7 @@
 import { FirebaseError } from "firebase/app";
 import { AuthForm } from "@/src/types/forms";
-import Cookies from "js-cookie";
 
 export const deleteUser = async (user: AuthForm) => {
-  const csrfToken = Cookies.get("__Host-.x-csrf-token");
-
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/delete`, {
       method: "DELETE",
@@ -12,7 +9,7 @@ export const deleteUser = async (user: AuthForm) => {
         "Content-Type": "application/json",
       },
       credentials: "include",
-      body: JSON.stringify({ user, csrfToken }),
+      body: JSON.stringify({ user }),
     });
     const data = await res.json();
     if (!res.ok) {

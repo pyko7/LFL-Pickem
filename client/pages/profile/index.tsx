@@ -18,15 +18,13 @@ import ConfirmDelete from "@/src/components/Forms/ConfirmDelete";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { User, UserRank } from "@/src/types/user";
 import { getUserById } from "@/src/utils/api/user/getUserById";
-import { getLoginCsrfToken } from "@/src/utils/api/auth/getLoginCsrfToken";
+
 import { getUserRank } from "@/src/utils/api/user/getUserRank";
 
 const Profile = () => {
   const theme = useTheme();
   const [resetPassword, setResetPassword] = useState(false);
   const [deleteAccount, setDeleteAccount] = useState(false);
-
-  const csrfToken = useQuery(["token"], getLoginCsrfToken);
 
   const currentUser: UseQueryResult<User> = useQuery(["user"], getUserById, {
     staleTime: 10 * (60 * 1000), // 10 mins
@@ -126,83 +124,82 @@ const Profile = () => {
       </Head>
 
       <Page component="section">
-        {csrfToken.isError ? (
+        {/* {csrfToken.isError ? (
           <Typography>
             Une erreur est survenue, veuillez réessayer plus tard.
           </Typography>
-        ) : (
-          <>
-            <Container maxWidth="md">
-              <ProfileHeader>
-                {currentUser.isLoading || csrfToken.isLoading ? (
-                  <>
-                    <Skeleton variant="text" width={120} height={30} />
-                    <Skeleton variant="rounded" width={70} height={30} />
-                  </>
-                ) : currentUser.isError ? (
-                  <>
-                    <UserName>User</UserName>
-                    <PointsCounter>N/A pts </PointsCounter>
-                  </>
+        ) : ( */}
+        <>
+          <Container maxWidth="md">
+            <ProfileHeader>
+              {currentUser.isLoading ? (
+                <>
+                  <Skeleton variant="text" width={120} height={30} />
+                  <Skeleton variant="rounded" width={70} height={30} />
+                </>
+              ) : currentUser.isError ? (
+                <>
+                  <UserName>User</UserName>
+                  <PointsCounter>N/A pts </PointsCounter>
+                </>
+              ) : (
+                <>
+                  <UserName>{currentUser.data.userName}</UserName>
+                  <PointsCounter>{currentUser.data.points} pts</PointsCounter>
+                </>
+              )}
+            </ProfileHeader>
+            <SectionDivider />
+
+            <ProfileList>
+              <ListItem disableGutters>
+                {userRank.isLoading ? (
+                  <Skeleton variant="rounded" width={200} height={30} />
+                ) : userRank.isError ? (
+                  <ListItemText primary={`Classement actuel: N/A`} />
                 ) : (
-                  <>
-                    <UserName>{currentUser.data.userName}</UserName>
-                    <PointsCounter>{currentUser.data.points} pts</PointsCounter>
-                  </>
+                  <ListItemText
+                    primary={`Classement actuel: ${userRank.data.userRank}`}
+                  />
                 )}
-              </ProfileHeader>
-              <SectionDivider />
+              </ListItem>
+              <ListItem disableGutters>
+                {userRank.isLoading ? (
+                  <Skeleton variant="rounded" width={100} height={30} />
+                ) : userRank.isError ? (
+                  <ListItemText primary={`Top: N/A`} />
+                ) : (
+                  <ListItemText primary={`Top: ${userRank.data.top}%`} />
+                )}
+              </ListItem>
+            </ProfileList>
+            <SectionDivider />
 
-              <ProfileList>
-                <ListItem disableGutters>
-                  {userRank.isLoading ? (
-                    <Skeleton variant="rounded" width={200} height={30} />
-                  ) : userRank.isError ? (
-                    <ListItemText primary={`Classement actuel: N/A`} />
-                  ) : (
-                    <ListItemText
-                      primary={`Classement actuel: ${userRank.data.userRank}`}
-                    />
-                  )}
-                </ListItem>
-                <ListItem disableGutters>
-                  {userRank.isLoading ? (
-                    <Skeleton variant="rounded" width={100} height={30} />
-                  ) : userRank.isError ? (
-                    <ListItemText primary={`Top: N/A`} />
-                  ) : (
-                    <ListItemText primary={`Top: ${userRank.data.top}%`} />
-                  )}
-                </ListItem>
-              </ProfileList>
-              <SectionDivider />
-
-              <ProfileList>
-                <ListItem disableGutters sx={{ width: "fit-content" }}>
-                  <ListItemButton disableGutters onClick={handlePasswordClick}>
-                    <ListIcon>
-                      <EditIcon />
-                    </ListIcon>
-                    <ListItemText primary="Modifier le mot de passe" />
-                  </ListItemButton>
-                </ListItem>
-                <ListItem disableGutters sx={{ width: "fit-content" }}>
-                  <ListItemButton
-                    disableGutters
-                    onClick={handleDeleteAccountClick}
-                  >
-                    <ListIcon>
-                      <DeleteIcon />
-                    </ListIcon>
-                    <ListItemText primary="Supprimer le compte" />
-                  </ListItemButton>
-                </ListItem>
-              </ProfileList>
-            </Container>
-            <SendEmailForm {...resetPasswordProps} />
-            <ConfirmDelete {...deleteAccountProps} />
-          </>
-        )}
+            <ProfileList>
+              <ListItem disableGutters sx={{ width: "fit-content" }}>
+                <ListItemButton disableGutters onClick={handlePasswordClick}>
+                  <ListIcon>
+                    <EditIcon />
+                  </ListIcon>
+                  <ListItemText primary="Modifier le mot de passe" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem disableGutters sx={{ width: "fit-content" }}>
+                <ListItemButton
+                  disableGutters
+                  onClick={handleDeleteAccountClick}
+                >
+                  <ListIcon>
+                    <DeleteIcon />
+                  </ListIcon>
+                  <ListItemText primary="Supprimer le compte" />
+                </ListItemButton>
+              </ListItem>
+            </ProfileList>
+          </Container>
+          <SendEmailForm {...resetPasswordProps} />
+          <ConfirmDelete {...deleteAccountProps} />
+        </>
       </Page>
     </>
   );
