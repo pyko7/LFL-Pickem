@@ -3,10 +3,13 @@ import { Request, Response } from "express";
 
 const { generateToken } = doubleCsrf({
   getSecret: () => `${process.env.SECRET_SESSION}`,
-  cookieName: "__Host.x-csrf-token",
+  // cookieName: "__Host-.x-csrf-token",
+  cookieName: "__Hst-.x-csrf-token",
   cookieOptions: {
-    httpOnly: false,
+    httpOnly: true,
+    secure: true,
     sameSite: "lax",
+    path: "/",
   },
   getTokenFromRequest: (req) => req.headers["x-csrf-token"],
 });

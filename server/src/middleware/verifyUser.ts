@@ -13,7 +13,8 @@ export const verifyUser = async (
   const csrfToken = req.body.csrfToken.toString();
   const { user } = req.body;
 
-  if (csrfToken !== req.cookies["__Host.x-csrf-token"]) {
+  // if (csrfToken !== req.cookies["__Host.x-csrf-token"]) {
+  if (csrfToken !== req.cookies["__Hst-.x-csrf-token"]) {
     return res.status(401).send("UNAUTHORIZED REQUEST!");
   }
 

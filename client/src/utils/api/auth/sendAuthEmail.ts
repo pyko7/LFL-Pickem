@@ -2,7 +2,8 @@ import { AuthForm } from "@/src/types/forms";
 import Cookies from "js-cookie";
 
 export const sendAuthEmail = async (user: AuthForm, url: string) => {
-  const csrfToken = Cookies.get("__Host.x-csrf-token");
+  // const csrfToken = Cookies.get("__Host.x-csrf-token");
+  const csrfToken = Cookies.get("__Hst-.x-csrf-token");
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${url}`, {
       method: "POST",
