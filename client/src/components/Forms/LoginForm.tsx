@@ -57,6 +57,7 @@ const LoginForm = ({ setOpen }: Props) => {
       }
     },
     onSuccess: () => {
+      console.log("logged");
       setAuth(true);
       push("/");
     },
