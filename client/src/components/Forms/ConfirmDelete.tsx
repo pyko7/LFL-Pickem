@@ -48,7 +48,7 @@ const ConfirmDelete = ({
     },
     onSuccess: () => {
       setTimeout(() => {
-        push("/signup");
+        window.location.replace("/signup");
       }, 1000);
     },
     mutationFn: (data: AuthForm) => deleteUser(data),

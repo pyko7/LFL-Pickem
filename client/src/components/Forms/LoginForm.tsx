@@ -49,9 +49,9 @@ const LoginForm = ({ setOpen }: Props) => {
     mutationFn: logUser,
     onError: (error) => {
       if (error instanceof Error) {
-        // if (error.message === "Email is not verified") {
-        //   push("/signup/confirm-email");
-        // }
+        if (error.message === "Email is not verified") {
+          window.location.href = "/signup/confirm-email";
+        }
         setErrorMessage(error.message);
         setAuth(false);
       }
@@ -59,7 +59,7 @@ const LoginForm = ({ setOpen }: Props) => {
     onSuccess: () => {
       console.log("logged");
       setAuth(true);
-      replace("/");
+      return (window.location.href = "/");
     },
   });
 
