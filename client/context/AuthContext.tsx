@@ -1,11 +1,8 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext } from "react";
 import { ContextProps, AuthContextInterface } from "@/src/types/context";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import { verify } from "jsonwebtoken";
-import { useQuery } from "@tanstack/react-query";
-
-import Box from "@mui/material/Box";
 
 const AuthContext = createContext({} as AuthContextInterface);
 
@@ -14,52 +11,27 @@ export const useAuthContext = () => {
 };
 
 export const AuthProvider = ({ children }: ContextProps) => {
-  const [auth, setAuth] = useState(false);
   const { push, pathname } = useRouter();
   const pid = Cookies.get("pid");
 
   const isAuth = () => {
     if (pathname === "/signup") {
-      return (window.location.href = "/signup");
+      return push("/signup");
     }
     if (!pid) {
-      setAuth(false);
-      return (window.location.href = "/login");
+      return false;
     }
-
     verify(`${pid}`, `${process.env.NEXT_PUBLIC_JWT_SECRET_KEY}`, (err) => {
       if (err) {
-        window.location.href = "/login";
-        setAuth(false);
         Cookies.remove("pid");
-        return;
+        return false;
       }
     });
-    setAuth(true);
+    return true;
   };
 
-  useEffect(() => {
-    isAuth();
-  }, [auth]);
-
   return (
-    <AuthContext.Provider value={{ auth, setAuth }}>
-      {/* {isError ? (
-        <Box
-          sx={{
-            width: 1,
-            height: "100vh",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            color: (theme) => theme.palette.neutral.light,
-            backgroundColor: (theme) => theme.palette.primary.main,
-            fontSize: 24,
-          }}
-        >
-          <p>Une erreur est survenue lors de votre demande...</p>
-        </Box>
-      ) : ( */}
+    <AuthContext.Provider value={{ isAuth }}>
       <>{children}</>
     </AuthContext.Provider>
   );

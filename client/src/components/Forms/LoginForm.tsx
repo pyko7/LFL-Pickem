@@ -17,15 +17,13 @@ import { logUserSchema } from "@/src/validations/authValidation";
 import { useMutation } from "@tanstack/react-query";
 import { logUser } from "@/src/utils/api/auth/logUser";
 import { useRouter } from "next/router";
-import { useAuthContext } from "@/context/AuthContext";
 
 type Props = {
   setOpen: (open: boolean) => void;
 };
 
 const LoginForm = ({ setOpen }: Props) => {
-  const { setAuth } = useAuthContext();
-  const { push, replace } = useRouter();
+  const { push } = useRouter();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -49,17 +47,15 @@ const LoginForm = ({ setOpen }: Props) => {
     mutationFn: logUser,
     onError: (error) => {
       if (error instanceof Error) {
-        if (error.message === "Email is not verified") {
-          window.location.href = "/signup/confirm-email";
-        }
+        // if (error.message === "Email is not verified") {
+        //   push("/signup/confirm-email");
+        // }
         setErrorMessage(error.message);
-        setAuth(false);
       }
     },
     onSuccess: () => {
       console.log("logged");
-      setAuth(true);
-      return (window.location.href = "/");
+      push("/");
     },
   });
 

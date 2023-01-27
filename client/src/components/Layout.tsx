@@ -3,10 +3,8 @@ import Head from "next/head";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import Header from "./Navigation/Header";
-import { useAuthContext } from "@/context/AuthContext";
 
 const Layout = ({ children }: { children?: ReactNode }) => {
-  const { auth } = useAuthContext();
   const Layout = styled(Box)(({ theme }) => ({
     width: "100%",
     margin: 0,
@@ -46,7 +44,7 @@ const Layout = ({ children }: { children?: ReactNode }) => {
         />
       </Head>
       <Layout>
-        {!auth ? null : <Header />}
+        <Header />
         <MainContainer component="main">{children}</MainContainer>
       </Layout>
     </>

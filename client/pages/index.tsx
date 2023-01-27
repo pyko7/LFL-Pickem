@@ -4,9 +4,16 @@ import Box from "@mui/material/Box";
 import Homepage from "@/src/components/Pages/Home";
 import { GameProvider } from "@/context/GameContext";
 import { useAuthContext } from "@/context/AuthContext";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 const Home = () => {
-  const { auth } = useAuthContext();
+  const { isAuth } = useAuthContext();
+  const { push } = useRouter();
+
+  useEffect(() => {
+    !isAuth() ? push("/login") : null;
+  }, []);
 
   const Page = styled(Box)(({ theme }) => ({
     position: "relative",
@@ -26,13 +33,11 @@ const Home = () => {
         <title>Accueil - LFL-Pickem</title>
         <meta property="og:title" content="Accueil - LFL-Pickem" />
       </Head>
-      {!auth ? null : (
-        <GameProvider>
-          <Page component="section">
-            <Homepage />
-          </Page>
-        </GameProvider>
-      )}
+      <GameProvider>
+        <Page component="section">
+          <Homepage />
+        </Page>
+      </GameProvider>
     </>
   );
 };

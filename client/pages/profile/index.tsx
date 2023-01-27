@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -18,10 +18,18 @@ import ConfirmDelete from "@/src/components/Forms/ConfirmDelete";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { User, UserRank } from "@/src/types/user";
 import { getUserById } from "@/src/utils/api/user/getUserById";
-
 import { getUserRank } from "@/src/utils/api/user/getUserRank";
+import { useAuthContext } from "@/context/AuthContext";
+import { useRouter } from "next/router";
 
 const Profile = () => {
+  const { isAuth } = useAuthContext();
+  const { push } = useRouter();
+
+  useEffect(() => {
+    !isAuth() ? push("/login") : null;
+  }, []);
+
   const theme = useTheme();
   const [resetPassword, setResetPassword] = useState(false);
   const [deleteAccount, setDeleteAccount] = useState(false);
