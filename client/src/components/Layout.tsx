@@ -10,8 +10,10 @@ const Layout = ({ children }: { children?: ReactNode }) => {
   const { isAuth } = useAuthContext();
 
   useEffect(() => {
-    isAuth() ? setHeader(true) : setHeader(false);
-  }, []);
+    const showHeader = isAuth();
+    showHeader ? setHeader(true) : setHeader(false);
+  }, [isAuth]);
+
   const Layout = styled(Box)(({ theme }) => ({
     width: "100%",
     margin: 0,
