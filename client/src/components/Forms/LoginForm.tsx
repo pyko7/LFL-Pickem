@@ -25,7 +25,7 @@ type Props = {
 
 const LoginForm = ({ setOpen }: Props) => {
   const { setAuth } = useAuthContext();
-  const { push } = useRouter();
+  const { push, replace } = useRouter();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -59,7 +59,7 @@ const LoginForm = ({ setOpen }: Props) => {
     onSuccess: () => {
       console.log("logged");
       setAuth(true);
-      push("/");
+      replace("/");
     },
   });
 
