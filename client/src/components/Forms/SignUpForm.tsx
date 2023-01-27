@@ -63,7 +63,7 @@ const SignUpForm = () => {
       }
     },
     onSuccess: () => {
-      router.push("/signup/confirm-email");
+      window.location.href = "/signup/confirm-email";
     },
   });
 

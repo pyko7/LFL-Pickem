@@ -20,16 +20,16 @@ export const AuthProvider = ({ children }: ContextProps) => {
 
   const isAuth = () => {
     if (pathname === "/signup") {
-      return push("/signup");
+      return (window.location.href = "/signup");
     }
     if (!pid) {
       setAuth(false);
-      return push("/login");
+      return (window.location.href = "/login");
     }
 
     verify(`${pid}`, `${process.env.NEXT_PUBLIC_JWT_SECRET_KEY}`, (err) => {
       if (err) {
-        push("/login");
+        window.location.href = "/login";
         setAuth(false);
         Cookies.remove("pid");
         return;

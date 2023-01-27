@@ -23,7 +23,7 @@ const ConfirmEmail = () => {
   };
 
   const handleLoginPageClick = () => {
-    push("/login");
+    return (window.location.href = "/login");
   };
 
   const handleVerificationEmailClick = () => {
@@ -97,7 +97,8 @@ const ConfirmEmail = () => {
           </strong>{" "}
           et cliquez sur le lien contenu dans l&apos;email.
           <br />
-          <br /> Note: l&apos;envoi de l&apos;email peut prendre quelques minutes.
+          <br /> Note: l&apos;envoi de l&apos;email peut prendre quelques
+          minutes.
         </Typography>
       </TextContainer>
       <SectionDivider />
