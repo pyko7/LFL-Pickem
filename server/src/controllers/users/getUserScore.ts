@@ -21,7 +21,7 @@ export const getUserScore = async (req: Request, res: Response) => {
     const allGames = await prisma.game.findMany();
 
     if (!user || !allGames) {
-      return;
+      throw new Error("Invalid request");
     }
 
     user.bets.map((bet: PrismaBet) => {
@@ -37,7 +37,7 @@ export const getUserScore = async (req: Request, res: Response) => {
     });
 
     if (userScore === user.points) {
-      return;
+      return res.status(200).json(user?.points);
     }
     await prisma.user.update({
       where: {
