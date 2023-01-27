@@ -23,7 +23,7 @@ const ConfirmEmail = () => {
   };
 
   const handleLoginPageClick = () => {
-    return (window.location.href = "/login");
+    return push("/login");
   };
 
   const handleVerificationEmailClick = () => {

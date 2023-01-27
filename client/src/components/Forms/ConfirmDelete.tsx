@@ -23,7 +23,7 @@ const ConfirmDelete = ({
   deleteAccount,
   setDeleteAccount,
 }: DeleteAccountProps) => {
-  const { push } = useRouter();
+  const { replace } = useRouter();
   const successMessage = `Suppression confirmée, merci d'avoir fait partie de l'aventure !`;
   const [errorMessage, setErrorMessage] = useState("");
   const {
@@ -48,7 +48,7 @@ const ConfirmDelete = ({
     },
     onSuccess: () => {
       setTimeout(() => {
-        window.location.replace("/signup");
+        replace("/signup");
       }, 1000);
     },
     mutationFn: (data: AuthForm) => deleteUser(data),

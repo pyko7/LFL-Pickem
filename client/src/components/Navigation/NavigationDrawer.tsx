@@ -23,7 +23,7 @@ const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
   const mutation = useMutation({
     mutationFn: logoutUser,
     onSuccess: () => {
-      window.location.href = "/login";
+      push("/login");
     },
   });
 

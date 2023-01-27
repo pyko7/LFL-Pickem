@@ -19,7 +19,7 @@ import { createUser } from "@/src/utils/api/auth/createUser";
 import { useRouter } from "next/router";
 
 const SignUpForm = () => {
-  const router = useRouter();
+  const { push } = useRouter();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [pseudoErrorMessage, setPseudoErrorMessage] = useState("");
@@ -63,7 +63,7 @@ const SignUpForm = () => {
       }
     },
     onSuccess: () => {
-      window.location.href = "/signup/confirm-email";
+      push("/signup/confirm-email");
     },
   });
 
