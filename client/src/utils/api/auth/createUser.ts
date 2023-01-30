@@ -13,7 +13,7 @@ export const createUser = async (user: AuthForm) => {
     const data = await res.json();
     if (!res.ok) {
       if (res.status === 400) {
-        if (data.code === "auth/email-already-exists") {
+        if (data === "The email address is already in use by another account.") {
           throw new Error("L'email est déjà utilisé");
         }
         if (data === "Le pseudo est déjà utilisé") {

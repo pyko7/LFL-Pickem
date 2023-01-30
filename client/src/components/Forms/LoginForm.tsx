@@ -47,14 +47,13 @@ const LoginForm = ({ setOpen }: Props) => {
     mutationFn: logUser,
     onError: (error) => {
       if (error instanceof Error) {
-        // if (error.message === "Email is not verified") {
-        //   push("/signup/confirm-email");
-        // }
+        if (error.message === "Email is not verified") {
+          push("/signup/confirm-email");
+        }
         setErrorMessage(error.message);
       }
     },
     onSuccess: () => {
-      console.log("logged");
       push("/");
     },
   });
