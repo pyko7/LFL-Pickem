@@ -1,6 +1,5 @@
 import { createContext, useContext } from "react";
 import { ContextProps, AuthContextInterface } from "@/src/types/context";
-import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import { verify } from "jsonwebtoken";
 
@@ -11,13 +10,9 @@ export const useAuthContext = () => {
 };
 
 export const AuthProvider = ({ children }: ContextProps) => {
-  const { push, pathname } = useRouter();
   const pid = Cookies.get("pid");
 
   const isAuth = () => {
-    if (pathname === "/signup") {
-      return push("/signup");
-    }
     if (!pid) {
       return false;
     }
