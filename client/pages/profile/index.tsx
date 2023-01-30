@@ -23,8 +23,14 @@ import { useAuthContext } from "@/context/AuthContext";
 import { useRouter } from "next/router";
 
 const Profile = () => {
-  const { isAuth } = useAuthContext();
+  const [page, setPage] = useState(false);
   const { push } = useRouter();
+  const { isAuth } = useAuthContext();
+
+  useEffect(() => {
+    const showPage = isAuth();
+    showPage ? setPage(true) : setPage(false);
+  }, [isAuth]);
 
   useEffect(() => {
     !isAuth() ? push("/login") : null;
@@ -131,84 +137,86 @@ const Profile = () => {
         <meta property="og:title" content="Profil - LFL-Pickem" />
       </Head>
 
-      <Page component="section">
-        {/* {csrfToken.isError ? (
+      {page ? (
+        <Page component="section">
+          {/* {csrfToken.isError ? (
           <Typography>
             Une erreur est survenue, veuillez réessayer plus tard.
           </Typography>
         ) : ( */}
-        <>
-          <Container maxWidth="md">
-            <ProfileHeader>
-              {currentUser.isLoading ? (
-                <>
-                  <Skeleton variant="text" width={120} height={30} />
-                  <Skeleton variant="rounded" width={70} height={30} />
-                </>
-              ) : currentUser.isError ? (
-                <>
-                  <UserName>User</UserName>
-                  <PointsCounter>N/A pts </PointsCounter>
-                </>
-              ) : (
-                <>
-                  <UserName>{currentUser.data.userName}</UserName>
-                  <PointsCounter>{currentUser.data.points} pts</PointsCounter>
-                </>
-              )}
-            </ProfileHeader>
-            <SectionDivider />
-
-            <ProfileList>
-              <ListItem disableGutters>
-                {userRank.isLoading ? (
-                  <Skeleton variant="rounded" width={200} height={30} />
-                ) : userRank.isError ? (
-                  <ListItemText primary={`Classement actuel: N/A`} />
+          <>
+            <Container maxWidth="md">
+              <ProfileHeader>
+                {currentUser.isLoading ? (
+                  <>
+                    <Skeleton variant="text" width={120} height={30} />
+                    <Skeleton variant="rounded" width={70} height={30} />
+                  </>
+                ) : currentUser.isError ? (
+                  <>
+                    <UserName>User</UserName>
+                    <PointsCounter>N/A pts </PointsCounter>
+                  </>
                 ) : (
-                  <ListItemText
-                    primary={`Classement actuel: ${userRank.data.userRank}`}
-                  />
+                  <>
+                    <UserName>{currentUser.data.userName}</UserName>
+                    <PointsCounter>{currentUser.data.points} pts</PointsCounter>
+                  </>
                 )}
-              </ListItem>
-              <ListItem disableGutters>
-                {userRank.isLoading ? (
-                  <Skeleton variant="rounded" width={100} height={30} />
-                ) : userRank.isError ? (
-                  <ListItemText primary={`Top: N/A`} />
-                ) : (
-                  <ListItemText primary={`Top: ${userRank.data.top}%`} />
-                )}
-              </ListItem>
-            </ProfileList>
-            <SectionDivider />
+              </ProfileHeader>
+              <SectionDivider />
 
-            <ProfileList>
-              <ListItem disableGutters sx={{ width: "fit-content" }}>
-                <ListItemButton disableGutters onClick={handlePasswordClick}>
-                  <ListIcon>
-                    <EditIcon />
-                  </ListIcon>
-                  <ListItemText primary="Modifier le mot de passe" />
-                </ListItemButton>
-              </ListItem>
-              <ListItem disableGutters sx={{ width: "fit-content" }}>
-                <ListItemButton
-                  disableGutters
-                  onClick={handleDeleteAccountClick}
-                >
-                  <ListIcon>
-                    <DeleteIcon />
-                  </ListIcon>
-                  <ListItemText primary="Supprimer le compte" />
-                </ListItemButton>
-              </ListItem>
-            </ProfileList>
-          </Container>
-          <SendEmailForm {...resetPasswordProps} />
-          <ConfirmDelete {...deleteAccountProps} />
-        </>
-      </Page>
+              <ProfileList>
+                <ListItem disableGutters>
+                  {userRank.isLoading ? (
+                    <Skeleton variant="rounded" width={200} height={30} />
+                  ) : userRank.isError ? (
+                    <ListItemText primary={`Classement actuel: N/A`} />
+                  ) : (
+                    <ListItemText
+                      primary={`Classement actuel: ${userRank.data.userRank}`}
+                    />
+                  )}
+                </ListItem>
+                <ListItem disableGutters>
+                  {userRank.isLoading ? (
+                    <Skeleton variant="rounded" width={100} height={30} />
+                  ) : userRank.isError ? (
+                    <ListItemText primary={`Top: N/A`} />
+                  ) : (
+                    <ListItemText primary={`Top: ${userRank.data.top}%`} />
+                  )}
+                </ListItem>
+              </ProfileList>
+              <SectionDivider />
+
+              <ProfileList>
+                <ListItem disableGutters sx={{ width: "fit-content" }}>
+                  <ListItemButton disableGutters onClick={handlePasswordClick}>
+                    <ListIcon>
+                      <EditIcon />
+                    </ListIcon>
+                    <ListItemText primary="Modifier le mot de passe" />
+                  </ListItemButton>
+                </ListItem>
+                <ListItem disableGutters sx={{ width: "fit-content" }}>
+                  <ListItemButton
+                    disableGutters
+                    onClick={handleDeleteAccountClick}
+                  >
+                    <ListIcon>
+                      <DeleteIcon />
+                    </ListIcon>
+                    <ListItemText primary="Supprimer le compte" />
+                  </ListItemButton>
+                </ListItem>
+              </ProfileList>
+            </Container>
+            <SendEmailForm {...resetPasswordProps} />
+            <ConfirmDelete {...deleteAccountProps} />
+          </>
+        </Page>
+      ) : null}
     </>
   );
 };

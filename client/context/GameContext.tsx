@@ -30,10 +30,10 @@ export const GameProvider = ({ children }: any) => {
     cacheTime: 45 * (60 * 1000), // 45 mins
   });
   const selectedTeamsList = useQuery(["selectedTeams"], getSelectedTeams);
-
-  useEffect(() => {
-    getUserScore();
-  }, []);
+  useQuery(["score"], getUserScore, {
+    staleTime: 60 * (60 * 1000), // 60 mins
+    cacheTime: 65 * (60 * 1000), // 65 mins
+  });
 
   useEffect(() => {
     if (typeof selectedTeamsList.data !== "undefined") {

@@ -39,13 +39,13 @@ const Home = () => {
         <title>Accueil - LFL-Pickem</title>
         <meta property="og:title" content="Accueil - LFL-Pickem" />
       </Head>
-      <GameProvider>
-        {page ? (
+      {page ? (
+        <GameProvider>
           <Page component="section">
             <Homepage />
           </Page>
-        ) : null}
-      </GameProvider>
+        </GameProvider>
+      ) : null}
     </>
   );
 };
