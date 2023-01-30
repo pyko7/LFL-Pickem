@@ -27,11 +27,13 @@ export const createSessionCookie = async (req: Request, res: Response) => {
       httpOnly: true,
       sameSite: "lax",
       secure: true,
+      domain: process.env.DOMAIN,
     });
     res.cookie("pid", pidCookie, {
       maxAge: expiresIn,
       sameSite: "lax",
       secure: true,
+      domain: process.env.DOMAIN,
     });
 
     return res.end(JSON.stringify({ status: "success" }));
