@@ -23,7 +23,7 @@ type Props = {
 };
 
 const LoginForm = ({ setOpen }: Props) => {
-  const { push, pathname } = useRouter();
+  const { push } = useRouter();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -55,7 +55,6 @@ const LoginForm = ({ setOpen }: Props) => {
     },
     onSuccess: () => {
       console.log("logged");
-      console.log(pathname);
       push("/");
     },
   });

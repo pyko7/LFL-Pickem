@@ -11,7 +11,6 @@ export const getAllDays = async (): Promise<Day[]> => {
     });
     const data = await res.json();
     if (!res.ok) {
-      console.log("error ici");
       throw new Error(res.statusText);
     }
     return data;
