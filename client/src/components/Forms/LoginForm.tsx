@@ -16,7 +16,8 @@ import { AuthForm } from "@/src/types/forms";
 import { logUserSchema } from "@/src/validations/authValidation";
 import { useMutation } from "@tanstack/react-query";
 import { logUser } from "@/src/utils/api/auth/logUser";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 type Props = {
   setOpen: (open: boolean) => void;
@@ -55,7 +56,8 @@ const LoginForm = ({ setOpen }: Props) => {
     },
     onSuccess: () => {
       console.log("logged");
-      push("/");
+      window.location.href = "/";
+      // push("/");
     },
   });
 
