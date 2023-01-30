@@ -1,15 +1,21 @@
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Homepage from "@/src/components/Pages/Home";
 import { GameProvider } from "@/context/GameContext";
 import { useAuthContext } from "@/context/AuthContext";
-import { useEffect } from "react";
 import { useRouter } from "next/router";
 
 const Home = () => {
-  const { isAuth } = useAuthContext();
+  const [page, setPage] = useState(false);
   const { push } = useRouter();
+  const { isAuth } = useAuthContext();
+
+  useEffect(() => {
+    const showPage = isAuth();
+    showPage ? setPage(true) : setPage(false);
+  }, [isAuth]);
 
   useEffect(() => {
     !isAuth() ? push("/login") : null;
@@ -34,9 +40,11 @@ const Home = () => {
         <meta property="og:title" content="Accueil - LFL-Pickem" />
       </Head>
       <GameProvider>
-        <Page component="section">
-          <Homepage />
-        </Page>
+        {page ? (
+          <Page component="section">
+            <Homepage />
+          </Page>
+        ) : null}
       </GameProvider>
     </>
   );
