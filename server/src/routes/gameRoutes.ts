@@ -9,16 +9,15 @@ import { getSelectedTeams } from "../controllers/game/getSelectedTeams";
 import { updateSelectedTeams } from "../controllers/game/updateSelectedTeams";
 import { betLimiter } from "../middleware/betLimiter";
 import { verifyDate } from "../middleware/verifyDate";
-import { verifySession } from "../middleware/verifySession";
 
 export const gameRoutes = Router();
 
-gameRoutes.get("/teams", verifySession, getAllTeams);
-gameRoutes.get("/days", verifySession, getAllDays);
-gameRoutes.get("/days/:id", verifySession, getGamesByDay);
-gameRoutes.get("/day/:date", verifySession, getDayByDate);
-gameRoutes.get("/selected", verifySession, getSelectedTeams);
+gameRoutes.get("/teams", getAllTeams);
+gameRoutes.get("/days", getAllDays);
+gameRoutes.get("/days/:id", getGamesByDay);
+gameRoutes.get("/day/:date", getDayByDate);
+gameRoutes.get("/selected", getSelectedTeams);
 
-gameRoutes.post("/selected", verifySession, betLimiter,verifyDate, addSelectedTeams);
-gameRoutes.put("/selected", verifySession, betLimiter,verifyDate, updateSelectedTeams);
-gameRoutes.delete("/selected", verifySession, betLimiter,verifyDate, deleteSelectedTeams);
+gameRoutes.post("/selected", betLimiter, verifyDate, addSelectedTeams);
+gameRoutes.put("/selected", betLimiter, verifyDate, updateSelectedTeams);
+gameRoutes.delete("/selected", betLimiter, verifyDate, deleteSelectedTeams);
