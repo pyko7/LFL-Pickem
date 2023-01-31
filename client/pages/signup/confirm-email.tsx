@@ -88,10 +88,10 @@ const ConfirmEmail = () => {
           Bienvenue !
         </Typography>
         <Typography paragraph>
-          Vous êtes bientôt prêt à acceder au site. Nous avons envoyé un email
+          Vous êtes bientôt prêt à accéder au site. Nous avons envoyé un email
           de vérification lors de votre inscription.
           <br />
-          <br /> Vérifier votre boîte mail ainsi que vos{" "}
+          <br /> Vérifiez votre boîte mail ainsi que vos{" "}
           <strong style={{ color: theme.palette.secondary.main }}>
             spams
           </strong>{" "}
