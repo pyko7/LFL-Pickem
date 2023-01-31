@@ -27,13 +27,19 @@ export const createSessionCookie = async (req: Request, res: Response) => {
       httpOnly: true,
       sameSite: "lax",
       secure: true,
-      domain: process.env.DOMAIN,
+      domain:
+        process.env.NODE_ENV === "production"
+          ? process.env.PROD_DOMAIN
+          : process.env.ENV_DOMAIN,
     });
     res.cookie("pid", pidCookie, {
       maxAge: expiresIn,
       sameSite: "lax",
       secure: true,
-      domain: process.env.DOMAIN,
+      domain:
+        process.env.NODE_ENV === "production"
+          ? process.env.PROD_DOMAIN
+          : process.env.ENV_DOMAIN,
     });
 
     return res.end(JSON.stringify({ status: "success" }));
