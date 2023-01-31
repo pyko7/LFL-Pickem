@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { auth } from "../firebase";
 import { verify } from "jsonwebtoken";
 import dotenv from "dotenv";
+import { userCredentials } from "../validations/userValidation";
 dotenv.config();
 
 export const verifyUser = async (
@@ -13,6 +14,7 @@ export const verifyUser = async (
   const { user } = req.body;
 
   try {
+    await userCredentials.validate(user.email);
     const userToken = verify(pid, `${process.env.JWT_SECRET_KEY}`);
     const decodedToken = await auth.verifySessionCookie(session);
 

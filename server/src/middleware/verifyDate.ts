@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import prisma from "../prisma";
 import { utcToZonedTime } from "date-fns-tz";
+import { betCredentials } from "../validations/betValidation";
 
 export const verifyDate = async (
   req: Request,
@@ -13,6 +14,7 @@ export const verifyDate = async (
   const dateInFrance = utcToZonedTime(new Date(), "Europe/Kiev");
 
   try {
+    betCredentials.validate({ gameId, dayId });
     const game = await prisma.game.findUnique({
       where: {
         id: gameId,

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { auth } from "../../firebase";
 import prisma from "../../prisma";
+import { gameCredentials } from "../../validations/betValidation";
 
 export const addSelectedTeams = async (req: Request, res: Response) => {
   try {
@@ -8,6 +9,8 @@ export const addSelectedTeams = async (req: Request, res: Response) => {
     const sessionCookie = req.cookies.session;
     const decodedToken = await auth.verifySessionCookie(sessionCookie);
     const userId = decodedToken.uid;
+
+    await gameCredentials.validate({ gameId, teamId });
 
     const game = await prisma.game.findUnique({
       where: {

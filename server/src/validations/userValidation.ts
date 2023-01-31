@@ -45,3 +45,10 @@ export const logUserSchema = yup.object({
     })
     .required("Adresse email et/ou mot de passe incorrect"),
 });
+
+export const userCredentials = yup.object({
+  email: yup
+    .string()
+    .email("Adresse email et/ou mot de passe incorrect")
+    .required("Adresse email et/ou mot de passe incorrect"),
+});
