@@ -3,7 +3,6 @@ import helmet from "helmet";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import path from "path";
 import { authRoutes } from "./routes/authRoutes";
 import { userRoutes } from "./routes/userRoutes";
 import { verifySession } from "./middleware/verifySession";
@@ -23,10 +22,8 @@ app.use(
     },
   })
 );
-app.disable("x-powered-by");
 app.use(cookieParser());
 
-app.use(express.static(path.join(__dirname, "assets/images/logos")));
 app.use("/api/auth", authRoutes);
 app.use("/api/user", verifySession, userRoutes);
 app.use("/api/game", verifySession, gameRoutes);
