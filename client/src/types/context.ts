@@ -7,7 +7,8 @@ export interface ContextProps {
 }
 
 export interface AuthContextInterface {
-  isAuth: () => boolean | Promise<boolean>;
+  isLogged: boolean;
+  setIsLogged: (isLogged: boolean) => void;
 }
 
 export interface GameContextInterface {

@@ -1,25 +1,12 @@
-import { useEffect, useState } from "react";
 import Head from "next/head";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Homepage from "@/src/components/Pages/Home";
 import { GameProvider } from "@/context/GameContext";
 import { useAuthContext } from "@/context/AuthContext";
-import { useRouter } from "next/router";
 
 const Home = () => {
-  const [page, setPage] = useState(false);
-  const { push } = useRouter();
-  const { isAuth } = useAuthContext();
-
-  useEffect(() => {
-    const showPage = isAuth();
-    showPage ? setPage(true) : setPage(false);
-  }, [isAuth]);
-
-  useEffect(() => {
-    !isAuth() ? push("/login") : null;
-  }, []);
+  const { isLogged } = useAuthContext();
 
   const Page = styled(Box)(({ theme }) => ({
     position: "relative",
@@ -39,7 +26,7 @@ const Home = () => {
         <title>Accueil - LFL-Pickem</title>
         <meta property="og:title" content="Accueil - LFL-Pickem" />
       </Head>
-      {page ? (
+      {isLogged ? (
         <GameProvider>
           <Page component="section">
             <Homepage />

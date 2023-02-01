@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode } from "react";
 import Head from "next/head";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
@@ -6,13 +6,7 @@ import Header from "./Navigation/Header";
 import { useAuthContext } from "@/context/AuthContext";
 
 const Layout = ({ children }: { children?: ReactNode }) => {
-  const [header, setHeader] = useState(false);
-  const { isAuth } = useAuthContext();
-
-  useEffect(() => {
-    const showHeader = isAuth();
-    showHeader ? setHeader(true) : setHeader(false);
-  }, [isAuth]);
+  const { isLogged } = useAuthContext();
 
   const Layout = styled(Box)(({ theme }) => ({
     width: "100%",
@@ -53,7 +47,7 @@ const Layout = ({ children }: { children?: ReactNode }) => {
         />
       </Head>
       <Layout>
-        {header ? <Header /> : null}
+        {isLogged ? <Header /> : null}
         <MainContainer component="main">{children}</MainContainer>
       </Layout>
     </>

@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -20,21 +20,9 @@ import { User, UserRank } from "@/src/types/user";
 import { getUserById } from "@/src/utils/api/user/getUserById";
 import { getUserRank } from "@/src/utils/api/user/getUserRank";
 import { useAuthContext } from "@/context/AuthContext";
-import { useRouter } from "next/router";
 
 const Profile = () => {
-  const [page, setPage] = useState(false);
-  const { push } = useRouter();
-  const { isAuth } = useAuthContext();
-
-  useEffect(() => {
-    const showPage = isAuth();
-    showPage ? setPage(true) : setPage(false);
-  }, [isAuth]);
-
-  useEffect(() => {
-    !isAuth() ? push("/login") : null;
-  }, []);
+  const { isLogged } = useAuthContext();
 
   const theme = useTheme();
   const [resetPassword, setResetPassword] = useState(false);
@@ -137,13 +125,8 @@ const Profile = () => {
         <meta property="og:title" content="Profil - LFL-Pickem" />
       </Head>
 
-      {page ? (
+      {isLogged ? (
         <Page component="section">
-          {/* {csrfToken.isError ? (
-          <Typography>
-            Une erreur est survenue, veuillez réessayer plus tard.
-          </Typography>
-        ) : ( */}
           <>
             <Container maxWidth="md">
               <ProfileHeader>

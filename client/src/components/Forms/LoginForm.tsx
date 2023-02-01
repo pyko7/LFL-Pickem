@@ -17,6 +17,7 @@ import { logUserSchema } from "@/src/validations/authValidation";
 import { useMutation } from "@tanstack/react-query";
 import { logUser } from "@/src/utils/api/auth/logUser";
 import { useRouter } from "next/router";
+import { useAuthContext } from "@/context/AuthContext";
 
 type Props = {
   setOpen: (open: boolean) => void;
@@ -24,6 +25,7 @@ type Props = {
 
 const LoginForm = ({ setOpen }: Props) => {
   const { push } = useRouter();
+  const { setIsLogged } = useAuthContext();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -52,8 +54,10 @@ const LoginForm = ({ setOpen }: Props) => {
         }
         setErrorMessage(error.message);
       }
+      setIsLogged(false);
     },
     onSuccess: () => {
+      setIsLogged(true);
       push("/");
     },
   });
