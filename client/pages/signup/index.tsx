@@ -3,7 +3,6 @@ import dynamic from "next/dynamic";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import lflLogo from "@/public/white_lfl.webp";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -13,6 +12,7 @@ const DynamicForm = dynamic(
 
 const SignUp = () => {
   const theme = useTheme();
+  const imageUrl = 'https://res.cloudinary.com/dkferpmf6/image/upload/v1674578020/LFL/white_lfl.webp'
   const Page = styled(Box)({
     position: "absolute",
     top: "50%",
@@ -63,7 +63,7 @@ const SignUp = () => {
         />
       </Head>
       <Page component="section">
-        <Image src={lflLogo} alt="logo" width={85} height={85} priority />
+        <Image src={imageUrl} alt="logo" width={85} height={85} priority />
 
         <Title variant="h1">Inscription</Title>
 

@@ -11,6 +11,10 @@ import NavigationDrawer from "./NavigationDrawer";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
+
+  const imageUrl =
+    "https://res.cloudinary.com/dkferpmf6/image/upload/v1674578020/LFL/white_lfl.webp";
+
   const drawerProps = { open, setOpen };
 
   const ImageContainer = styled("a")(({ theme }) => ({
@@ -35,7 +39,7 @@ const Header = () => {
           }}
         >
           <ImageContainer href="/">
-            <Image src={lflLogo} alt="logo" width={65} height={65} priority />
+            <Image src={imageUrl} alt="logo" width={65} height={65} priority />
           </ImageContainer>
           <IconButton
             sx={{ padding: 0 }}
