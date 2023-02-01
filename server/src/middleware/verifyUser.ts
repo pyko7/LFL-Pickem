@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { auth } from "../firebase";
-import { verify } from "jsonwebtoken";
 import dotenv from "dotenv";
 import { userCredentials } from "../validations/userValidation";
+import { jwtVerify } from "jose";
 dotenv.config();
 
 export const verifyUser = async (
@@ -12,20 +12,19 @@ export const verifyUser = async (
 ) => {
   const { session, pid } = req.cookies;
   const { user } = req.body;
+  const secret = new TextEncoder().encode(
+    process.env.NEXT_PUBLIC_JWT_SECRET_KEY
+  );
 
   try {
     await userCredentials.validate(user.email);
-    const userToken = verify(pid, `${process.env.JWT_SECRET_KEY}`);
+    const { payload } = await jwtVerify(pid, secret);
     const decodedToken = await auth.verifySessionCookie(session);
 
-    if (typeof userToken === "object") {
-      if (
-        user.email !== decodedToken.email ||
-        userToken.pid !== decodedToken.uid
-      ) {
-        throw Error("Forbidden access");
-      }
+    if (user.email !== decodedToken.email || payload.pid !== decodedToken.uid) {
+      throw Error("Forbidden access");
     }
+
     next();
   } catch (error) {
     if (error instanceof Error) {

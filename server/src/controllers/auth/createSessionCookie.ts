@@ -1,12 +1,14 @@
 import { Request, Response } from "express";
 import { auth } from "../../firebase";
-import { sign } from "jsonwebtoken";
+import * as jose from "jose";
 import dotenv from "dotenv";
 dotenv.config();
 
 export const createSessionCookie = async (req: Request, res: Response) => {
   const idToken = req.body.idToken.toString();
   const expiresIn = 3600000;
+  const secret = new TextEncoder().encode(process.env.JWT_SECRET_KEY);
+  const alg = process.env.JWT_ALG;
 
   try {
     const sessionCookie = await auth.createSessionCookie(idToken, {
@@ -14,13 +16,10 @@ export const createSessionCookie = async (req: Request, res: Response) => {
     });
     const token = await auth.verifyIdToken(idToken);
 
-    const pidCookie = sign(
-      { pid: token.uid },
-      `${process.env.JWT_SECRET_KEY}`,
-      {
-        expiresIn: expiresIn,
-      }
-    );
+    const pidCookie = await new jose.SignJWT({ pid: token.uid })
+      .setProtectedHeader({ alg: alg! })
+      .setExpirationTime("1h")
+      .sign(secret);
 
     res.cookie("session", sessionCookie, {
       maxAge: expiresIn,

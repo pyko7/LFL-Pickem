@@ -13,6 +13,6 @@ export const verifySession = async (
   } catch (error) {
     res.clearCookie("session");
     res.clearCookie("pid");
-    return res.redirect("/login");
+    return res.status(401).json(error);
   }
 };
