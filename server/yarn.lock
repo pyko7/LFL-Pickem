@@ -709,6 +709,13 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
+"@jsdoc/salty@^0.2.1":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@jsdoc/salty/-/salty-0.2.3.tgz#aab70c8756c1b98598bbc30867d3aa7a31b5c7d4"
+  integrity sha512-bbtCxCkxcnWhi50I+4Lj6mdz9w3pOXOgEQrID8TCZ/DF51fW7M9GCQW2y45SpBDdHd1Eirm1X/Cf6CkAAe8HPg==
+  dependencies:
+    lodash "^4.17.21"
+
 "@prisma/client@^4.8.0":
   version "4.9.0"
   resolved "https://registry.yarnpkg.com/@prisma/client/-/client-4.9.0.tgz#4a4068f3540732ea5723c008d49ed684d20f9340"
@@ -1911,7 +1918,7 @@ find-up@^4.0.0, find-up@^4.1.0:
     locate-path "^5.0.0"
     path-exists "^4.0.0"
 
-firebase-admin@^11.3.0:
+firebase-admin@^11.5.0:
   version "11.5.0"
   resolved "https://registry.yarnpkg.com/firebase-admin/-/firebase-admin-11.5.0.tgz#86aa97e45fd9868be1759dccf04614c488945093"
   integrity sha512-bBdlYtNvXx8yZGdCd00NrfZl1o1A0aXOw5h8q5PwC8RXikOLNXq8vYtSKW44dj8zIaafVP6jFdcUXZem/LMsHA==
@@ -2070,9 +2077,9 @@ google-auth-library@^8.0.1, google-auth-library@^8.0.2:
     lru-cache "^6.0.0"
 
 google-gax@^3.5.2:
-  version "3.5.2"
-  resolved "https://registry.yarnpkg.com/google-gax/-/google-gax-3.5.2.tgz#7c3ad61dbf366a55527b803caead276668b160d8"
-  integrity sha512-AyP53w0gHcWlzxm+jSgqCR3Xu4Ld7EpSjhtNBnNhzwwWaIUyphH9kBGNIEH+i4UGkTUXOY29K/Re8EiAvkBRGw==
+  version "3.5.3"
+  resolved "https://registry.yarnpkg.com/google-gax/-/google-gax-3.5.3.tgz#f2b696b6edbe7ebdd512225aec1d03d3c9d9fc2a"
+  integrity sha512-caItkifbcPDVf5xW2j6xLXmuX9bh2dheJN9AzMuQj6VvWacUVV5d0BkjL+Ia8sgX9VvXtbqjf4NKK3nTgV9UUQ==
   dependencies:
     "@grpc/grpc-js" "~1.7.0"
     "@grpc/proto-loader" "^0.7.0"
@@ -2086,7 +2093,7 @@ google-gax@^3.5.2:
     object-hash "^3.0.0"
     proto3-json-serializer "^1.0.0"
     protobufjs "7.1.2"
-    protobufjs-cli "1.0.2"
+    protobufjs-cli "1.1.0"
     retry-request "^5.0.0"
 
 google-p12-pem@^4.0.0:
@@ -2715,12 +2722,13 @@ js2xmlparser@^4.0.2:
   dependencies:
     xmlcreate "^2.0.4"
 
-jsdoc@^3.6.3:
-  version "3.6.11"
-  resolved "https://registry.yarnpkg.com/jsdoc/-/jsdoc-3.6.11.tgz#8bbb5747e6f579f141a5238cbad4e95e004458ce"
-  integrity sha512-8UCU0TYeIYD9KeLzEcAu2q8N/mx9O3phAGl32nmHlE0LpaJL71mMkP4d+QE5zWfNt50qheHtOZ0qoxVrsX5TUg==
+jsdoc@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/jsdoc/-/jsdoc-4.0.0.tgz#9569f79ea5b14ba4bc726da1a48fe6a241ad7893"
+  integrity sha512-tzTgkklbWKrlaQL2+e3NNgLcZu3NaK2vsHRx7tyHQ+H5jcB9Gx0txSd2eJWlMC/xU1+7LQu4s58Ry0RkuaEQVg==
   dependencies:
     "@babel/parser" "^7.9.4"
+    "@jsdoc/salty" "^0.2.1"
     "@types/markdown-it" "^12.2.3"
     bluebird "^3.7.2"
     catharsis "^0.9.0"
@@ -2733,7 +2741,6 @@ jsdoc@^3.6.3:
     mkdirp "^1.0.4"
     requizzle "^0.2.3"
     strip-json-comments "^3.1.0"
-    taffydb "2.6.2"
     underscore "~1.13.2"
 
 jsesc@^2.5.1:
@@ -3332,17 +3339,17 @@ proto3-json-serializer@^1.0.0:
   dependencies:
     protobufjs "^7.0.0"
 
-protobufjs-cli@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/protobufjs-cli/-/protobufjs-cli-1.0.2.tgz#905fc49007cf4aaf3c45d5f250eb294eedeea062"
-  integrity sha512-cz9Pq9p/Zs7okc6avH20W7QuyjTclwJPgqXG11jNaulfS3nbVisID8rC+prfgq0gbZE0w9LBFd1OKFF03kgFzg==
+protobufjs-cli@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/protobufjs-cli/-/protobufjs-cli-1.1.0.tgz#ba1f5a6fa78f8426d2015cf41ed16b7b69c6ac0a"
+  integrity sha512-VXMQn+z3yG2WbN2E+mx5vcyIHF7yJSg2jqyqfxcZLWNOSTqUzSSgAE5vu04/JEpwxTI04JGyrZRDHC36wr04uw==
   dependencies:
     chalk "^4.0.0"
     escodegen "^1.13.0"
     espree "^9.0.0"
     estraverse "^5.1.0"
     glob "^8.0.0"
-    jsdoc "^3.6.3"
+    jsdoc "^4.0.0"
     minimist "^1.2.0"
     semver "^7.1.2"
     tmp "^0.2.1"
@@ -3743,11 +3750,6 @@ supports-preserve-symlinks-flag@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
-
-taffydb@2.6.2:
-  version "2.6.2"
-  resolved "https://registry.yarnpkg.com/taffydb/-/taffydb-2.6.2.tgz#7cbcb64b5a141b6a2efc2c5d2c67b4e150b2a268"
-  integrity sha512-y3JaeRSplks6NYQuCOj3ZFMO3j60rTwbuKCvZxsAraGYH2epusatvZ0baZYA01WsGqJBq/Dl6vOrMUJqyMj8kA==
 
 tar@^6.1.11:
   version "6.1.13"
