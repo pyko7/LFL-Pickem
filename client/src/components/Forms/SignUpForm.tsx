@@ -140,6 +140,7 @@ const SignUpForm = () => {
           variant="filled"
           label="Pseudo"
           {...register("pseudo")}
+          inputProps={{ minLength: 2, maxLength: 16 }}
         />
         {mutation.isError && pseudoErrorMessage.length > 0 ? (
           <ErrorMessage>{pseudoErrorMessage}</ErrorMessage>
