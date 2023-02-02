@@ -131,7 +131,9 @@ const GameContainer = (props: Game) => {
 
   useEffect(() => {
     const dateInFrance = utcToZonedTime(new Date(), "Europe/Paris");
-    const isPast = isBefore(parseISO(props.date), dateInFrance);
+  //date-fns-tz has 1 hour off compare to Paris timezone, this is why timezone is set to London
+    const gameDateInFrance = utcToZonedTime(parseISO(props.date), "Europe/London")
+    const isPast = isBefore(gameDateInFrance, dateInFrance);
     return isPast ? setDisabledDay(true) : setDisabledDay(false);
   }, [props.date]);
 
