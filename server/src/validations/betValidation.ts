@@ -13,7 +13,3 @@ export const gameCredentials = yup.object({
 export const dayCredentials = yup.object({
   dayId: yup.number().required().positive().integer(),
 });
-
-export const dateCredentials = yup.object({
-  date: yup.string().required(),
-});
