@@ -12,6 +12,7 @@ import { useMutation } from "@tanstack/react-query";
 import { logoutUser } from "@/src/utils/api/auth/logoutUser";
 import { useRouter } from "next/router";
 import { useAuthContext } from "@/context/AuthContext";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 
 const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
   const theme = useTheme();
@@ -135,8 +136,16 @@ const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
           ) : (
             <ListItem key={item.name} disablePadding>
               <a href={item.pathname} target="_blank" rel="noreferrer">
-                {item.name}
+                {item.name} <span style={{ fontSize: 15 }}>(OTP LoL)</span>
               </a>
+              <OpenInNewIcon
+                sx={{
+                  width: 15,
+                  height: 15,
+                  marginLeft: 0.5,
+                  marginBottom: 1,
+                }}
+              />
             </ListItem>
           );
         })}
