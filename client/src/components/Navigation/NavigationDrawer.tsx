@@ -11,9 +11,11 @@ import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
 import { logoutUser } from "@/src/utils/api/auth/logoutUser";
 import { useRouter } from "next/router";
+import { useAuthContext } from "@/context/AuthContext";
 
 const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
   const theme = useTheme();
+  const { setIsLogged } = useAuthContext();
   const { push } = useRouter();
 
   const handleClose = () => {
@@ -23,6 +25,7 @@ const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
   const mutation = useMutation({
     mutationFn: logoutUser,
     onSuccess: () => {
+      setIsLogged(false);
       push("/login");
     },
   });
