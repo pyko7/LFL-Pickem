@@ -21,15 +21,18 @@ export const AuthProvider = ({ children }: ContextProps) => {
   useEffect(() => {
     const isAuth = async () => {
       if (!pid) {
+        console.log("no pid");
         setIsLogged(false);
         return router.push("/login");
       }
 
       try {
         await jwtVerify(pid, secret);
+        console.log("logged");
         setIsLogged(true);
         return;
       } catch (error) {
+        console.log("error");
         Cookies.remove("pid");
         setIsLogged(false);
         return router.push("/login");
