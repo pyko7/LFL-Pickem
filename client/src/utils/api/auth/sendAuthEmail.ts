@@ -1,12 +1,15 @@
 import { AuthForm } from "@/src/types/forms";
+import { getCsrfToken } from "../credentials/getCsrfToken";
 
 export const sendAuthEmail = async (user: AuthForm, url: string) => {
   try {
+    const csrfToken = await getCsrfToken();
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${url}`, {
       method: "POST",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
+        "x-csrf-token": csrfToken,
       },
       body: JSON.stringify({ user }),
     });

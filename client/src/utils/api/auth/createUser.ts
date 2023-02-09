@@ -1,11 +1,14 @@
 import { AuthForm } from "@/src/types/forms";
+import { getCsrfToken } from "../credentials/getCsrfToken";
 
 export const createUser = async (user: AuthForm) => {
   try {
+    const csrfToken = await getCsrfToken();
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "x-csrf-token": csrfToken,
       },
       credentials: "include",
       body: JSON.stringify(user),

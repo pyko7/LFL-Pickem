@@ -6,10 +6,12 @@ import {
   browserSessionPersistence,
 } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
+import { getCsrfToken } from "../credentials/getCsrfToken";
 
 export const logUser = async (userData: AuthForm) => {
   const { email, password } = userData;
   try {
+    const csrfToken = await getCsrfToken();
     await setPersistence(auth, browserSessionPersistence);
     const user = await signInWithEmailAndPassword(auth, email, password);
     const idToken = await user.user.getIdToken();
@@ -20,6 +22,7 @@ export const logUser = async (userData: AuthForm) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "x-csrf-token": csrfToken,
         },
         credentials: "include",
         body: JSON.stringify({ idToken }),

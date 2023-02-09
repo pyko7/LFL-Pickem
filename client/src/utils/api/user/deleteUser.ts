@@ -1,12 +1,15 @@
 import { FirebaseError } from "firebase/app";
 import { AuthForm } from "@/src/types/forms";
+import { getCsrfToken } from "../credentials/getCsrfToken";
 
 export const deleteUser = async (user: AuthForm) => {
   try {
+    const csrfToken = await getCsrfToken();
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/delete`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
+        "x-csrf-token": csrfToken,
       },
       credentials: "include",
       body: JSON.stringify({ user }),

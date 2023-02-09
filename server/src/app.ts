@@ -7,6 +7,10 @@ import { authRoutes } from "./routes/authRoutes";
 import { userRoutes } from "./routes/userRoutes";
 import { verifySession } from "./middleware/verifySession";
 import { gameRoutes } from "./routes/gameRoutes";
+import {
+  doubleCsrfProtection,
+  generateCsrfToken,
+} from "./middleware/csrfProtection";
 
 dotenv.config();
 
@@ -23,7 +27,8 @@ app.use(
   })
 );
 app.use(cookieParser());
-
+app.get("/api/csrf-token", generateCsrfToken);
+app.use(doubleCsrfProtection);
 app.use("/api/auth", authRoutes);
 app.use("/api/user", verifySession, userRoutes);
 app.use("/api/game", verifySession, gameRoutes);

@@ -1,13 +1,16 @@
 import { SelectedTeam } from "@/src/types/teams";
+import { getCsrfToken } from "../credentials/getCsrfToken";
 
 export const addSelectedTeams = async (team: SelectedTeam) => {
   try {
+    const csrfToken = await getCsrfToken();
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/game/selected`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "x-csrf-token": csrfToken,
         },
         credentials: "include",
         body: JSON.stringify(team),
@@ -27,12 +30,14 @@ export const addSelectedTeams = async (team: SelectedTeam) => {
 
 export const updateSelectedTeams = async (team: SelectedTeam) => {
   try {
+    const csrfToken = await getCsrfToken();
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/game/selected`,
       {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          "x-csrf-token": csrfToken,
         },
         credentials: "include",
         body: JSON.stringify(team),
@@ -52,12 +57,14 @@ export const updateSelectedTeams = async (team: SelectedTeam) => {
 
 export const deleteSelectedTeams = async (team: SelectedTeam) => {
   try {
+    const csrfToken = await getCsrfToken();
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/game/selected`,
       {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
+          "x-csrf-token": csrfToken,
         },
         credentials: "include",
         body: JSON.stringify(team),
