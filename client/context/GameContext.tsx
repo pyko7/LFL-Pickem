@@ -2,12 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 import { createContext, useContext, useEffect, useState } from "react";
 import { GameContextInterface } from "@/src/types/context";
 import { Game, Day, UserSelection } from "@/src/types/teams";
-import { getUserScore } from "@/src/utils/api/user/getUserScore";
 import { getAllDays } from "@/src/utils/api/game/getAllDays";
 import { getAllTeams } from "@/src/utils/api/game/getAllTeams";
 import { getGamesByDay } from "@/src/utils/api/game/getGamesByDay";
 import { getSelectedTeams } from "@/src/utils/api/game/getSelectedTeams";
 import { getClosestDayFromNow } from "@/src/utils/getClosestDayFromNow";
+import { updateUserScore } from "@/src/utils/api/user/updateUserScore";
 
 const GameContext = createContext({} as GameContextInterface);
 
@@ -30,10 +30,6 @@ export const GameProvider = ({ children }: any) => {
     cacheTime: 45 * (60 * 1000), // 45 mins
   });
   const selectedTeamsList = useQuery(["selectedTeams"], getSelectedTeams);
-  useQuery(["score"], getUserScore, {
-    staleTime: 60 * (60 * 1000), // 60 mins
-    cacheTime: 65 * (60 * 1000), // 65 mins
-  });
 
   useEffect(() => {
     if (typeof selectedTeamsList.data !== "undefined") {
@@ -67,6 +63,10 @@ export const GameProvider = ({ children }: any) => {
     };
     setGames();
   }, [dayData?.id]);
+
+  useEffect(() => {
+    updateUserScore();
+  }, []);
 
   return (
     <GameContext.Provider

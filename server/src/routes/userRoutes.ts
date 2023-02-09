@@ -3,13 +3,13 @@ import { sendResetPasswordEmail } from "../controllers/auth/sendResetPasswordEma
 import { deleteUser } from "../controllers/users/deleteUser";
 import { getUserById } from "../controllers/users/getUserById";
 import { getUserRank } from "../controllers/users/getUserRank";
-import { getUserScore } from "../controllers/users/getUserScore";
+import { updateUserScore } from "../controllers/users/updateUserScore";
 import { verifyUser } from "../middleware/verifyUser";
 
 export const userRoutes = Router();
 
 userRoutes.get("/", getUserById);
-userRoutes.get("/score", getUserScore);
 userRoutes.get("/rank", getUserRank);
 userRoutes.post("/reset-password", verifyUser, sendResetPasswordEmail);
+userRoutes.put("/score", updateUserScore);
 userRoutes.delete("/delete", verifyUser, deleteUser);

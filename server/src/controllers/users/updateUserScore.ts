@@ -3,7 +3,7 @@ import { auth } from "../../firebase";
 import prisma from "../../prisma";
 import { PrismaBet, PrismaGame } from "../../types/prisma";
 
-export const getUserScore = async (req: Request, res: Response) => {
+export const updateUserScore = async (req: Request, res: Response) => {
   const sessionId = req.cookies.session;
 
   let userScore = 0;
