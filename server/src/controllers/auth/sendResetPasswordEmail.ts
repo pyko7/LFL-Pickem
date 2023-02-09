@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { auth } from "../../firebase";
 import { createTransport } from "nodemailer";
 import * as dotenv from "dotenv";
+import { userCredentials } from "../../validations/userValidation";
 dotenv.config();
 
 export const sendResetPasswordEmail = async (req: Request, res: Response) => {
@@ -14,6 +15,7 @@ export const sendResetPasswordEmail = async (req: Request, res: Response) => {
     },
   });
   try {
+    await userCredentials.validate(user.email);
     const link = await auth.generatePasswordResetLink(user.email);
 
     const data = {
