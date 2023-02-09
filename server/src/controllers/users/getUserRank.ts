@@ -2,9 +2,9 @@ import { Request, Response } from "express";
 import { auth } from "../../firebase";
 import prisma from "../../prisma";
 import { getUserRankById } from "../../utils/users/getUserRankById";
+
 export const getUserRank = async (req: Request, res: Response) => {
   const sessionId = req.cookies.session;
-
   try {
     const decodedToken = await auth.verifySessionCookie(sessionId);
 

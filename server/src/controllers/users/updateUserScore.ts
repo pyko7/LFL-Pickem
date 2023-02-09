@@ -5,7 +5,6 @@ import { PrismaBet, PrismaGame } from "../../types/prisma";
 
 export const updateUserScore = async (req: Request, res: Response) => {
   const sessionId = req.cookies.session;
-
   let userScore = 0;
 
   try {
