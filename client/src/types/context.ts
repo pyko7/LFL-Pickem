@@ -1,6 +1,6 @@
 import { UseQueryResult } from "@tanstack/react-query";
 import { ReactNode } from "react";
-import { Day, Game, GamesWithBet, TeamList, UserSelection } from "./teams";
+import { Day, GamesWithBet, TeamList } from "./teams";
 
 export interface ContextProps {
   children: ReactNode;
@@ -14,9 +14,7 @@ export interface AuthContextInterface {
 export interface GameContextInterface {
   allDays: UseQueryResult<Day[]>;
   teamsList: UseQueryResult<TeamList>;
-  day: Game[] | null;
-  setDay: (day: Game[] | null) => void;
+  gamesWithBet: UseQueryResult<GamesWithBet>;
   dayData: Day | null;
   setDayData: (dayData: Day) => void;
-  userSelection: UserSelection[];
 }

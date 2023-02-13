@@ -11,10 +11,11 @@ import { User } from "@/src/types/user";
 import { useGameContext } from "@/context/GameContext";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
+import GameContainerSkeleton from "../Feedbacks/GameContainerSkeleton";
 
 const Homepage = () => {
   const theme = useTheme();
-  const { day, dayData, teamsList } = useGameContext();
+  const { dayData, teamsList, gamesWithBet } = useGameContext();
 
   const currentUser: UseQueryResult<User> | null = useQuery(
     ["user"],
@@ -92,11 +93,9 @@ const Homepage = () => {
           </Typography>
         ) : (
           <>
-            {day?.map((day) => {
+            {gamesWithBet.data?.day?.map((day) => {
               return dayData?.id !== day.dayId ? (
-                <Box sx={{ display: "none" }}>
-                  <GameContainer {...day} key={day.id} />
-                </Box>
+                <GameContainerSkeleton key={day.id} />
               ) : (
                 <GameContainer {...day} key={day.id} />
               );

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useContext, useEffect, useState } from "react";
 import { GameContextInterface } from "@/src/types/context";
-import { Game, Day, UserSelection } from "@/src/types/teams";
+import { Day } from "@/src/types/teams";
 import { getAllDays } from "@/src/utils/api/game/getAllDays";
 import { getAllTeams } from "@/src/utils/api/game/getAllTeams";
 import { getGamesWithBetByDay } from "@/src/utils/api/game/getGamesWithBeByDay";
@@ -16,9 +16,6 @@ export const useGameContext = () => {
 
 export const GameProvider = ({ children }: any) => {
   const [dayData, setDayData] = useState<Day | null>(null);
-  const [userSelection, setUserSelection] = useState<UserSelection[]>([]);
-
-  const [day, setDay] = useState<Game[] | null>(null);
 
   const allDays = useQuery(["allDays"], getAllDays, {
     staleTime: 10 * (60 * 1000), // 10 mins
@@ -28,6 +25,14 @@ export const GameProvider = ({ children }: any) => {
     staleTime: 30 * (60 * 1000), // 30 mins
     cacheTime: 45 * (60 * 1000), // 45 mins
   });
+
+  const gamesWithBet = useQuery(
+    ["gamesWithBet"],
+    () => getGamesWithBetByDay(dayData?.id!),
+    {
+      enabled: dayData !== null ? true : false,
+    }
+  );
 
   useEffect(() => {
     if (typeof allDays.data !== "undefined") {
@@ -48,28 +53,21 @@ export const GameProvider = ({ children }: any) => {
       allDays.refetch();
       return;
     }
-    const getGamesCrendentials = async () => {
-      const gamesWithBet = await getGamesWithBetByDay(dayData?.id);
-      setDay(gamesWithBet.day);
-      setUserSelection(gamesWithBet.userBets);
-    };
-    getGamesCrendentials();
+    gamesWithBet.refetch();
   }, [dayData?.id]);
 
-  // useEffect(() => {
-  //   updateUserScore();
-  // }, []);
+  useEffect(() => {
+    updateUserScore();
+  }, []);
 
   return (
     <GameContext.Provider
       value={{
         allDays,
         teamsList,
-        day,
-        setDay,
+        gamesWithBet,
         dayData,
         setDayData,
-        userSelection,
       }}
     >
       {children}

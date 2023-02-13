@@ -31,7 +31,7 @@ const GameContainer = (props: Game) => {
   const [betError, setBetError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const { teamsList, userSelection } = useGameContext();
+  const { teamsList, gamesWithBet } = useGameContext();
 
   const isBiggerThanMobile = useMediaQuery(theme.breakpoints.up("sm"));
 
@@ -147,7 +147,7 @@ const GameContainer = (props: Game) => {
     if (!firstTeam || !secondTeam) {
       return;
     }
-    userSelection.map((bet) => {
+    gamesWithBet.data?.userBets.map((bet) => {
       if (bet.teamId === firstTeam.id) {
         setNotSelected(secondTeam.id);
         return setSelectedTeam(firstTeam.id);
@@ -157,7 +157,15 @@ const GameContainer = (props: Game) => {
         return setSelectedTeam(secondTeam.id);
       }
     });
-  }, [userSelection, props.id, firstTeam, secondTeam]);
+  }, [gamesWithBet.data?.userBets, props.id, firstTeam, secondTeam]);
+
+  useEffect(() => {
+    if (gamesWithBet.isError) {
+      setErrorMessage(
+        "Impossible de récupérer votre sélection, veuillez réessayer plus tard"
+      );
+    }
+  }, [gamesWithBet]);
 
   const Game = styled(Box)({
     width: "100%",
@@ -189,7 +197,7 @@ const GameContainer = (props: Game) => {
   return (
     <Game>
       <>
-        {teamsList.isLoading ? (
+        {teamsList.isLoading || gamesWithBet.isLoading ? (
           <Skeleton variant="rounded" width="50%" height={78} />
         ) : (
           <>
@@ -235,7 +243,7 @@ const GameContainer = (props: Game) => {
       {createBet.isLoading || updateBet.isLoading || deleteBet.isLoading ? (
         <CircularProgress color="secondary" />
       ) : null}
-      {teamsList.isLoading ? (
+      {teamsList.isLoading || gamesWithBet.isLoading ? (
         <Skeleton variant="rounded" width="50%" height={78} />
       ) : (
         <>
@@ -273,7 +281,7 @@ const GameContainer = (props: Game) => {
               )}
             </Box>
           ) : null}
-          {betError ? (
+          {betError || gamesWithBet.isError ? (
             <ErrorModal
               betError={betError}
               setBetError={setBetError}
