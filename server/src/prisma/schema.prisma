@@ -36,12 +36,15 @@ model Game {
   Day          Day      @relation(fields: [dayId], references: [id], onDelete: NoAction, onUpdate: Cascade)
   dayId        Int      @default(0)
   Bet          Bet[]
+
+  @@unique([id, date])
 }
 
 model Day {
   id    Int      @id @default(autoincrement())
   games Game[]
   date  DateTime @default(now())
+  Bet   Bet[]
 }
 
 model Bet {
@@ -49,7 +52,9 @@ model Bet {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   game   Game   @relation(fields: [gameId], references: [id])
   team   Team   @relation(fields: [teamId], references: [id])
+  day    Day    @relation(fields: [dayId], references: [id])
   userId String
   gameId Int
   teamId Int
+  dayId  Int
 }
