@@ -1,7 +1,7 @@
 import { SelectedTeam } from "@/src/types/teams";
 import { getCsrfToken } from "../credentials/getCsrfToken";
 
-export const addSelectedTeams = async (team: SelectedTeam) => {
+export const addSelectedTeams = async (bet: SelectedTeam) => {
   try {
     const csrfToken = await getCsrfToken();
     const res = await fetch(
@@ -13,7 +13,7 @@ export const addSelectedTeams = async (team: SelectedTeam) => {
           "x-csrf-token": csrfToken,
         },
         credentials: "include",
-        body: JSON.stringify(team),
+        body: JSON.stringify(bet),
       }
     );
     const data = await res.json();
@@ -28,7 +28,7 @@ export const addSelectedTeams = async (team: SelectedTeam) => {
   }
 };
 
-export const updateSelectedTeams = async (team: SelectedTeam) => {
+export const updateSelectedTeams = async (bet: SelectedTeam) => {
   try {
     const csrfToken = await getCsrfToken();
     const res = await fetch(
@@ -40,7 +40,7 @@ export const updateSelectedTeams = async (team: SelectedTeam) => {
           "x-csrf-token": csrfToken,
         },
         credentials: "include",
-        body: JSON.stringify(team),
+        body: JSON.stringify(bet),
       }
     );
     const data = await res.json();
@@ -55,7 +55,7 @@ export const updateSelectedTeams = async (team: SelectedTeam) => {
   }
 };
 
-export const deleteSelectedTeams = async (team: SelectedTeam) => {
+export const deleteSelectedTeams = async (bet: SelectedTeam) => {
   try {
     const csrfToken = await getCsrfToken();
     const res = await fetch(
@@ -67,7 +67,7 @@ export const deleteSelectedTeams = async (team: SelectedTeam) => {
           "x-csrf-token": csrfToken,
         },
         credentials: "include",
-        body: JSON.stringify(team),
+        body: JSON.stringify(bet),
       }
     );
     const data = await res.json();

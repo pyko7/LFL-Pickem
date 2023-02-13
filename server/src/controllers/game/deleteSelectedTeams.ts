@@ -5,12 +5,12 @@ import { gameCredentials } from "../../validations/betValidation";
 
 export const deleteSelectedTeams = async (req: Request, res: Response) => {
   try {
-    const { gameId, teamId } = req.body;
+    const { gameId, teamId, dayId } = req.body;
     const sessionCookie = req.cookies.session;
     const decodedToken = await auth.verifySessionCookie(sessionCookie);
     const userId = decodedToken.uid;
 
-    await gameCredentials.validate({ gameId, teamId });
+    await gameCredentials.validate({ gameId, teamId, dayId });
 
     const game = await prisma.game.findUnique({
       where: {

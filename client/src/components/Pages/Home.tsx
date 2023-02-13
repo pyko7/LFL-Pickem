@@ -11,13 +11,10 @@ import { User } from "@/src/types/user";
 import { useGameContext } from "@/context/GameContext";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
-import ErrorSnackbar from "../Feedbacks/ErrorSnackbar";
-import { useEffect, useState } from "react";
 
 const Homepage = () => {
   const theme = useTheme();
-  const { day, dayData, teamsList, selectedTeamsList } = useGameContext();
-  const [errorMessage, setErrorMessage] = useState(false);
+  const { day, dayData, teamsList } = useGameContext();
 
   const currentUser: UseQueryResult<User> | null = useQuery(
     ["user"],
@@ -27,13 +24,6 @@ const Homepage = () => {
       cacheTime: 15 * (60 * 1000), // 15 mins
     }
   );
-
-  useEffect(() => {
-    if (selectedTeamsList.isError) {
-      return setErrorMessage(true);
-    }
-    setErrorMessage(false);
-  }, [selectedTeamsList]);
 
   const PageHeader = styled(Box)(({ theme }) => ({
     width: "100%",
@@ -102,19 +92,18 @@ const Homepage = () => {
           </Typography>
         ) : (
           <>
-            {day?.map((day) => (
-              <GameContainer {...day} key={day.id} />
-            ))}
+            {day?.map((day) => {
+              return dayData?.id !== day.dayId ? (
+                <Box sx={{ display: "none" }}>
+                  <GameContainer {...day} key={day.id} />
+                </Box>
+              ) : (
+                <GameContainer {...day} key={day.id} />
+              );
+            })}
           </>
         )}
       </Games>
-      {selectedTeamsList.error ? (
-        <ErrorSnackbar
-          open={errorMessage}
-          setOpen={setErrorMessage}
-          message="Impossible d'afficher votre sélection pour le moment "
-        />
-      ) : null}
     </Container>
   );
 };

@@ -1,12 +1,22 @@
 import { Request, Response } from "express";
 import { auth } from "../../firebase";
 import prisma from "../../prisma";
+import { dayCredentials } from "../../validations/betValidation";
 
-export const getSelectedTeams = async (req: Request, res: Response) => {
+export const getGamesWithBetByDay = async (req: Request, res: Response) => {
   try {
+    const { id } = req.params;
+    await dayCredentials.validate({ dayId: parseInt(id) });
+
     const sessionCookie = req.cookies.session;
     const decodedToken = await auth.verifySessionCookie(sessionCookie);
     const userId = decodedToken.uid;
+
+    const day = await prisma.game.findMany({
+      where: {
+        dayId: parseInt(id),
+      },
+    });
 
     const user = await prisma.user.findUnique({
       where: {
@@ -21,11 +31,15 @@ export const getSelectedTeams = async (req: Request, res: Response) => {
       throw new Error("unauthorized request");
     }
 
-    res.status(200).json(user.bets);
+    const userBets = user.bets.filter((bet) => bet.dayId === parseInt(id));
+
+    const gamesWithBet = {
+      day,
+      userBets,
+    };
+
+    res.status(200).json(gamesWithBet);
   } catch (error) {
-    if (error instanceof Error) {
-      res.status(401).json(error.message);
-    }
     res.status(400).json(error);
   }
 };

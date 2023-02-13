@@ -1,6 +1,6 @@
-import { Game } from "@/src/types/teams";
+import { GamesWithBet } from "@/src/types/teams";
 
-export const getGamesByDay = async (id: number): Promise<Game[]> => {
+export const getGamesWithBetByDay = async (id: number): Promise<GamesWithBet> => {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/game/days/${id}`,

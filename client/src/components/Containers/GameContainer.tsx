@@ -13,7 +13,6 @@ import {
   updateSelectedTeams,
   deleteSelectedTeams,
 } from "@/src/utils/api/game/handleSelectedTeams";
-import { getUserSelection } from "@/src/utils/api/game/getUserSelection";
 import { utcToZonedTime } from "date-fns-tz";
 import { isBefore, parseISO } from "date-fns";
 import { useMutation } from "@tanstack/react-query";
@@ -32,7 +31,7 @@ const GameContainer = (props: Game) => {
   const [betError, setBetError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const { teamsList, selectedTeamsList, userSelection } = useGameContext();
+  const { teamsList, userSelection } = useGameContext();
 
   const isBiggerThanMobile = useMediaQuery(theme.breakpoints.up("sm"));
 
@@ -92,36 +91,29 @@ const GameContainer = (props: Game) => {
   });
 
   const handleClick = (currentTeamId: number, otherTeamId: number) => {
+    const credentials = {
+      gameId: props.id,
+      teamId: currentTeamId,
+      dayId: props.dayId,
+    };
     if (disabledDay) {
       return;
     }
     if (selectedTeam === 0) {
-      createBet.mutate({
-        gameId: props.id,
-        teamId: currentTeamId,
-        dayId: props.dayId,
-      });
+      createBet.mutate(credentials);
       setBetError(false);
       setSelectedTeam(currentTeamId);
       setNotSelected(otherTeamId);
       return;
     }
     if (selectedTeam === currentTeamId) {
-      deleteBet.mutate({
-        gameId: props.id,
-        teamId: currentTeamId,
-        dayId: props.dayId,
-      });
+      deleteBet.mutate(credentials);
       setBetError(false);
       setSelectedTeam(0);
       setNotSelected(0);
       return;
     } else {
-      updateBet.mutate({
-        gameId: props.id,
-        teamId: currentTeamId,
-        dayId: props.dayId,
-      });
+      updateBet.mutate(credentials);
       setBetError(false);
       setNotSelected(otherTeamId);
       setSelectedTeam(currentTeamId);
@@ -131,14 +123,17 @@ const GameContainer = (props: Game) => {
 
   useEffect(() => {
     const dateInFrance = utcToZonedTime(new Date(), "Europe/Paris");
-  //date-fns-tz has 1 hour off compare to Paris timezone, this is why timezone is set to London
-    const gameDateInFrance = utcToZonedTime(parseISO(props.date), "Europe/London")
+    //date-fns-tz has 1 hour off compare to Paris timezone, this is why timezone is set to London
+    const gameDateInFrance = utcToZonedTime(
+      parseISO(props.date),
+      "Europe/London"
+    );
     const isPast = isBefore(gameDateInFrance, dateInFrance);
     return isPast ? setDisabledDay(true) : setDisabledDay(false);
   }, [props.date]);
 
   useEffect(() => {
-    teamsList.data?.teams.forEach((team) => {
+    teamsList.data?.teams.map((team) => {
       if (team.id === props.firstTeamId) {
         setFirstTeam(team);
       }
@@ -146,36 +141,23 @@ const GameContainer = (props: Game) => {
         setSecondTeam(team);
       }
     });
-  });
+  }, [props.id, props.firstTeamId, props.secondTeamId, teamsList.data]);
 
   useEffect(() => {
-    if (
-      typeof selectedTeamsList.data !== "undefined" &&
-      firstTeam &&
-      secondTeam
-    ) {
-      const isFirstTeamSelected = getUserSelection(
-        userSelection,
-        props.id,
-        firstTeam
-      );
-      const isSecondTeamSelected = getUserSelection(
-        userSelection,
-        props.id,
-        secondTeam
-      );
-
-      if (isFirstTeamSelected) {
+    if (!firstTeam || !secondTeam) {
+      return;
+    }
+    userSelection.map((bet) => {
+      if (bet.teamId === firstTeam.id) {
         setNotSelected(secondTeam.id);
         return setSelectedTeam(firstTeam.id);
       }
-
-      if (isSecondTeamSelected) {
+      if (bet.teamId === secondTeam.id) {
         setNotSelected(firstTeam.id);
         return setSelectedTeam(secondTeam.id);
       }
-    }
-  }, [userSelection, selectedTeamsList.data, props.id, firstTeam, secondTeam]);
+    });
+  }, [userSelection, props.id, firstTeam, secondTeam]);
 
   const Game = styled(Box)({
     width: "100%",
@@ -197,7 +179,6 @@ const GameContainer = (props: Game) => {
   const FailIcon = styled(CancelIcon)(({ theme }) => ({
     position: "absolute",
     top: "50%",
-
     transform: "translateY(-50%)",
     width: 25,
     height: 25,
@@ -208,7 +189,7 @@ const GameContainer = (props: Game) => {
   return (
     <Game>
       <>
-        {teamsList.isLoading || selectedTeamsList.isLoading ? (
+        {teamsList.isLoading ? (
           <Skeleton variant="rounded" width="50%" height={78} />
         ) : (
           <>
@@ -254,7 +235,7 @@ const GameContainer = (props: Game) => {
       {createBet.isLoading || updateBet.isLoading || deleteBet.isLoading ? (
         <CircularProgress color="secondary" />
       ) : null}
-      {teamsList.isLoading || selectedTeamsList.isLoading ? (
+      {teamsList.isLoading ? (
         <Skeleton variant="rounded" width="50%" height={78} />
       ) : (
         <>

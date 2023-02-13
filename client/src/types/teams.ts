@@ -53,3 +53,8 @@ export interface UserSelection extends SelectedTeam {
   id: number;
   userId: string;
 }
+
+export interface GamesWithBet {
+  day: Game[];
+  userBets: UserSelection[];
+}

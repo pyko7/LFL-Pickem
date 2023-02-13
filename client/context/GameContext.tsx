@@ -4,8 +4,7 @@ import { GameContextInterface } from "@/src/types/context";
 import { Game, Day, UserSelection } from "@/src/types/teams";
 import { getAllDays } from "@/src/utils/api/game/getAllDays";
 import { getAllTeams } from "@/src/utils/api/game/getAllTeams";
-import { getGamesByDay } from "@/src/utils/api/game/getGamesByDay";
-import { getSelectedTeams } from "@/src/utils/api/game/getSelectedTeams";
+import { getGamesWithBetByDay } from "@/src/utils/api/game/getGamesWithBeByDay";
 import { getClosestDayFromNow } from "@/src/utils/getClosestDayFromNow";
 import { updateUserScore } from "@/src/utils/api/user/updateUserScore";
 
@@ -29,14 +28,6 @@ export const GameProvider = ({ children }: any) => {
     staleTime: 30 * (60 * 1000), // 30 mins
     cacheTime: 45 * (60 * 1000), // 45 mins
   });
-  const selectedTeamsList = useQuery(["selectedTeams"], getSelectedTeams);
-
-  useEffect(() => {
-    if (typeof selectedTeamsList.data !== "undefined") {
-      selectedTeamsList.refetch();
-      setUserSelection(selectedTeamsList.data);
-    }
-  }, [selectedTeamsList.data, dayData]);
 
   useEffect(() => {
     if (typeof allDays.data !== "undefined") {
@@ -57,22 +48,22 @@ export const GameProvider = ({ children }: any) => {
       allDays.refetch();
       return;
     }
-    const setGames = async () => {
-      const games = await getGamesByDay(dayData?.id);
-      setDay(games);
+    const getGamesCrendentials = async () => {
+      const gamesWithBet = await getGamesWithBetByDay(dayData?.id);
+      setDay(gamesWithBet.day);
+      setUserSelection(gamesWithBet.userBets);
     };
-    setGames();
+    getGamesCrendentials();
   }, [dayData?.id]);
 
-  useEffect(() => {
-    updateUserScore();
-  }, []);
+  // useEffect(() => {
+  //   updateUserScore();
+  // }, []);
 
   return (
     <GameContext.Provider
       value={{
         allDays,
-        selectedTeamsList,
         teamsList,
         day,
         setDay,
