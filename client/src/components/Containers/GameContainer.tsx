@@ -27,6 +27,7 @@ const GameContainer = (props: Game) => {
   const [disabledDay, setDisabledDay] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState(0);
   const [notSelected, setNotSelected] = useState(0);
+  const [noBet, setNoBet] = useState(true);
 
   const [betError, setBetError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -102,6 +103,7 @@ const GameContainer = (props: Game) => {
     if (selectedTeam === 0) {
       createBet.mutate(credentials);
       setBetError(false);
+      setNoBet(false);
       setSelectedTeam(currentTeamId);
       setNotSelected(otherTeamId);
       return;
@@ -109,12 +111,14 @@ const GameContainer = (props: Game) => {
     if (selectedTeam === currentTeamId) {
       deleteBet.mutate(credentials);
       setBetError(false);
+      setNoBet(true);
       setSelectedTeam(0);
       setNotSelected(0);
       return;
     } else {
       updateBet.mutate(credentials);
       setBetError(false);
+      setNoBet(false);
       setNotSelected(otherTeamId);
       setSelectedTeam(currentTeamId);
       return;
@@ -233,6 +237,7 @@ const GameContainer = (props: Game) => {
                   team={firstTeam}
                   notSelected={notSelected}
                   disabledDay={disabledDay}
+                  noBet={noBet}
                 />
               </Box>
             ) : null}
@@ -264,6 +269,7 @@ const GameContainer = (props: Game) => {
                 team={secondTeam}
                 notSelected={notSelected}
                 disabledDay={disabledDay}
+                noBet={noBet}
               />
               {!disabledDay ? null : selectedTeam !==
                 secondTeam.id ? null : secondTeam.id === props.winner ? (

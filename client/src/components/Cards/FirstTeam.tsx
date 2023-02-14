@@ -8,7 +8,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { TeamProps } from "@/src/types/teams";
 import Image from "next/image";
 
-const FirstTeam = ({ team, notSelected, disabledDay }: TeamProps) => {
+const FirstTeam = ({ team, notSelected, disabledDay, noBet }: TeamProps) => {
   const theme = useTheme();
   const isBiggerThanMobile = useMediaQuery(theme.breakpoints.up("sm"));
   const [visible, setVisible] = useState(true);
@@ -26,10 +26,13 @@ const FirstTeam = ({ team, notSelected, disabledDay }: TeamProps) => {
     color: theme.palette.neutral.light,
     backgroundColor: "#000",
     background: `linear-gradient(90deg, ${theme.palette.primary.dark} 0%, ${team.color} 75%)`,
-    filter: disabledDay ? "grayscale(60%)" : "",
+    filter: disabledDay ? "contrast(1%)" : noBet || !visible ? "grayscale(75%)" : "",
     cursor: disabledDay ? "not-allowed" : "pointer",
     "& .MuiCardContent-root:last-child": {
       paddingBottom: 10,
+    },
+    "&:hover": {
+      filter: "grayscale(30%)",
     },
   }));
 

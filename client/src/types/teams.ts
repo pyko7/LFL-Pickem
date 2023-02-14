@@ -22,6 +22,7 @@ export interface TeamProps {
   team: Team;
   notSelected: number;
   disabledDay: boolean;
+  noBet: boolean;
 }
 
 export interface Day {
