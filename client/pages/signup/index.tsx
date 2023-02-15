@@ -2,17 +2,16 @@ import Head from "next/head";
 import dynamic from "next/dynamic";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Image from "next/image";
-import Link from "next/link";
 
-const DynamicForm = dynamic(
-  () => import("../../src/components/Forms/SignUpForm")
+const SignUpFormContainer = dynamic(
+  () => import("../../src/components/Containers/SignUpFormContainer")
 );
 
 const SignUp = () => {
   const theme = useTheme();
-  const imageUrl = 'https://res.cloudinary.com/dkferpmf6/image/upload/v1674578020/LFL/white_lfl.webp'
+  const imageUrl =
+    "https://res.cloudinary.com/dkferpmf6/image/upload/v1674578020/LFL/white_lfl.webp";
   const Page = styled(Box)({
     position: "absolute",
     top: "50%",
@@ -23,24 +22,6 @@ const SignUp = () => {
     flexDirection: "column",
     alignItems: "center",
     backgroundColor: theme.palette.primary.main,
-  });
-
-  const Title = styled(Typography)({
-    width: "90%",
-    maxWidth: 375,
-    paddingTop: 20,
-    fontSize: 32,
-    fontWeight: 700,
-    textAlign: "center",
-    backgroundColor: theme.palette.background.paper,
-    color: theme.palette.primary.dark,
-    borderRadius: "8px 8px 0 0",
-    [theme.breakpoints.up("sm")]: {
-      maxWidth: 395,
-    },
-    [theme.breakpoints.up("lg")]: {
-      maxWidth: 445,
-    },
   });
 
   return (
@@ -65,22 +46,7 @@ const SignUp = () => {
       <Page component="section">
         <Image src={imageUrl} alt="logo" width={85} height={85} priority />
 
-        <Title variant="h1">Inscription</Title>
-
-        <DynamicForm />
-        <Box sx={{ marginY: 2, textAlign: "center" }}>
-          <Typography>Vous avez déjà un compte ?</Typography>
-          <Link
-            href="/login"
-            style={{
-              color: theme.palette.secondary.main,
-              fontWeight: 700,
-              textDecoration: "none",
-            }}
-          >
-            Connectez-vous
-          </Link>
-        </Box>
+        <SignUpFormContainer />
       </Page>
     </>
   );
