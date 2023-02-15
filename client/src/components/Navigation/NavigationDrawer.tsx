@@ -54,6 +54,10 @@ const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
       pathname: "https://www.twitch.tv/otplol_",
     },
     {
+      name: "Règles",
+      pathname: "/rules",
+    },
+    {
       name: "Profil",
       pathname: "/profile",
     },
