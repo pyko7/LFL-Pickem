@@ -66,29 +66,32 @@ const Rules = () => {
           Les journées se déroulant généralement le mercredi soir et le jeudi
           soir. Les résultats sont mis à jour le lendemain des journées à 7h.
         </Rule>
-        <Rule>Amusez-vous :{")"}</Rule>
         {/* <Rule>
           Réaliser un score parfait sur une journée vous octroie un bonus de 3 points
         </Rule> */}
         <Rule>
-          Vous pouvez rejoindre le{" "}
+          Vous pouvez rejoindre le&nbsp;
           <a
             href="https://discord.gg/g3M24pdShN"
             style={{ fontWeight: "bold", color: "inherit" }}
-          >
-            discord
-          </a>{" "}
-          afin de partager vos résultats et prédictions
-        </Rule>
-        <Rule>
-          En cas de problème, un salon dedié existe sur le{" "}
-          <a
-            href="https://discord.gg/g3M24pdShN"
-            style={{ fontWeight: "bold", color: "inherit" }}
+            target="_blank"
           >
             discord
           </a>
+          &nbsp; afin de partager vos résultats et prédictions.
         </Rule>
+        <Rule>
+          En cas de problème, un salon dedié existe sur le&nbsp;
+          <a
+            href="https://discord.gg/g3M24pdShN"
+            style={{ fontWeight: "bold", color: "inherit" }}
+            target="_blank"
+          >
+            discord
+          </a>
+          .
+        </Rule>
+        <Rule>Amusez-vous :{")"}</Rule>
       </TextContainer>
     </Page>
   );
