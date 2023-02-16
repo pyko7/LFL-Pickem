@@ -70,11 +70,25 @@ const Rules = () => {
         {/* <Rule>
           Réaliser un score parfait sur une journée vous octroie un bonus de 3 points
         </Rule> */}
-        {/* <Rule>
-          Vous pouvez rejoindre le discord afin de partager vos résultats et
-          prédictions
+        <Rule>
+          Vous pouvez rejoindre le{" "}
+          <a
+            href="https://discord.gg/g3M24pdShN"
+            style={{ fontWeight: "bold", color: "inherit" }}
+          >
+            discord
+          </a>{" "}
+          afin de partager vos résultats et prédictions
         </Rule>
-        <Rule>En cas de problème, un salon dedié existe sur le discord</Rule> */}
+        <Rule>
+          En cas de problème, un salon dedié existe sur le{" "}
+          <a
+            href="https://discord.gg/g3M24pdShN"
+            style={{ fontWeight: "bold", color: "inherit" }}
+          >
+            discord
+          </a>
+        </Rule>
       </TextContainer>
     </Page>
   );
