@@ -139,9 +139,11 @@ const GameContainer = (props: Game) => {
   useEffect(() => {
     teamsList.data?.teams.map((team) => {
       if (team.id === props.firstTeamId) {
+        setNoBet(false);
         setFirstTeam(team);
       }
       if (team.id === props.secondTeamId) {
+        setNoBet(false);
         setSecondTeam(team);
       }
     });

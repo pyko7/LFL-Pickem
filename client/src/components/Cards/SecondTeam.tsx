@@ -32,7 +32,8 @@ const SecondTeam = ({ team, notSelected, disabledDay, noBet }: TeamProps) => {
       paddingBottom: 10,
     },
     "&:hover": {
-      filter: "grayscale(30%)",
+      filter: disabledDay ? "" : "grayscale(30%)",
+
     },
   }));
 
