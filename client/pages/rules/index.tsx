@@ -75,6 +75,7 @@ const Rules = () => {
             href="https://discord.gg/g3M24pdShN"
             style={{ fontWeight: "bold", color: "inherit" }}
             target="_blank"
+            rel="noreferrer"
           >
             discord
           </a>
@@ -86,6 +87,7 @@ const Rules = () => {
             href="https://discord.gg/g3M24pdShN"
             style={{ fontWeight: "bold", color: "inherit" }}
             target="_blank"
+            rel="noreferrer"
           >
             discord
           </a>
