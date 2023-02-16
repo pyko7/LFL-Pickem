@@ -139,11 +139,9 @@ const GameContainer = (props: Game) => {
   useEffect(() => {
     teamsList.data?.teams.map((team) => {
       if (team.id === props.firstTeamId) {
-        setNoBet(false);
         setFirstTeam(team);
       }
       if (team.id === props.secondTeamId) {
-        setNoBet(false);
         setSecondTeam(team);
       }
     });
@@ -153,7 +151,13 @@ const GameContainer = (props: Game) => {
     if (!firstTeam || !secondTeam) {
       return;
     }
-    gamesWithBet.data?.userBets.map((bet) => {
+    if (typeof gamesWithBet.data === "undefined") {
+      return;
+    }
+    if (gamesWithBet.data.userBets.length > 0) {
+      setNoBet(false);
+    }
+    gamesWithBet.data.userBets.map((bet) => {
       if (bet.teamId === firstTeam.id) {
         setNotSelected(secondTeam.id);
         return setSelectedTeam(firstTeam.id);
