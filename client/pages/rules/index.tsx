@@ -69,7 +69,7 @@ const Rules = () => {
         {/* <Rule>
           Réaliser un score parfait sur une journée vous octroie un bonus de 3 points
         </Rule> */}
-        <Rule>
+        {/* <Rule>
           Vous pouvez rejoindre le&nbsp;
           <a
             href="https://discord.gg/g3M24pdShN"
@@ -92,7 +92,7 @@ const Rules = () => {
             discord
           </a>
           .
-        </Rule>
+        </Rule> */}
         <Rule>Amusez-vous :{")"}</Rule>
       </TextContainer>
     </Page>
