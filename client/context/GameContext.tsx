@@ -7,6 +7,8 @@ import { getAllTeams } from "@/src/utils/api/game/getAllTeams";
 import { getGamesWithBetByDay } from "@/src/utils/api/game/getGamesWithBeByDay";
 import { getClosestDayFromNow } from "@/src/utils/getClosestDayFromNow";
 import { updateUserScore } from "@/src/utils/api/user/updateUserScore";
+import { useAuthContext } from "./AuthContext";
+import { getGamesByDayId } from "@/src/utils/api/game/getGamesByDayId";
 
 const GameContext = createContext({} as GameContextInterface);
 
@@ -15,6 +17,7 @@ export const useGameContext = () => {
 };
 
 export const GameProvider = ({ children }: any) => {
+  const { isLogged } = useAuthContext();
   const [dayData, setDayData] = useState<Day | null>(null);
 
   const allDays = useQuery(["allDays"], getAllDays, {
@@ -26,11 +29,19 @@ export const GameProvider = ({ children }: any) => {
     cacheTime: 45 * (60 * 1000), // 45 mins
   });
 
+  const gamesByDayId = useQuery(
+    ["gamesByDayId"],
+    () => getGamesByDayId(dayData?.id!),
+    {
+      enabled: dayData !== null && !isLogged ? true : false,
+    }
+  );
+
   const gamesWithBet = useQuery(
     ["gamesWithBet"],
     () => getGamesWithBetByDay(dayData?.id!),
     {
-      enabled: dayData !== null ? true : false,
+      enabled: dayData !== null && isLogged ? true : false,
     }
   );
 
@@ -53,10 +64,17 @@ export const GameProvider = ({ children }: any) => {
       allDays.refetch();
       return;
     }
-    gamesWithBet.refetch();
+    if (!isLogged) {
+      gamesByDayId.refetch();
+    } else {
+      gamesWithBet.refetch();
+    }
   }, [dayData?.id]);
 
   useEffect(() => {
+    if (!isLogged) {
+      return;
+    }
     updateUserScore();
   }, []);
 
@@ -65,6 +83,7 @@ export const GameProvider = ({ children }: any) => {
       value={{
         allDays,
         teamsList,
+        gamesByDayId,
         gamesWithBet,
         dayData,
         setDayData,

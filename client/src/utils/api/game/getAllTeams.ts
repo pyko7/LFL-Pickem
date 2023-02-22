@@ -7,7 +7,6 @@ export const getAllTeams = async (): Promise<TeamList> => {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include",
     });
     const data = await res.json();
     if (!res.ok) {

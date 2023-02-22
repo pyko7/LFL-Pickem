@@ -13,11 +13,16 @@ import { logoutUser } from "@/src/utils/api/auth/logoutUser";
 import { useRouter } from "next/router";
 import { useAuthContext } from "@/context/AuthContext";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import AuthModal from "../Modals/AuthModal";
+import { useState } from "react";
 
 const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
   const theme = useTheme();
-  const { setIsLogged } = useAuthContext();
+  const { isLogged, setIsLogged } = useAuthContext();
   const { push } = useRouter();
+  const [userAuth, setUserAuth] = useState(false);
+
+  const formProps = { userAuth, setUserAuth };
 
   const handleClose = () => {
     return setOpen(false);
@@ -58,8 +63,8 @@ const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
       pathname: "/rules",
     },
     {
-      name: "Profil",
-      pathname: "/profile",
+      name: isLogged ? "Profil" : "",
+      pathname: isLogged ? "/profile" : "#",
     },
   ];
 
@@ -82,7 +87,7 @@ const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
     },
   }));
 
-  const LogoutButton = styled(Button)(({ theme }) => ({
+  const AuthButton = styled(Button)(({ theme }) => ({
     position: "absolute",
     bottom: 0,
     left: 16,
@@ -108,56 +113,65 @@ const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
   });
 
   return (
-    <Drawer
-      anchor="right"
-      variant="temporary"
-      open={open}
-      onClose={handleClose}
-      ModalProps={{
-        keepMounted: true,
-      }}
-      sx={{
-        "&	.MuiDrawer-paper": {
-          backgroundColor: theme.palette.primary.dark,
-        },
-      }}
-    >
-      <ListHeader>
-        <IconButton sx={{ width: 44, height: 44 }} onClick={handleClose}>
-          <CloseIcon
-            sx={{ width: 1, height: 1, color: theme.palette.neutral.light }}
-          />
-        </IconButton>
-      </ListHeader>
-      <ItemList>
-        {navLinks.map((item) => {
-          return item.name !== "Live" ? (
-            <ListItem key={item.name} disablePadding>
-              <Link href={item.pathname} onClick={handleClose}>
-                {item.name}
-              </Link>
-            </ListItem>
-          ) : (
-            <ListItem key={item.name} disablePadding>
-              <a href={item.pathname} target="_blank" rel="noreferrer">
-                {item.name} <span style={{ fontSize: 15 }}>(OTP LoL)</span>
-              </a>
-              <OpenInNewIcon
-                sx={{
-                  width: 15,
-                  height: 15,
-                  marginLeft: 0.5,
-                  marginBottom: 1,
-                }}
-              />
-            </ListItem>
-          );
-        })}
-      </ItemList>
-      <LogoutButton variant="contained" onClick={handleLogoutButton}>
-        Se déconnecter
-      </LogoutButton>
-    </Drawer>
+    <>
+      <Drawer
+        anchor="right"
+        variant="temporary"
+        open={open}
+        onClose={handleClose}
+        ModalProps={{
+          keepMounted: true,
+        }}
+        sx={{
+          "&	.MuiDrawer-paper": {
+            backgroundColor: theme.palette.primary.dark,
+          },
+        }}
+      >
+        <ListHeader>
+          <IconButton sx={{ width: 44, height: 44 }} onClick={handleClose}>
+            <CloseIcon
+              sx={{ width: 1, height: 1, color: theme.palette.neutral.light }}
+            />
+          </IconButton>
+        </ListHeader>
+        <ItemList>
+          {navLinks.map((item) => {
+            return item.name !== "Live" ? (
+              <ListItem key={item.name} disablePadding>
+                <Link href={item.pathname} onClick={handleClose}>
+                  {item.name}
+                </Link>
+              </ListItem>
+            ) : (
+              <ListItem key={item.name} disablePadding>
+                <a href={item.pathname} target="_blank" rel="noreferrer">
+                  {item.name} <span style={{ fontSize: 15 }}>(OTP LoL)</span>
+                </a>
+                <OpenInNewIcon
+                  sx={{
+                    width: 15,
+                    height: 15,
+                    marginLeft: 0.5,
+                    marginBottom: 1,
+                  }}
+                />
+              </ListItem>
+            );
+          })}
+        </ItemList>
+        {!isLogged ? (
+          <AuthButton variant="contained" onClick={() => setUserAuth(true)}>
+            Se connecter
+          </AuthButton>
+        ) : (
+          <AuthButton variant="contained" onClick={handleLogoutButton}>
+            Se déconnecter
+          </AuthButton>
+        )}
+      </Drawer>
+      <AuthModal {...formProps} />
+    </>
   );
 };
 

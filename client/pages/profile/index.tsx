@@ -31,11 +31,13 @@ const Profile = () => {
   const currentUser: UseQueryResult<User> = useQuery(["user"], getUserById, {
     staleTime: 10 * (60 * 1000), // 10 mins
     cacheTime: 15 * (60 * 1000), // 15 mins
+    enabled: isLogged,
   });
 
   const userRank: UseQueryResult<UserRank> = useQuery(["rank"], getUserRank, {
     staleTime: 10 * (60 * 1000), // 10 mins
     cacheTime: 15 * (60 * 1000), // 15 mins
+    enabled: isLogged,
   });
 
   const resetPasswordProps = {

@@ -3,11 +3,8 @@ import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Homepage from "@/src/components/Pages/Home";
 import { GameProvider } from "@/context/GameContext";
-import { useAuthContext } from "@/context/AuthContext";
 
 const Home = () => {
-  const { isLogged } = useAuthContext();
-
   const Page = styled(Box)(({ theme }) => ({
     position: "relative",
     width: "100%",
@@ -26,13 +23,12 @@ const Home = () => {
         <title>Accueil - LFL-Pickem</title>
         <meta property="og:title" content="Accueil - LFL-Pickem" />
       </Head>
-      {isLogged ? (
-        <GameProvider>
-          <Page component="section">
-            <Homepage />
-          </Page>
-        </GameProvider>
-      ) : null}
+
+      <GameProvider>
+        <Page component="section">
+          <Homepage />
+        </Page>
+      </GameProvider>
     </>
   );
 };

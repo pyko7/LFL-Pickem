@@ -12,10 +12,12 @@ import { useGameContext } from "@/context/GameContext";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
 import GameContainerSkeleton from "../Feedbacks/GameContainerSkeleton";
+import { useAuthContext } from "@/context/AuthContext";
 
 const Homepage = () => {
   const theme = useTheme();
-  const { dayData, teamsList, gamesWithBet } = useGameContext();
+  const { isLogged } = useAuthContext();
+  const { dayData, teamsList, gamesWithBet, gamesByDayId } = useGameContext();
 
   const currentUser: UseQueryResult<User> | null = useQuery(
     ["user"],
@@ -23,6 +25,7 @@ const Homepage = () => {
     {
       staleTime: 10 * (60 * 1000), // 10 mins
       cacheTime: 15 * (60 * 1000), // 15 mins
+      enabled: isLogged,
     }
   );
 
@@ -77,7 +80,9 @@ const Homepage = () => {
                 locale: fr,
               })}
         </CurrentDate>
-        {currentUser.isLoading ? (
+        {!isLogged ? (
+          <PointsCounter>0 pts</PointsCounter>
+        ) : currentUser.isLoading ? (
           <Skeleton variant="rounded" width={70} height={30} />
         ) : currentUser.isError ? (
           <PointsCounter>N/A pts </PointsCounter>
@@ -85,24 +90,46 @@ const Homepage = () => {
           <PointsCounter>{currentUser.data.points} pts</PointsCounter>
         )}
       </PageHeader>
-      <Games>
-        {teamsList.isError ? (
-          <Typography sx={{ margin: "0 auto" }}>
-            Une erreur est survenue. Les matchs sont momentanément
-            indisponibles. Veuillez nous excuser pour la gêne occasionnée.
-          </Typography>
-        ) : (
-          <>
-            {gamesWithBet.data?.day?.map((day) => {
-              return dayData?.id !== day.dayId ? (
-                <GameContainerSkeleton key={day.id} />
-              ) : (
-                <GameContainer {...day} key={day.id} />
-              );
-            })}
-          </>
-        )}
-      </Games>
+
+      {isLogged ? (
+        <Games>
+          {teamsList.isError ? (
+            <Typography sx={{ margin: "0 auto" }}>
+              Une erreur est survenue. Les matchs sont momentanément
+              indisponibles. Veuillez nous excuser pour la gêne occasionnée.
+            </Typography>
+          ) : (
+            <>
+              {gamesWithBet.data?.day?.map((day) => {
+                return dayData?.id !== day.dayId ? (
+                  <GameContainerSkeleton key={day.id} />
+                ) : (
+                  <GameContainer {...day} key={day.id} />
+                );
+              })}
+            </>
+          )}
+        </Games>
+      ) : (
+        <Games>
+          {teamsList.isError ? (
+            <Typography sx={{ margin: "0 auto" }}>
+              Une erreur est survenue. Les matchs sont momentanément
+              indisponibles. Veuillez nous excuser pour la gêne occasionnée.
+            </Typography>
+          ) : (
+            <>
+              {gamesByDayId.data?.map((day) => {
+                return dayData?.id !== day.dayId ? (
+                  <GameContainerSkeleton key={day.id} />
+                ) : (
+                  <GameContainer {...day} key={day.id} />
+                );
+              })}
+            </>
+          )}
+        </Games>
+      )}
     </Container>
   );
 };
