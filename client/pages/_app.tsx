@@ -5,6 +5,7 @@ import Layout from "../src/components/Layout";
 import { theme } from "../src/style/theme";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "@/context/AuthContext";
+import "../src/style/globals.css"
 
 type AppProps<P = any> = {
   pageProps: P;
