@@ -26,7 +26,7 @@ export const createUserSchema = yup.object({
   confirmPassword: yup
     .string()
     .oneOf(
-      [yup.ref("password"), null],
+      [yup.ref("password")],
       "Les mots de passe doivent être similaires"
     )
     .required("Veuillez remplir ce champ"),
