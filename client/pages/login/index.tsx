@@ -3,8 +3,11 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import SendEmailForm from "@/src/components/Forms/SendEmailForm";
+import { useCountdown } from "@/src/hooks/useCountdown";
+import ShowCounter from "@/src/components/Feedbacks/ShowCounter";
 
 const LoginFormContainer = dynamic(
   () => import("../../src/components/Containers/LoginFormContainer")
@@ -15,6 +18,8 @@ const LoginPage = () => {
   const [open, setOpen] = useState(false);
   const imageUrl =
     "https://res.cloudinary.com/dkferpmf6/image/upload/v1674578020/LFL/white_lfl.webp";
+
+  const [days, hours, minutes, seconds] = useCountdown("2023-03-01 10:00:00");
 
   const formProps = {
     open,
@@ -64,8 +69,16 @@ const LoginPage = () => {
           sizes="100vw"
           priority
         />
+        <Typography variant="h1" sx={{margin:4, fontSize:32}}>Lancement officiel</Typography>
 
-        <LoginFormContainer setOpen={setOpen} />
+        <ShowCounter
+          days={days}
+          hours={hours}
+          minutes={minutes}
+          seconds={seconds}
+        />
+
+        {/* <LoginFormContainer setOpen={setOpen} /> */}
       </Page>
 
       <SendEmailForm {...formProps} />
