@@ -83,6 +83,7 @@ const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
         {/* Sliding sidebar */}
         <Transition.Child
           as="nav"
+          aria-label="menu"
           enter="transition ease-in-out duration-300 transform"
           enterFrom="translate-x-full"
           enterTo="translate-x-0"

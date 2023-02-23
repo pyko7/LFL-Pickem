@@ -13,6 +13,9 @@ module.exports = {
         "neutral": "#9E9E9E",
         "neutral-dark": "#121212",
       },
+      borderRadius:{
+        "circle": "50%"
+      }
     },
   },
   plugins: [],

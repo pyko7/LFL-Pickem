@@ -6,4 +6,16 @@
   html {
     font-family: Lato, sans-serif;
   }
+  *:focus-visible {
+    @apply px-2 outline-none border-2 outline border-secondary rounded-sm;
+  }
+
+  /*Navigation tabs*/
+  .tabs__scrollbar--hide::-webkit-scrollbar {
+    display: none;
+  }
+  .tabs__scrollbar--hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
 }
