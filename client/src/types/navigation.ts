@@ -10,4 +10,5 @@ export interface TabProps {
   setDayData: (dayData: Day) => void;
   label: string;
   value: Day;
+  setPosition: (position: number) => void;
 }

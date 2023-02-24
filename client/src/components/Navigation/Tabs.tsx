@@ -1,7 +1,13 @@
-import { ReactNode, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
-const Tabs = ({ children }: { children?: ReactNode }) => {
+const Tabs = ({
+  children,
+  position,
+}: {
+  children?: ReactNode;
+  position: number;
+}) => {
   const [scrollX, setScrollX] = useState(0); // For detecting start scroll postion
   const [scrollEnd, setScrollEnd] = useState(false); // For detecting end of scrolling
   const ref = useRef<HTMLUListElement>(null);
@@ -28,6 +34,13 @@ const Tabs = ({ children }: { children?: ReactNode }) => {
       setScrollEnd(false);
     }
   };
+
+  useEffect(() => {
+    if (!ref.current) {
+      return;
+    }
+    ref.current.scrollTo(position - 40, 0);
+  }, [position]);
 
   return (
     <>
