@@ -17,12 +17,12 @@ const SecondTeamContainer = (props: TeamContainerProps) => {
   return (
     <div
       className={`relative ${
-        selectedTeam === firstTeam.id
+        selectedTeam === secondTeam.id
           ? "w-3/4"
-          : selectedTeam === secondTeam.id
+          : selectedTeam === firstTeam.id
           ? "w-1/3"
           : "w-1/2"
-      }`}
+      } team_card_animation--width`}
       onClick={() => handleClick(secondTeam.id, firstTeam.id)}
     >
       <TeamCard

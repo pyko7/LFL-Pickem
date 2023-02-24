@@ -40,20 +40,13 @@
   /*****************/
 
   /*team card*/
-  .team_card {
-    @apply w-full max-h-16 px-3 flex items-center text-neutral-light rounded-md bg-black sm:max-h-[72px] lg:max-h-20;
+  .team__card {
+    @apply w-full max-h-16 px-3 flex items-center text-neutral-light rounded-md bg-black overflow-hidden grayscale-75 hover:grayscale-30 sm:max-h-[72px] lg:max-h-20;
     box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
       0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-      transition: width 2s ease-in forwards;
   }
-  .team__card--unselected {
-    filter: grayscale(75%);
-  }
-  .team__card--unselected:hover {
-    filter: grayscale(30%);
-  }
-  .team__card--disabled {
-    filter: contrast(1%);
-    cursor: not-allowed;
+
+  .team_card_animation--width {
+    transition: width 2s ease-out;
   }
 }

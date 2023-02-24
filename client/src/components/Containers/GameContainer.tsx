@@ -205,9 +205,9 @@ const GameContainer = (props: Game) => {
           )}
         </>
 
-        {createBet.isLoading || updateBet.isLoading || deleteBet.isLoading ? (
+        {/* {createBet.isLoading || updateBet.isLoading || deleteBet.isLoading ? (
           <CircularProgress color="secondary" />
-        ) : null}
+        ) : null} */}
         {teamsList.isLoading || (isLogged && gamesWithBet.isLoading) ? (
           <Skeleton variant="rounded" width="50%" height={78} />
         ) : (

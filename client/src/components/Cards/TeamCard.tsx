@@ -23,15 +23,11 @@ const FirstTeam = ({
     <button
       type="button"
       name={team.name}
-      className={`team_card
+      className={`team__card
       ${firstTeam ? "justify-end" : ""}
-      ${
-        disabledDay
-          ? "team__card--disabled"
-          : noBet || !visible
-          ? "team__card--unselected"
-          : ""
-      }`}
+      ${disabledDay ? "contrast-0 cursor-not-allowed" : ""}
+      ${visible && !noBet ? "filter-none hover:filter-none" : ""}
+      `}
       style={{
         background: firstTeam
           ? `linear-gradient(90deg, rgb(10, 14, 19) 0%, ${team.color} 75%)`
@@ -45,9 +41,22 @@ const FirstTeam = ({
         ${visible ? "sm:w-2/3 sm:justify-between" : "sm:justify-center"}
        `}
       >
-        {!visible ? null : (
-          <h2 className="text-sm font-bold sm:text-base">{team.name}</h2>
-        )}
+        <h2
+          className={`${
+            !visible && firstTeam
+              ? "animate-hideFirstTeamName"
+              : !visible && !firstTeam
+              ? "animate-hideSecondTeamName"
+              : visible && firstTeam
+              ? "animate-showFirstTeamName"
+              : visible && !firstTeam
+              ? "animate-showSecondTeamName"
+              : ""
+          } text-sm font-bold sm:text-base`}
+        >
+          {team.name}
+        </h2>
+
         <Image
           loader={() => team.logo}
           unoptimized
@@ -55,9 +64,7 @@ const FirstTeam = ({
           alt={team.name}
           width={50}
           height={50}
-          style={{
-            objectFit: "contain",
-          }}
+          className="w-10 h-10 object-contain sm:w-12 sm:h-12"
         />
       </div>
     </button>

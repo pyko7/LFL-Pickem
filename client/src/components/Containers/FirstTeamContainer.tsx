@@ -23,7 +23,7 @@ const FirstTeamContainer = (props: TeamContainerProps) => {
           : selectedTeam === secondTeam.id
           ? "w-1/3"
           : "w-1/2"
-      }`}
+      } team_card_animation--width`}
       onClick={() => handleClick(firstTeam.id, secondTeam.id)}
     >
       {!disabledDay ? null : selectedTeam !==
