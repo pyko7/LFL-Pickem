@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
-import { styled, useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import CircularProgress from "@mui/material/CircularProgress";
-import FirstTeam from "../Cards/FirstTeam";
-import SecondTeam from "../Cards/SecondTeam";
 import { Game, Team } from "@/src/types/teams";
 import { useGameContext } from "@/context/GameContext";
 import {
@@ -17,13 +12,12 @@ import { utcToZonedTime } from "date-fns-tz";
 import { isBefore, parseISO } from "date-fns";
 import { useMutation } from "@tanstack/react-query";
 import ErrorModal from "../Feedbacks/ErrorModal";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CancelIcon from "@mui/icons-material/Cancel";
 import { useAuthContext } from "@/context/AuthContext";
 import AuthModal from "../Modals/AuthModal";
+import FirstTeamContainer from "./FirstTeamContainer";
+import SecondTeamContainer from "./SecondTeamContainer";
 
 const GameContainer = (props: Game) => {
-  const theme = useTheme();
   const { isLogged } = useAuthContext();
   const [firstTeam, setFirstTeam] = useState<Team>();
   const [secondTeam, setSecondTeam] = useState<Team>();
@@ -33,14 +27,21 @@ const GameContainer = (props: Game) => {
   const [noBet, setNoBet] = useState(true);
   const [userAuth, setUserAuth] = useState(false);
 
+  const teamContainerProps = {
+    game: props,
+    firstTeam: firstTeam!,
+    secondTeam: secondTeam!,
+    selectedTeam,
+    disabledDay,
+    notSelected,
+    noBet,
+  };
+
   const authProps = { userAuth, setUserAuth };
 
   const [betError, setBetError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
   const { teamsList, gamesWithBet } = useGameContext();
-
-  const isBiggerThanMobile = useMediaQuery(theme.breakpoints.up("sm"));
 
   const createBet = useMutation({
     mutationFn: addSelectedTeams,
@@ -186,77 +187,20 @@ const GameContainer = (props: Game) => {
     }
   }, [gamesWithBet]);
 
-  const Game = styled(Box)({
-    width: "100%",
-    display: "flex",
-    justifyContent: "space-between",
-    gap: 10,
-  });
-
-  const SuccessIcon = styled(CheckCircleIcon)(({ theme }) => ({
-    position: "absolute",
-    top: "50%",
-    transform: "translateY(-50%)",
-    width: 25,
-    height: 25,
-    zIndex: 1,
-    color: theme.palette.secondary.main,
-  }));
-
-  const FailIcon = styled(CancelIcon)(({ theme }) => ({
-    position: "absolute",
-    top: "50%",
-    transform: "translateY(-50%)",
-    width: 25,
-    height: 25,
-    zIndex: 1,
-    color: theme.palette.error.main,
-  }));
-
   return (
     <>
-      <Game>
+      <div className="w-full flex justify-between gap-2 sm:gap-3">
         <>
           {teamsList.isLoading || (isLogged && gamesWithBet.isLoading) ? (
             <Skeleton variant="rounded" width="50%" height={78} />
           ) : (
             <>
-              {firstTeam && secondTeam ? (
-                <Box
-                  sx={{
-                    position: "relative",
-                    width:
-                      selectedTeam === firstTeam.id
-                        ? "75%"
-                        : selectedTeam === secondTeam.id
-                        ? "33%"
-                        : "50%",
-                  }}
-                  onClick={() => handleClick(firstTeam.id, secondTeam.id)}
-                >
-                  {!disabledDay ? null : selectedTeam !==
-                    firstTeam.id ? null : firstTeam.id === props.winner ? (
-                    <SuccessIcon
-                      sx={{
-                        left: isBiggerThanMobile ? 15 : 5,
-                      }}
-                    />
-                  ) : (
-                    <FailIcon
-                      sx={{
-                        left: isBiggerThanMobile ? 15 : 5,
-                      }}
-                    />
-                  )}
-
-                  <FirstTeam
-                    team={firstTeam}
-                    notSelected={notSelected}
-                    disabledDay={disabledDay}
-                    noBet={noBet}
-                  />
-                </Box>
-              ) : null}
+              {!firstTeam || !secondTeam ? null : (
+                <FirstTeamContainer
+                  {...teamContainerProps}
+                  handleClick={handleClick}
+                />
+              )}
             </>
           )}
         </>
@@ -268,41 +212,12 @@ const GameContainer = (props: Game) => {
           <Skeleton variant="rounded" width="50%" height={78} />
         ) : (
           <>
-            {firstTeam && secondTeam ? (
-              <Box
-                sx={{
-                  position: "relative",
-                  width:
-                    selectedTeam === secondTeam.id
-                      ? "75%"
-                      : selectedTeam === firstTeam.id
-                      ? "33%"
-                      : "50%",
-                }}
-                onClick={() => handleClick(secondTeam.id, firstTeam.id)}
-              >
-                <SecondTeam
-                  team={secondTeam}
-                  notSelected={notSelected}
-                  disabledDay={disabledDay}
-                  noBet={noBet}
-                />
-                {!disabledDay ? null : selectedTeam !==
-                  secondTeam.id ? null : secondTeam.id === props.winner ? (
-                  <SuccessIcon
-                    sx={{
-                      right: isBiggerThanMobile ? 15 : 5,
-                    }}
-                  />
-                ) : (
-                  <FailIcon
-                    sx={{
-                      right: isBiggerThanMobile ? 15 : 5,
-                    }}
-                  />
-                )}
-              </Box>
-            ) : null}
+            {!firstTeam || !secondTeam ? null : (
+              <SecondTeamContainer
+                {...teamContainerProps}
+                handleClick={handleClick}
+              />
+            )}
             {betError || gamesWithBet.isError ? (
               <ErrorModal
                 betError={betError}
@@ -312,7 +227,7 @@ const GameContainer = (props: Game) => {
             ) : null}
           </>
         )}
-      </Game>
+      </div>
       <AuthModal {...authProps} />
     </>
   );

@@ -23,6 +23,18 @@ export interface TeamProps {
   notSelected: number;
   disabledDay: boolean;
   noBet: boolean;
+  firstTeam: boolean;
+}
+
+export interface TeamContainerProps {
+  game: Game;
+  firstTeam: Team;
+  secondTeam: Team;
+  selectedTeam: number;
+  disabledDay: boolean;
+  notSelected: number;
+  noBet: boolean;
+  handleClick: (currentTeamId: number, otherTeamId: number) => void;
 }
 
 export interface Day {
