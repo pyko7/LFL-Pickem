@@ -49,9 +49,8 @@ const FirstTeam = ({
             ? "opacity-1 "
             : ""
         }
-        team_card_title--opacity
         ${firstTeam ? "mr-5" : "ml-5"}
-        max-w-[75px] whitespace-pre-wrap text-sm font-bold sm:text-base`}
+        team_card_title--opacity max-w-[75px] whitespace-pre-wrap text-sm font-bold sm:max-w-none sm:text-base`}
       >
         {team.name}
       </h2>
