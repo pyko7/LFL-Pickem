@@ -7,20 +7,14 @@ import Divider from "@mui/material/Divider";
 import LoginIcon from "@mui/icons-material/Login";
 import EmailIcon from "@mui/icons-material/Email";
 import { useRouter } from "next/router";
-import SendEmailForm from "@/src/components/Forms/SendEmailForm";
+import ConfirmEmailModal from "@/src/components/Modals/ConfirmEmailModal";
 
 const ConfirmEmail = () => {
   const theme = useTheme();
   const { push } = useRouter();
   const [open, setOpen] = useState(false);
 
-  const formProps = {
-    open,
-    setOpen,
-    url: "auth/confirm-email",
-    title: "Envoie d'un email de confirmation",
-    buttonName: "confirmer l'email",
-  };
+  const formProps = { open, setOpen };
 
   const handleLoginPageClick = () => {
     return push("/login");
@@ -126,7 +120,7 @@ const ConfirmEmail = () => {
           Renvoyer un email
         </Buttons>
       </TextContainer>
-      {!open ? null : <SendEmailForm {...formProps} />}
+      {!open ? null : <ConfirmEmailModal {...formProps} />}
     </Page>
   );
 };
