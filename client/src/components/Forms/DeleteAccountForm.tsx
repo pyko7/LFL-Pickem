@@ -65,7 +65,7 @@ const DeleteAccountForm = () => {
 
       <button
         type="submit"
-        className="w-auto mt-3 px-4 py-2 rounded shadow text-lg focus:shadow-outline focus:outline-none hover:bg-secondary-light  text-neutral-dark bg-secondary"
+        className="w-auto mt-3 px-4 py-2 rounded shadow text-base font-bold uppercase focus:shadow-outline focus:outline-none hover:bg-secondary-light  text-neutral-dark bg-secondary"
       >
         {mutation.isLoading ? (
           <CircularProgress color="secondary" size={26} />
