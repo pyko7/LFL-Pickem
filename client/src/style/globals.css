@@ -41,12 +41,15 @@
 
   /*team card*/
   .team__card {
-    @apply w-full max-h-16 px-3 flex items-center text-neutral-light rounded-md bg-black overflow-hidden grayscale-75 hover:grayscale-30 sm:max-h-[72px] lg:max-h-20;
+    @apply w-full max-h-16 py-8 px-3 flex items-center justify-center text-neutral-light rounded-md bg-black overflow-hidden grayscale-75 hover:grayscale-30 sm:max-h-[72px] lg:max-h-20;
     box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
       0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
   }
 
   .team_card_animation--width {
-    transition: width 2s ease-out;
+    transition: width 1s ease-out;
+  }
+  .team_card_title--opacity {
+    transition: opacity 0.5s ease-out;
   }
 }

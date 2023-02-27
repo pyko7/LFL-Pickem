@@ -21,28 +21,40 @@ module.exports = {
         75: "75%",
       },
       keyframes: {
-        hideFirstTeamName: {
-          from: { opacity: 1, },
-          to: { opacity: 0, transform: " translateX(-100%)" },
+        centerFirstTeamLogo: {
+          from: {},
+          to: {
+            top: "50%",
+            right: "50%",
+            transform: " translate(50%,-50%)",
+          },
         },
-        hideSecondTeamName: {
-          from: { opacity: 1 },
-          to: { opacity: 0, transform: " translateX(100%)" },
+        centerSecondTeamLogo: {
+          from: {},
+          to: {
+            top: "50%",
+            left: "50%",
+            transform: " translate(-50%,-50%)",
+          },
         },
-        showFirstTeamName: {
-          from: { opacity: 0, transform: " translateX(-100%)" },
-          to: { opacity: 1 },
+        slideLogoToLeft: {
+          from: {},
+          to: {
+            left: "12px",
+          },
         },
-        showSecondTeamName: {
-          from: { opacity: 0, transform: " translateX(100%)" },
-          to: { opacity: 1 },
+        slideLogoToRight: {
+          from: {},
+          to: {
+            right: "12px",
+          },
         },
       },
       animation: {
-        hideFirstTeamName: "hideFirstTeamName 2s ease-in  forwards",
-        hideSecondTeamName: "hideSecondTeamName 2s ease-in  forwards",
-        showFirstTeamName: "showFirstTeamName 2s ease-in  forwards",
-        showSecondTeamName: "showSecondTeamName 2s ease-in  forwards",
+        centerFirstTeamLogo: "centerFirstTeamLogo 1s ease-out forwards",
+        centerSecondTeamLogo: "centerSecondTeamLogo 1s ease-out forwards",
+        slideLogoToLeft: "slideLogoToLeft .5s ease-in-out forwards",
+        slideLogoToRight: "slideLogoToRight .5s ease-in-out forwards",
       },
     },
   },
