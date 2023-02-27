@@ -30,7 +30,7 @@ const FormModal = ({ open, setOpen, title, description, children }: Props) => {
           <div className="fixed inset-0 bg-black/90" aria-hidden="true" />
 
           <div className="fixed inset-0 flex items-center justify-center p-4">
-            <Dialog.Panel className="w-fit py-6 px-4 flex flex-col items-center gap-6 rounded-md bg-main text-neutral-light">
+            <Dialog.Panel className="w-fit py-6 px-4 flex flex-col items-center gap-6 rounded-md bg-main text-neutral-light md:max-w-lg md:px-6">
               <button role="button" className="w-full flex flex-row-reverse text-neutral-light ">
                 <XMarkIcon className="w-7 h-7" onClick={handleClose}/>
               </button>
