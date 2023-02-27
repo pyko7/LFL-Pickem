@@ -3,19 +3,21 @@ import { useState } from "react";
 import Skeleton from "@mui/material/Skeleton";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { TrashIcon } from "@heroicons/react/24/outline";
-import SendEmailForm from "@/src/components/Forms/SendEmailForm";
-import ConfirmDelete from "@/src/components/Forms/ConfirmDelete";
+import ConfirmDeleteModal from "@/src/components/Modals/ConfirmDeleteModal";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { User, UserRank } from "@/src/types/user";
 import { getUserById } from "@/src/utils/api/user/getUserById";
 import { getUserRank } from "@/src/utils/api/user/getUserRank";
 import { useAuthContext } from "@/context/AuthContext";
+import ResetPasswordModal from "@/src/components/Modals/ResetPasswordModal";
 
 const Profile = () => {
   const { isLogged } = useAuthContext();
 
   const [resetPassword, setResetPassword] = useState(false);
   const [deleteAccount, setDeleteAccount] = useState(false);
+  const deleteAccountProps = { deleteAccount, setDeleteAccount };
+  const resetPasswordProps = { resetPassword, setResetPassword };
 
   const currentUser: UseQueryResult<User> = useQuery(["user"], getUserById, {
     staleTime: 10 * (60 * 1000), // 10 mins
@@ -28,16 +30,6 @@ const Profile = () => {
     cacheTime: 15 * (60 * 1000), // 15 mins
     enabled: isLogged,
   });
-
-  const resetPasswordProps = {
-    open: resetPassword,
-    setOpen: setResetPassword,
-    url: "user/reset-password",
-    title: "Réinitialisation du mot de passe",
-    buttonName: "réinitialiser le mot de passe",
-  };
-
-  const deleteAccountProps = { deleteAccount, setDeleteAccount };
 
   const handlePasswordClick = () => {
     return resetPassword ? setResetPassword(false) : setResetPassword(true);
@@ -130,8 +122,8 @@ const Profile = () => {
               </li>
             </ul>
           </div>
-          <SendEmailForm {...resetPasswordProps} />
-          <ConfirmDelete {...deleteAccountProps} />
+          <ResetPasswordModal {...resetPasswordProps} />
+          <ConfirmDeleteModal {...deleteAccountProps} />
         </section>
       ) : null}
     </>
