@@ -57,7 +57,7 @@ const Profile = () => {
       {isLogged ? (
         <section>
           <div className="w-full px-5 m-auto sm:max-w-3xl lg:max-w-4xl lg:px-0 ">
-            <div className="w-full mt-20 mb-10 flex justify-between text-neutral-light">
+            <div className="w-full flex justify-between text-neutral-light">
               {currentUser.isLoading ? (
                 <>
                   <Skeleton variant="text" width={120} height={30} />
@@ -82,7 +82,7 @@ const Profile = () => {
               )}
             </div>
 
-            <hr className="w-2/3 max-w-2xl my-12 mx-auto border-main-light" />
+            <hr className="w-2/3 max-w-2xl my-8 mx-auto border-main-light sm:my-12" />
 
             <ul className="icons flex flex-col gap-6">
               <li>
@@ -105,21 +105,26 @@ const Profile = () => {
               </li>
             </ul>
 
-            <hr className="w-2/3 max-w-2xl my-12 mx-auto border-main-light" />
+            <hr className="w-2/3 max-w-2xl my-8 mx-auto border-main-light sm:my-12" />
 
             <ul className="w-full  py-4 flex flex-col gap-6 md:gap-3">
-              <li className="w-fit flex items-center gap-3 rounded-sm hover:bg-main-light md:py-2 md:pl-1 md:pr-6">
-                <PencilSquareIcon aria-hidden="true" className="w-8 h-8" />
-                <button onClick={handlePasswordClick}>
+              <li>
+                <button
+                  type="button"
+                  className="w-fit flex items-center gap-3 rounded-sm text-neutral-light hover:shadow-md hover:bg-main-light md:py-2 md:pl-1 md:pr-6"
+                  onClick={handlePasswordClick}
+                >
+                  <PencilSquareIcon aria-hidden="true" className="w-6 h-6" />
                   Modifier le mot de passe
                 </button>
               </li>
               <li>
                 <button
-                  className="w-fit flex items-center gap-3 rounded-sm hover:bg-main-light md:py-2 md:pl-1 md:pr-6"
+                  type="button"
+                  className="w-fit flex items-center gap-3 rounded-sm text-neutral-light hover:shadow-md hover:bg-main-light md:py-2 md:pl-1 md:pr-6"
                   onClick={handleDeleteAccountClick}
                 >
-                  <TrashIcon aria-hidden="true" className="w-8 h-8 -ml-[2px]" />
+                  <TrashIcon aria-hidden="true" className="w-6 h-6 -ml-[2px]" />
                   Supprimer le compte
                 </button>
               </li>
