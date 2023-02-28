@@ -169,7 +169,7 @@ const SignUpForm = ({ handleClose }: { handleClose: () => void }) => {
           <input
             type={passwordVisible ? "text" : "password"}
             id="passwordInput"
-            className="peer"
+            className="peer password_input"
             required
             {...register("password")}
             onChange={handlePasswordValueChange}
@@ -228,7 +228,7 @@ const SignUpForm = ({ handleClose }: { handleClose: () => void }) => {
           <input
             type={confirmPasswordVisible ? "text" : "password"}
             id="confirmPasswordInput"
-            className="peer"
+            className="peer password_input"
             required
             {...register("confirmPassword")}
             onChange={handleConfirmPasswordValueChange}

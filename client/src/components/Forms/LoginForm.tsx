@@ -93,7 +93,7 @@ const LoginForm = ({ handleClose }: { handleClose: () => void }) => {
         <input
           type={passwordVisible ? "text" : "password"}
           id="passwordInput"
-          className="peer"
+          className="peer password_input"
           required
           {...register("password")}
           onChange={handlePasswordValueChange}
