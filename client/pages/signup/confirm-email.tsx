@@ -38,7 +38,7 @@ const ConfirmEmail = () => {
           minutes.
         </p>
       </div>
-      <hr className="w-4/5 my-12 max-w-2xl mx-auto border-main-light" />
+      <hr aria-hidden="true"  className="w-4/5 my-12 max-w-2xl mx-auto border-main-light" />
 
       <div className="w-full mb-12 flex flex-col gap-5 sm:w-3/4">
         <h3 className="text-lg">Déjà confirmé ?</h3>

@@ -45,8 +45,11 @@ const AuthModal = ({ userAuth, setUserAuth }: AuthProps) => {
     <>
       {signUpForm ? (
         <FormModal {...signUpProps}>
-          <SignUpForm  handleClose={handleClose}/>
-          <hr className="w-4/5 max-w-2xl mx-auto border-main-light" />
+          <SignUpForm handleClose={handleClose} />
+          <hr
+            aria-hidden="true"
+            className="w-4/5 max-w-2xl mx-auto border-main-light"
+          />
 
           <SwitchAuthModalButton {...switchToLoginModalProps} />
         </FormModal>
@@ -60,7 +63,10 @@ const AuthModal = ({ userAuth, setUserAuth }: AuthProps) => {
           >
             Mot de passe oublié ?
           </button>
-          <hr className="w-4/5 max-w-2xl mx-auto border-main-light" />
+          <hr
+            aria-hidden="true"
+            className="w-4/5 max-w-2xl mx-auto border-main-light"
+          />
 
           <SwitchAuthModalButton {...switchToSignUpModalProps} />
           {resetPassword ? (

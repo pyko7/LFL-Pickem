@@ -12,11 +12,18 @@ const ScrollableDaysTabs = () => {
   return (
     <div className="absolute top-8 left-1/2 -translate-x-1/2 w-full max-w-4xl bg-main-light">
       {allDays.isLoading ? (
-        <Skeleton width="100%" height="64px" rounded ariaLabel="Chargement des journées"/>
+        <Skeleton
+          width="100%"
+          height="64px"
+          rounded
+          ariaLabel="Chargement des journées"
+        />
       ) : allDays.isError ? (
-        <p className="text-neutral-light">
-          Une erreur est survenue, veuillez réessayer plus tard.
-        </p>
+        <div>
+          <p className="w-full h-16 px-4 flex items-center justify-center text-neutral-light">
+            Une erreur est survenue, veuillez réessayer plus tard.
+          </p>
+        </div>
       ) : (
         <nav aria-label="Selecteur de journée" className=" w-full h-full ">
           <Tabs position={position}>

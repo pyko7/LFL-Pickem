@@ -84,7 +84,7 @@ const Profile = () => {
               )}
             </div>
 
-            <hr className="w-2/3 max-w-2xl my-8 mx-auto border-main-light sm:my-12" />
+            <hr aria-hidden="true"  className="w-2/3 max-w-2xl my-8 mx-auto border-main-light sm:my-12" />
 
             <ul className="icons flex flex-col gap-6">
               <li>
@@ -117,7 +117,7 @@ const Profile = () => {
               </li>
             </ul>
 
-            <hr className="w-2/3 max-w-2xl my-8 mx-auto border-main-light sm:my-12" />
+            <hr aria-hidden="true"  className="w-2/3 max-w-2xl my-8 mx-auto border-main-light sm:my-12" />
 
             <ul className="w-full  py-4 flex flex-col gap-6 md:gap-3">
               <li>

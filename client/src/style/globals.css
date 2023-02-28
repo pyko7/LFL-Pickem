@@ -54,12 +54,12 @@
   }
 
   /*form & inputs*/
+
   .input_label_container {
-    @apply relative w-full h-11 max-w-[290px] rounded-sm text-neutral-light sm:max-w-none;
+    @apply relative w-full max-w-[290px] h-11 rounded-sm text-neutral-light sm:max-w-none;
   }
   .input_label_container input {
-    @apply w-full h-full px-3 rounded-sm border-2 border-secondary-light/20 bg-transparent transition-all duration-200 ease-linear focus:placeholder:opacity-100
-    focus:border-secondary outline-none;
+    @apply w-full h-full pl-3 pr-10 rounded-sm border-2 border-secondary-light/20 bg-transparent transition-all duration-200 ease-linear focus:placeholder:opacity-100 focus:border-secondary outline-none;
   }
   .input_label {
     @apply pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 bg-main transition-all duration-200 ease-out motion-reduce:transition-none;

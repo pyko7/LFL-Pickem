@@ -117,14 +117,15 @@ const LoginForm = ({ handleClose }: { handleClose: () => void }) => {
         >
           <button
             type="button"
-            aria-hidden="true"
+            role="button"
+            aria-label={`${passwordVisible ? "Masquer le mot de passe" : "Afficher le mot de passe"}`}
             className="w-full h-full text-neutral-light focus-visible:text-neutral-light focus-visible:p-0"
             onClick={handleClickShowPassword}
           >
             {passwordVisible ? (
-              <EyeSlashIcon className="w-full h-full" />
+              <EyeSlashIcon aria-hidden="true" className="w-full h-full" />
             ) : (
-              <EyeIcon className="w-full h-full" />
+              <EyeIcon aria-hidden="true" className="w-full h-full" />
             )}
           </button>
         </label>
