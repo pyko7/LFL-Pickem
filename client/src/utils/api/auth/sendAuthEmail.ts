@@ -32,9 +32,6 @@ export const sendAuthEmail = async (user: AuthForm, url: string) => {
     return data;
   } catch (error) {
     if (error instanceof Error) {
-      if (error.message === "Token invalide") {
-        window.location.href = "/login";
-      }
       throw new Error(error.message);
     }
   }
