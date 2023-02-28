@@ -15,7 +15,7 @@ const ConfirmDeleteModal = ({
   };
 
   const handleClose = () => {
-    return setDeleteAccount(true);
+    return setDeleteAccount(false);
   };
 
   return (
