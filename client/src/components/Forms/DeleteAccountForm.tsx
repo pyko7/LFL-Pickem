@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { deleteUser } from "@/src/utils/api/user/deleteUser";
-import CircularProgress from "@mui/material/CircularProgress";
+import Spinner from "../Loaders/Spinner";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AuthForm } from "@/src/types/forms";
@@ -8,9 +8,10 @@ import { sendEmailSchema } from "@/src/validations/authValidation";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 
-const DeleteAccountForm = () => {
+const DeleteAccountForm = ({ handleClose }: { handleClose: () => void }) => {
   const { replace } = useRouter();
   const successMessage = `Suppression confirmée, merci d'avoir fait partie de l'aventure !`;
+  const [emailValue, setEmailValue] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const {
     register,
@@ -22,6 +23,10 @@ const DeleteAccountForm = () => {
     resolver: yupResolver(sendEmailSchema),
   });
 
+  const handleEmailValueChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setEmailValue(event.target.value);
+  };
+
   const mutation = useMutation({
     onError: (error) => {
       if (error instanceof Error) {
@@ -30,7 +35,7 @@ const DeleteAccountForm = () => {
     },
     onSuccess: () => {
       setTimeout(() => {
-        replace("/signup");
+        handleClose();
       }, 1000);
     },
     mutationFn: (data: AuthForm) => deleteUser(data),
@@ -50,32 +55,37 @@ const DeleteAccountForm = () => {
           id="emailInput"
           className="peer"
           {...register("email")}
+          onChange={handleEmailValueChange}
         />
         <label
           htmlFor="emailInput"
-          className="peer-focus:-translate-y-[34px] peer-focus:-translate-x-2 peer-focus:scale-[0.8]
-    peer-focus:px-1 "
+          className={`input_label ${
+            emailValue.length > 0
+              ? "-translate-y-[34px] -translate-x-2 scale-[0.8] px-2"
+              : ""
+          } peer-focus:-translate-y-[34px] peer-focus:-translate-x-2 peer-focus:scale-[0.8]
+    peer-focus:px-2`}
         >
           Adresse email
         </label>
       </div>
       {errors.email ? (
-        <p className="w-full text-red-600">{errors.email.message}</p>
+        <p className="w-full text-red-400">{errors.email.message}</p>
       ) : null}
 
       <button
         type="submit"
-        className="w-auto mt-3 px-4 py-2 rounded shadow text-base font-bold uppercase focus:shadow-outline focus:outline-none hover:bg-secondary-light  text-neutral-dark bg-secondary"
+        className="w-full max-w-[275px] mt-3 py-3 rounded shadow text-base font-bold uppercase focus:shadow-outline focus:outline-none hover:bg-secondary-light  text-neutral-dark bg-secondary focus-visible:border-neutral-light"
       >
         {mutation.isLoading ? (
-          <CircularProgress color="secondary" size={26} />
+          <Spinner dark ariaLabel="Attente de la suppression" />
         ) : (
           "Supprimer le compte"
         )}
       </button>
 
       {mutation.isError ? (
-        <p className="pt-[2px] pb-3 text-red-600">{errorMessage}</p>
+        <p className="pt-[2px] pb-3 text-red-400">{errorMessage}</p>
       ) : null}
       {mutation.isSuccess ? <p>{successMessage}</p> : null}
     </form>

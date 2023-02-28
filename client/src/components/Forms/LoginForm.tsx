@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from "react";
-import CircularProgress from "@mui/material/CircularProgress";
+import Spinner from "../Loaders/Spinner";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AuthForm } from "@/src/types/forms";
@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 import { useAuthContext } from "@/context/AuthContext";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
-const LoginForm = () => {
+const LoginForm = ({ handleClose }: { handleClose: () => void }) => {
   const { push } = useRouter();
   const { setIsLogged } = useAuthContext();
   const [emailValue, setEmailValue] = useState("");
@@ -54,7 +54,7 @@ const LoginForm = () => {
     },
     onSuccess: () => {
       setIsLogged(true);
-      push("/");
+      handleClose();
     },
   });
 
@@ -138,17 +138,16 @@ const LoginForm = () => {
         </p>
       ) : null}
 
-      <input
+      <button
         type="submit"
-        value={`${
-          mutation.isLoading ? (
-            <CircularProgress color="secondary" size={26} />
-          ) : (
-            "Se connecter"
-          )
-        }`}
-        className="w-auto mt-3 px-7 py-3 rounded shadow text-base font-bold uppercase focus:shadow-outline focus:outline-none hover:bg-secondary-light  text-neutral-dark bg-secondary focus-visible:border-neutral-light"
-      />
+        className="w-full max-w-[275px] mt-3 py-3 rounded shadow text-base font-bold uppercase focus:shadow-outline focus:outline-none hover:bg-secondary-light  text-neutral-dark bg-secondary focus-visible:border-neutral-light"
+      >
+        {mutation.isLoading ? (
+          <Spinner dark ariaLabel="Attente de la connexion" />
+        ) : (
+          "Se connecter"
+        )}
+      </button>
     </form>
   );
 };

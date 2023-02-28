@@ -6,7 +6,6 @@ const ConfirmDeleteModal = ({
   deleteAccount,
   setDeleteAccount,
 }: DeleteAccountProps) => {
-
   const props = {
     open: deleteAccount,
     setOpen: setDeleteAccount,
@@ -15,9 +14,13 @@ const ConfirmDeleteModal = ({
     Inscrivez votre adresse email afin de confirmer la suppression définitive de votre compte.`,
   };
 
+  const handleClose = () => {
+    return setDeleteAccount(true);
+  };
+
   return (
     <FormModal {...props}>
-      <DeleteAccountForm />
+      <DeleteAccountForm handleClose={handleClose} />
     </FormModal>
   );
 };

@@ -25,7 +25,7 @@ const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
     mutationFn: logoutUser,
     onSuccess: () => {
       setIsLogged(false);
-      push("/login");
+      handleClose();
     },
   });
 
@@ -34,7 +34,6 @@ const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
   };
 
   const handleLogoutButton = () => {
-    handleClose();
     mutation.mutate();
   };
 

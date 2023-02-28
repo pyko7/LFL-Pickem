@@ -22,6 +22,10 @@ const AuthModal = ({ userAuth, setUserAuth }: AuthProps) => {
     title: "Connexion",
   };
 
+  const handleClose = () => {
+    return setUserAuth(false);
+  };
+
   const handleClick = () => {
     return signUpForm ? setSignUpForm(false) : setSignUpForm(true);
   };
@@ -48,7 +52,7 @@ const AuthModal = ({ userAuth, setUserAuth }: AuthProps) => {
         </FormModal>
       ) : (
         <FormModal {...loginProps}>
-          <LoginForm />
+          <LoginForm handleClose={handleClose} />
           <button
             type="button"
             className="text-base sm:-mt-8"

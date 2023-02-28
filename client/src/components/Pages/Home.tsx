@@ -1,4 +1,3 @@
-import Skeleton from "@mui/material/Skeleton";
 import ScrollableDaysTabs from "@/src/components/Navigation/ScrollableDaysTabs";
 import GameContainer from "@/src/components/Containers/GameContainer";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
@@ -7,8 +6,9 @@ import { User } from "@/src/types/user";
 import { useGameContext } from "@/context/GameContext";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
-import GameContainerSkeleton from "../Feedbacks/GameContainerSkeleton";
+import GameContainerSkeleton from "../Loaders/GameContainerSkeleton";
 import { useAuthContext } from "@/context/AuthContext";
+import Skeleton from "../Loaders/Skeleton";
 
 const Homepage = () => {
   const { isLogged } = useAuthContext();
@@ -39,7 +39,12 @@ const Homepage = () => {
           {!isLogged ? (
             <p className="points_counter">0 pts</p>
           ) : currentUser.isLoading ? (
-            <Skeleton variant="rounded" width={70} height={30} />
+            <Skeleton
+              width="60px"
+              height="32px"
+              rounded
+              ariaLabel="Chargement des points"
+            />
           ) : currentUser.isError ? (
             <p className="points_counter">N/A pts </p>
           ) : (

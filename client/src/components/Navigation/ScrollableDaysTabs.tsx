@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Skeleton from "@mui/material/Skeleton";
+import Skeleton from "../Loaders/Skeleton";
 import Typography from "@mui/material/Typography";
 import { useGameContext } from "@/context/GameContext";
 import Tab from "./Tab";
@@ -13,7 +13,7 @@ const ScrollableDaysTabs = () => {
   return (
     <div className="absolute top-8 left-1/2 -translate-x-1/2 w-full max-w-4xl bg-main-light">
       {allDays.isLoading ? (
-        <Skeleton variant="rectangular" height={48} />
+        <Skeleton width="100%" height="64px" rounded ariaLabel="Chargement des journées"/>
       ) : allDays.isError ? (
         <Typography sx={{ padding: "0 5px" }}>
           Une erreur est survenue, veuillez réessayer plus tard.

@@ -1,6 +1,5 @@
 import Head from "next/head";
 import { useState } from "react";
-import Skeleton from "@mui/material/Skeleton";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import ConfirmDeleteModal from "@/src/components/Modals/ConfirmDeleteModal";
@@ -10,6 +9,7 @@ import { getUserById } from "@/src/utils/api/user/getUserById";
 import { getUserRank } from "@/src/utils/api/user/getUserRank";
 import { useAuthContext } from "@/context/AuthContext";
 import ResetPasswordModal from "@/src/components/Modals/ResetPasswordModal";
+import Skeleton from "@/src/components/Loaders/Skeleton";
 
 const Profile = () => {
   const { isLogged } = useAuthContext();
@@ -52,8 +52,18 @@ const Profile = () => {
             <div className="w-full flex justify-between text-neutral-light">
               {currentUser.isLoading ? (
                 <>
-                  <Skeleton variant="text" width={120} height={30} />
-                  <Skeleton variant="rounded" width={70} height={30} />
+                  <Skeleton
+                    width="120px"
+                    height="30px"
+                    rounded
+                    ariaLabel="Chargement du pseudo"
+                  />
+                  <Skeleton
+                    width="70px"
+                    height="30px"
+                    rounded
+                    ariaLabel="Chargement des points"
+                  />
                 </>
               ) : currentUser.isError ? (
                 <>
@@ -79,7 +89,12 @@ const Profile = () => {
             <ul className="icons flex flex-col gap-6">
               <li>
                 {userRank.isLoading ? (
-                  <Skeleton variant="rounded" width={200} height={30} />
+                  <Skeleton
+                    width="200px"
+                    height="30px"
+                    rounded
+                    ariaLabel="Chargement du rang"
+                  />
                 ) : userRank.isError ? (
                   "Classement actuel: N/A"
                 ) : (
@@ -88,7 +103,12 @@ const Profile = () => {
               </li>
               <li>
                 {userRank.isLoading ? (
-                  <Skeleton variant="rounded" width={100} height={30} />
+                  <Skeleton
+                    width="100px"
+                    height="30px"
+                    rounded
+                    ariaLabel="Chargement du rang"
+                  />
                 ) : userRank.isError ? (
                   "Top: N/A"
                 ) : (

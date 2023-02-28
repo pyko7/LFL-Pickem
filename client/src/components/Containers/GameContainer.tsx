@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import Skeleton from "@mui/material/Skeleton";
-import CircularProgress from "@mui/material/CircularProgress";
 import { Game, Team } from "@/src/types/teams";
 import { useGameContext } from "@/context/GameContext";
 import {
@@ -11,21 +9,26 @@ import {
 import { utcToZonedTime } from "date-fns-tz";
 import { isBefore, parseISO } from "date-fns";
 import { useMutation } from "@tanstack/react-query";
-import ErrorModal from "../Feedbacks/ErrorModal";
+import ErrorModal from "../Modals/ErrorModal";
 import { useAuthContext } from "@/context/AuthContext";
 import AuthModal from "../Modals/AuthModal";
 import FirstTeamContainer from "./FirstTeamContainer";
 import SecondTeamContainer from "./SecondTeamContainer";
+import Skeleton from "../Loaders/Skeleton";
 
 const GameContainer = (props: Game) => {
   const { isLogged } = useAuthContext();
   const [firstTeam, setFirstTeam] = useState<Team>();
   const [secondTeam, setSecondTeam] = useState<Team>();
   const [disabledDay, setDisabledDay] = useState(false);
+  const [userAuth, setUserAuth] = useState(false);
+  const [betError, setBetError] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState(0);
   const [notSelected, setNotSelected] = useState(0);
-  const [noBet, setNoBet] = useState(true);
-  const [userAuth, setUserAuth] = useState(false);
+  const [noBet, setNoBet] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const { teamsList, gamesWithBet } = useGameContext();
+  const authProps = { userAuth, setUserAuth };
 
   const teamContainerProps = {
     game: props,
@@ -36,12 +39,6 @@ const GameContainer = (props: Game) => {
     notSelected,
     noBet,
   };
-
-  const authProps = { userAuth, setUserAuth };
-
-  const [betError, setBetError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const { teamsList, gamesWithBet } = useGameContext();
 
   const createBet = useMutation({
     mutationFn: addSelectedTeams,
@@ -192,7 +189,12 @@ const GameContainer = (props: Game) => {
       <div className="w-full flex justify-between gap-2 sm:gap-3">
         <>
           {teamsList.isLoading || (isLogged && gamesWithBet.isLoading) ? (
-            <Skeleton variant="rounded" width="50%" height={78} />
+            <Skeleton
+              width="100%"
+              height="64px"
+              rounded
+              ariaLabel="Chargement des équipes"
+            />
           ) : (
             <>
               {!firstTeam || !secondTeam ? null : (
@@ -204,12 +206,13 @@ const GameContainer = (props: Game) => {
             </>
           )}
         </>
-
-        {/* {createBet.isLoading || updateBet.isLoading || deleteBet.isLoading ? (
-          <CircularProgress color="secondary" />
-        ) : null} */}
         {teamsList.isLoading || (isLogged && gamesWithBet.isLoading) ? (
-          <Skeleton variant="rounded" width="50%" height={78} />
+          <Skeleton
+            width="100%"
+            height="64px"
+            rounded
+            ariaLabel="Chargement des équipes"
+          />
         ) : (
           <>
             {!firstTeam || !secondTeam ? null : (
@@ -218,16 +221,17 @@ const GameContainer = (props: Game) => {
                 handleClick={handleClick}
               />
             )}
-            {betError || gamesWithBet.isError ? (
-              <ErrorModal
-                betError={betError}
-                setBetError={setBetError}
-                errorMessage={errorMessage}
-              />
-            ) : null}
           </>
         )}
       </div>
+      {betError || gamesWithBet.isError ? (
+        <ErrorModal
+          betError={betError}
+          setBetError={setBetError}
+          errorMessage={errorMessage}
+        />
+      ) : null}
+
       <AuthModal {...authProps} />
     </>
   );
