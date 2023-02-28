@@ -6,10 +6,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { AuthForm } from "@/src/types/forms";
 import { sendEmailSchema } from "@/src/validations/authValidation";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/router";
 
 const DeleteAccountForm = ({ handleClose }: { handleClose: () => void }) => {
-  const { replace } = useRouter();
   const successMessage = `Suppression confirmée, merci d'avoir fait partie de l'aventure !`;
   const [emailValue, setEmailValue] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
