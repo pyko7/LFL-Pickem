@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import Spinner from "../Loaders/Spinner";
 
-const SignUpForm = () => {
+const SignUpForm = ({ handleClose }: { handleClose: () => void }) => {
   const { push } = useRouter();
   const [pseudoValue, setPseudoValue] = useState("");
   const [emailValue, setEmailValue] = useState("");
@@ -73,6 +73,7 @@ const SignUpForm = () => {
       }
     },
     onSuccess: () => {
+      handleClose();
       push("/signup/confirm-email");
     },
   });
@@ -272,17 +273,16 @@ const SignUpForm = () => {
         )}
       </div>
 
-      <input
+      <button
         type="submit"
-        value={`${
-          mutation.isLoading ? (
-            <Spinner dark ariaLabel="En attente de l'inscription" />
-          ) : (
-            "S'inscrire"
-          )
-        }`}
-        className="w-auto mt-3 px-7 py-3 rounded shadow text-base font-bold uppercase focus:shadow-outline focus:outline-none hover:bg-secondary-light  text-neutral-dark bg-secondary focus-visible:border-neutral-light"
-      />
+        className="w-full max-w-[275px] mt-3 py-3 rounded shadow text-base font-bold uppercase focus:shadow-outline focus:outline-none hover:bg-secondary-light  text-neutral-dark bg-secondary focus-visible:border-neutral-light"
+      >
+        {mutation.isLoading ? (
+          <Spinner dark ariaLabel="Attente de l'inscription" />
+        ) : (
+          "S'inscrire"
+        )}
+      </button>
     </form>
   );
 };

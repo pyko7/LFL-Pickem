@@ -30,10 +30,12 @@ const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
   });
 
   const handleAuthClick = () => {
+    handleClose();
     return setUserAuth(true);
   };
 
   const handleLogoutButton = () => {
+    handleClose();
     mutation.mutate();
   };
 

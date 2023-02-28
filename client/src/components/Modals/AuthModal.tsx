@@ -45,7 +45,7 @@ const AuthModal = ({ userAuth, setUserAuth }: AuthProps) => {
     <>
       {signUpForm ? (
         <FormModal {...signUpProps}>
-          <SignUpForm />
+          <SignUpForm  handleClose={handleClose}/>
           <hr className="w-4/5 max-w-2xl mx-auto border-main-light" />
 
           <SwitchAuthModalButton {...switchToLoginModalProps} />
