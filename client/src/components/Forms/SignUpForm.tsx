@@ -1,15 +1,5 @@
-import { useState } from "react";
-import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import FormGroup from "@mui/material/FormGroup";
-import FormHelperText from "@mui/material/FormHelperText";
-import Button from "@mui/material/Button";
-import InputAdornment from "@mui/material/InputAdornment";
-import IconButton from "@mui/material/IconButton";
+import { ChangeEvent, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AuthForm } from "@/src/types/forms";
@@ -17,14 +7,34 @@ import { createUserSchema } from "@/src/validations/authValidation";
 import { useMutation } from "@tanstack/react-query";
 import { createUser } from "@/src/utils/api/auth/createUser";
 import { useRouter } from "next/router";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
 const SignUpForm = () => {
   const { push } = useRouter();
+  const [pseudoValue, setPseudoValue] = useState("");
+  const [emailValue, setEmailValue] = useState("");
+  const [passwordValue, setPasswordValue] = useState("");
+  const [confirmPasswordValue, setConfirmPasswordValue] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [pseudoErrorMessage, setPseudoErrorMessage] = useState("");
   const [emailErrorMessage, setEmailErrorMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  const handlePseudoValueChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setPseudoValue(event.target.value);
+  };
+  const handleEmailValueChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setEmailValue(event.target.value);
+  };
+  const handlePasswordValueChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setPasswordValue(event.target.value);
+  };
+  const handleConfirmPasswordValueChange = (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
+    setConfirmPasswordValue(event.target.value);
+  };
 
   const handleClickShowPassword = () => {
     return passwordVisible
@@ -74,170 +84,206 @@ const SignUpForm = () => {
     mutation.mutate(data);
   };
 
-  const Form = styled(Box)(({ theme }) => ({
-    width: "90%",
-    maxWidth: 375,
-    height: "100%",
-    marginTop: "-1px",
-    padding: 20,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    rowGap: 6,
-    backgroundColor: theme.palette.background.paper,
-    borderRadius: "0 0 8px 8px",
-    [theme.breakpoints.up("sm")]: {
-      maxWidth: 395,
-      padding: 35,
-    },
-    [theme.breakpoints.up("lg")]: {
-      rowGap: 18,
-      maxWidth: 445,
-    },
-  }));
-
-  const Inputs = styled(FormGroup)(({ theme }) => ({
-    width: "100%",
-    maxWidth: 290,
-    [theme.breakpoints.up("sm")]: {
-      maxWidth: "none",
-    },
-  }));
-
-  const PasswordVisibilityButton = styled(IconButton)(({ theme }) => ({
-    "&:hover": {
-      background: "transparent",
-      color: theme.palette.primary.main,
-    },
-  }));
-
-  const SubmitButton = styled(Button)(({ theme }) => ({
-    width: "100%",
-    maxWidth: 290,
-    padding: "10px 0",
-    marginTop: 35,
-    fontWeight: 700,
-    backgroundColor: "#0A0E13",
-    color: theme.palette.neutral.light,
-    "&:hover": {
-      backgroundColor: theme.palette.primary.light,
-    },
-    [theme.breakpoints.up("sm")]: {
-      maxWidth: "none",
-    },
-  }));
-
-  const ErrorMessage = styled(FormHelperText)(({ theme }) => ({
-    padding: "2px 0 0 5px",
-    color: theme.palette.error.main,
-  }));
-
   return (
-    <Form component="form" onSubmit={handleSubmit(onSubmit)}>
-      <Inputs>
-        <TextField
-          type="text"
-          variant="filled"
-          label="Pseudo"
-          {...register("pseudo")}
-          inputProps={{ minLength: 2, maxLength: 16 }}
-        />
+    <form
+      className="w-full flex flex-col items-center gap-6 rounded-lg sm:max-w-sm sm:p-9 md:max-w-md lg:max-w-md lg:gap-5"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <div className="w-full flex flex-col items-center">
+        <div className="input_label_container ">
+          <input
+            type="text"
+            id="pseudoInput"
+            className="peer"
+            minLength={2}
+            maxLength={16}
+            required
+            {...register("pseudo")}
+            onChange={handlePseudoValueChange}
+          />
+          <label
+            htmlFor="pseudoInput"
+            className={`input_label ${
+              pseudoValue.length > 0
+                ? "-translate-y-[34px] -translate-x-2 scale-[0.8] px-2"
+                : ""
+            } peer-focus:-translate-y-[34px] peer-focus:-translate-x-2 peer-focus:scale-[0.8]
+    peer-focus:px-2`}
+          >
+            Pseudo
+          </label>
+        </div>
         {mutation.isError && pseudoErrorMessage.length > 0 ? (
-          <ErrorMessage>{pseudoErrorMessage}</ErrorMessage>
+          <p className="w-full max-w-[290px] mb-4 text-sm text-red-400 sm:max-w-none">
+            {pseudoErrorMessage}
+          </p>
         ) : null}
         {errors.pseudo ? (
-          <ErrorMessage>{errors.pseudo.message}</ErrorMessage>
+          <p className="w-full max-w-[290px] mb-4 text-sm text-red-400 sm:max-w-none">
+            {errors.pseudo.message}
+          </p>
         ) : (
           ""
         )}
-      </Inputs>
-      <Inputs>
-        <TextField
-          type="email"
-          variant="filled"
-          label="Adresse email"
-          {...register("email")}
-        />
+      </div>
+
+      <div className="w-full flex flex-col items-center">
+        <div className="input_label_container">
+          <input
+            type="email"
+            id="emailInput"
+            className="peer"
+            required
+            {...register("email")}
+            onChange={handleEmailValueChange}
+          />
+          <label
+            htmlFor="emailInput"
+            className={`input_label ${
+              emailValue.length > 0
+                ? "-translate-y-[34px] -translate-x-2 scale-[0.8] px-2"
+                : ""
+            } peer-focus:-translate-y-[34px] peer-focus:-translate-x-2 peer-focus:scale-[0.8]
+    peer-focus:px-2`}
+          >
+            Adresse email
+          </label>
+        </div>
         {mutation.isError && emailErrorMessage.length > 0 ? (
-          <ErrorMessage>{emailErrorMessage}</ErrorMessage>
+          <p className="w-full max-w-[290px] mb-4 text-sm text-red-400 sm:max-w-none">
+            {emailErrorMessage}
+          </p>
         ) : null}
-
         {errors.email ? (
-          <ErrorMessage>{errors.email.message}</ErrorMessage>
+          <p className="w-full max-w-[290px] mb-4 text-sm text-red-400 sm:max-w-none">
+            {errors.email.message}
+          </p>
         ) : (
           ""
         )}
-      </Inputs>
-      <Inputs>
-        <TextField
-          type={passwordVisible ? "text" : "password"}
-          variant="filled"
-          label="Mot de passe"
-          {...register("password")}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <PasswordVisibilityButton
-                  aria-label="modifie la visibilité du mot de passe"
-                  onClick={handleClickShowPassword}
-                  edge="end"
-                  color="inherit"
-                >
-                  {passwordVisible ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                </PasswordVisibilityButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-        {errors.password ? (
-          <ErrorMessage>{errors.password.message}</ErrorMessage>
-        ) : (
-          ""
-        )}
-      </Inputs>
+      </div>
 
-      <Inputs>
-        <TextField
-          type={confirmPasswordVisible ? "text" : "password"}
-          variant="filled"
-          label="Confirmer le mot de passe"
-          {...register("confirmPassword")}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <PasswordVisibilityButton
-                  aria-label="modifie la visibilité de la confirmation du mot de passe"
-                  onClick={handleClickShowConfirmPassword}
-                  edge="end"
-                  color="inherit"
-                >
-                  {confirmPasswordVisible ? (
-                    <VisibilityOffIcon />
-                  ) : (
-                    <VisibilityIcon />
-                  )}
-                </PasswordVisibilityButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-        {errors.confirmPassword ? (
-          <ErrorMessage>{errors.confirmPassword.message}</ErrorMessage>
+      <div className="w-full flex flex-col items-center">
+        <div className="input_label_container">
+          <input
+            type={passwordVisible ? "text" : "password"}
+            id="passwordInput"
+            className="peer"
+            required
+            {...register("password")}
+            onChange={handlePasswordValueChange}
+          />
+          <label
+            htmlFor="passwordInput"
+            className={`input_label
+          ${
+            passwordValue.length > 0
+              ? "-translate-y-[34px] -translate-x-2 scale-[0.8] px-2"
+              : ""
+          }
+            peer-focus:-translate-y-[34px] peer-focus:-translate-x-2 peer-focus:scale-[0.8]
+    peer-focus:px-2`}
+          >
+            Mot de passe
+          </label>
+          <label
+            htmlFor="passwordInput"
+            className="absolute top-1/2 right-4 -translate-y-1/2 w-5 h-5 "
+          >
+            <button
+              type="button"
+              aria-hidden="true"
+              className="w-full h-full text-neutral-light focus-visible:text-neutral-light focus-visible:p-0"
+              onClick={handleClickShowPassword}
+            >
+              {passwordVisible ? (
+                <EyeSlashIcon className="w-full h-full" />
+              ) : (
+                <EyeIcon className="w-full h-full" />
+              )}
+            </button>
+          </label>
+        </div>
+        {mutation.isError && errorMessage.length > 0 ? (
+          <p className="w-full max-w-[290px] mb-4 text-sm text-red-400 sm:max-w-none">
+            {errorMessage}
+          </p>
+        ) : null}
+        {errors.password ? (
+          <p className="w-full max-w-[290px] mb-4 text-sm text-red-400 sm:max-w-none">
+            {errors.password.message}
+          </p>
         ) : (
           ""
         )}
+      </div>
+      <div className="w-full flex flex-col items-center">
+        <div className="input_label_container">
+          <input
+            type={confirmPasswordVisible ? "text" : "password"}
+            id="confirmPasswordInput"
+            className="peer"
+            required
+            {...register("confirmPassword")}
+            onChange={handleConfirmPasswordValueChange}
+          />
+          <label
+            htmlFor="confirmPasswordInput"
+            className={`input_label
+          ${
+            confirmPasswordValue.length > 0
+              ? "-translate-y-[34px] -translate-x-2 scale-[0.8] px-2"
+              : ""
+          }
+           peer-focus:-translate-y-[34px] peer-focus:-translate-x-2 peer-focus:scale-[0.8]
+    peer-focus:px-2`}
+          >
+            Confirmer le mot de passe
+          </label>
+          <label
+            htmlFor="confirmPasswordInput"
+            className="absolute top-1/2 right-4 -translate-y-1/2 w-5 h-5 "
+          >
+            <button
+              type="button"
+              aria-hidden="true"
+              className="w-full h-full text-neutral-light focus-visible:text-neutral-light focus-visible:p-0"
+              onClick={handleClickShowConfirmPassword}
+            >
+              {confirmPasswordVisible ? (
+                <EyeSlashIcon className="w-full h-full" />
+              ) : (
+                <EyeIcon className="w-full h-full" />
+              )}
+            </button>
+          </label>
+        </div>
         {mutation.isError && errorMessage.length > 0 ? (
-          <ErrorMessage>{errorMessage}</ErrorMessage>
+          <p className="w-full max-w-[290px] mb-4 text-sm text-red-400 sm:max-w-none">
+            {errorMessage}
+          </p>
         ) : null}
-      </Inputs>
-      <SubmitButton variant="contained" type="submit">
-        {mutation.isLoading ? (
-          <CircularProgress color="secondary" size={26} />
+        {errors.confirmPassword ? (
+          <p className="w-full max-w-[290px] mb-4 text-sm text-red-400 sm:max-w-none">
+            {errors.confirmPassword.message}
+          </p>
         ) : (
-          "S'inscrire"
+          ""
         )}
-      </SubmitButton>
-    </Form>
+      </div>
+
+      <input
+        type="submit"
+        value={`${
+          mutation.isLoading ? (
+            <CircularProgress color="secondary" size={26} />
+          ) : (
+            "S'inscrire"
+          )
+        }`}
+        className="w-auto mt-3 px-7 py-3 rounded shadow text-base font-bold uppercase focus:shadow-outline focus:outline-none hover:bg-secondary-light  text-neutral-dark bg-secondary focus-visible:border-neutral-light"
+      />
+    </form>
   );
 };
 

@@ -10,6 +10,11 @@ export interface EmailFormProps {
   buttonName: string;
 }
 
+export interface AuthProps {
+  userAuth: boolean;
+  setUserAuth: (userAuth: boolean) => void;
+}
+
 export interface ConfirmEmailProps {
   open: boolean;
   setOpen: (open: boolean) => void;

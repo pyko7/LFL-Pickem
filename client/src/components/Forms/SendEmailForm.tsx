@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { sendAuthEmail } from "@/src/utils/api/auth/sendAuthEmail";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -8,6 +8,7 @@ import { sendEmailSchema } from "@/src/validations/authValidation";
 import { useMutation } from "@tanstack/react-query";
 
 const SendEmailForm = ({ url, buttonName }: EmailFormProps) => {
+  const [emailValue, setEmailValue] = useState("");
   const successMessage = `Demande réussie ! Vous recevrez un email sous peu contenant un lien pour ${buttonName}.`;
   const [errorMessage, setErrorMessage] = useState("");
   const {
@@ -19,6 +20,10 @@ const SendEmailForm = ({ url, buttonName }: EmailFormProps) => {
     reValidateMode: "onSubmit",
     resolver: yupResolver(sendEmailSchema),
   });
+
+  const handleEmailValueChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setEmailValue(event.target.value);
+  };
 
   const mutation = useMutation({
     onError: (error) => {
@@ -38,17 +43,23 @@ const SendEmailForm = ({ url, buttonName }: EmailFormProps) => {
       className="w-full m-auto flex flex-col items-center gap-2 rounded-lg sm:max-w-sm sm:p-9 lg:max-w-md lg:gap-5"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="input_label_container">
+      <div className="input_label_container mb-6">
         <input
           type="email"
           id="emailInput"
           className="peer"
+          required
           {...register("email")}
+          onChange={handleEmailValueChange}
         />
         <label
           htmlFor="emailInput"
-          className="peer-focus:-translate-y-[34px] peer-focus:-translate-x-2 peer-focus:scale-[0.8]
-  peer-focus:px-1 "
+          className={`input_label ${
+            emailValue.length > 0
+              ? "-translate-y-[34px] -translate-x-2 scale-[0.8] px-1"
+              : ""
+          } peer-focus:-translate-y-[34px] peer-focus:-translate-x-2 peer-focus:scale-[0.8]
+    peer-focus:px-2`}
         >
           Adresse email
         </label>
@@ -59,7 +70,7 @@ const SendEmailForm = ({ url, buttonName }: EmailFormProps) => {
 
       <button
         type="submit"
-        className="w-auto mt-3 px-4 py-2 rounded shadow text-base font-bold uppercase focus:shadow-outline focus:outline-none hover:bg-secondary-light  text-neutral-dark bg-secondary"
+        className="w-auto mt-3 px-4 py-2 rounded shadow text-[14px] font-bold uppercase focus:shadow-outline focus:outline-none hover:bg-secondary-light  text-neutral-dark bg-secondary sm:text-base"
       >
         {mutation.isLoading ? (
           <CircularProgress color="secondary" size={26} />
