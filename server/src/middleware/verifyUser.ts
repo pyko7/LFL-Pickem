@@ -12,10 +12,7 @@ export const verifyUser = async (
 ) => {
   const { session, pid } = req.cookies;
   const { user } = req.body;
-  const secret = new TextEncoder().encode(
-    process.env.NEXT_PUBLIC_JWT_SECRET_KEY
-  );
-
+  const secret = new TextEncoder().encode(process.env.JWT_SECRET_KEY);
   try {
     await userCredentials.validate(user.email);
     const { payload } = await jwtVerify(pid, secret);
