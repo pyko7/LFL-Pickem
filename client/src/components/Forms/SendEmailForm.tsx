@@ -1,11 +1,11 @@
 import { ChangeEvent, useState } from "react";
 import { sendAuthEmail } from "@/src/utils/api/auth/sendAuthEmail";
-import CircularProgress from "@mui/material/CircularProgress";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AuthForm, EmailFormProps } from "@/src/types/forms";
 import { sendEmailSchema } from "@/src/validations/authValidation";
 import { useMutation } from "@tanstack/react-query";
+import Spinner from "../Loaders/Spinner";
 
 const SendEmailForm = ({ url, buttonName }: EmailFormProps) => {
   const [emailValue, setEmailValue] = useState("");
@@ -73,7 +73,7 @@ const SendEmailForm = ({ url, buttonName }: EmailFormProps) => {
         className="w-auto mt-3 px-4 py-2 rounded shadow text-[14px] font-bold uppercase focus:shadow-outline focus:outline-none hover:bg-secondary-light  text-neutral-dark bg-secondary sm:text-base"
       >
         {mutation.isLoading ? (
-          <CircularProgress color="secondary" size={26} />
+          <Spinner dark ariaLabel="En attente de l'envoie de l'email" />
         ) : (
           `${buttonName}`
         )}

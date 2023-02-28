@@ -1,5 +1,4 @@
 import { ChangeEvent, useState } from "react";
-import CircularProgress from "@mui/material/CircularProgress";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AuthForm } from "@/src/types/forms";
@@ -8,6 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import { createUser } from "@/src/utils/api/auth/createUser";
 import { useRouter } from "next/router";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import Spinner from "../Loaders/Spinner";
 
 const SignUpForm = () => {
   const { push } = useRouter();
@@ -276,7 +276,7 @@ const SignUpForm = () => {
         type="submit"
         value={`${
           mutation.isLoading ? (
-            <CircularProgress color="secondary" size={26} />
+            <Spinner dark ariaLabel="En attente de l'inscription" />
           ) : (
             "S'inscrire"
           )

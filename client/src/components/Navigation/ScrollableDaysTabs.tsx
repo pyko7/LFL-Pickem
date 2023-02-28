@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Skeleton from "../Loaders/Skeleton";
-import Typography from "@mui/material/Typography";
 import { useGameContext } from "@/context/GameContext";
 import Tab from "./Tab";
 import Tabs from "./Tabs";
@@ -15,9 +14,9 @@ const ScrollableDaysTabs = () => {
       {allDays.isLoading ? (
         <Skeleton width="100%" height="64px" rounded ariaLabel="Chargement des journées"/>
       ) : allDays.isError ? (
-        <Typography sx={{ padding: "0 5px" }}>
+        <p className="text-neutral-light">
           Une erreur est survenue, veuillez réessayer plus tard.
-        </Typography>
+        </p>
       ) : (
         <nav aria-label="Selecteur de journée" className=" w-full h-full ">
           <Tabs position={position}>
