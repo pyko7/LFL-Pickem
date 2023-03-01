@@ -1,11 +1,4 @@
 import { useEffect, useState } from "react";
-import { styled, useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import Box from "@mui/material/Box";
-import Skeleton from "@mui/material/Skeleton";
-import CircularProgress from "@mui/material/CircularProgress";
-import FirstTeam from "../Cards/FirstTeam";
-import SecondTeam from "../Cards/SecondTeam";
 import { Game, Team } from "@/src/types/teams";
 import { useGameContext } from "@/context/GameContext";
 import {
@@ -16,31 +9,41 @@ import {
 import { utcToZonedTime } from "date-fns-tz";
 import { isBefore, parseISO } from "date-fns";
 import { useMutation } from "@tanstack/react-query";
-import ErrorModal from "../Feedbacks/ErrorModal";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CancelIcon from "@mui/icons-material/Cancel";
+import ErrorModal from "../Modals/ErrorModal";
+import { useAuthContext } from "@/context/AuthContext";
+import AuthModal from "../Modals/AuthModal";
+import FirstTeamContainer from "./FirstTeamContainer";
+import SecondTeamContainer from "./SecondTeamContainer";
+import Skeleton from "../Loaders/Skeleton";
 
 const GameContainer = (props: Game) => {
-  const theme = useTheme();
+  const { isLogged } = useAuthContext();
   const [firstTeam, setFirstTeam] = useState<Team>();
   const [secondTeam, setSecondTeam] = useState<Team>();
   const [disabledDay, setDisabledDay] = useState(false);
+  const [userAuth, setUserAuth] = useState(false);
+  const [betError, setBetError] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState(0);
   const [notSelected, setNotSelected] = useState(0);
-  const [noBet, setNoBet] = useState(true);
-
-  const [betError, setBetError] = useState(false);
+  const [noBet, setNoBet] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
   const { teamsList, gamesWithBet } = useGameContext();
+  const authProps = { userAuth, setUserAuth };
 
-  const isBiggerThanMobile = useMediaQuery(theme.breakpoints.up("sm"));
+  const teamContainerProps = {
+    game: props,
+    firstTeam: firstTeam!,
+    secondTeam: secondTeam!,
+    selectedTeam,
+    disabledDay,
+    notSelected,
+    noBet,
+  };
 
   const createBet = useMutation({
     mutationFn: addSelectedTeams,
     onError: (error) => {
       if (error instanceof Error) {
-        console.log(error);
         if (error.message === "Unauthorized") {
           setErrorMessage("Vous n'êtes pas autorisé à réaliser cette action");
         } else if (error.message === "Too Many Requests") {
@@ -97,6 +100,10 @@ const GameContainer = (props: Game) => {
       teamId: currentTeamId,
       dayId: props.dayId,
     };
+    if (!isLogged) {
+      return setUserAuth(true);
+    }
+
     if (disabledDay) {
       return;
     }
@@ -148,7 +155,7 @@ const GameContainer = (props: Game) => {
   }, [props.id, props.firstTeamId, props.secondTeamId, teamsList.data]);
 
   useEffect(() => {
-    if (!firstTeam || !secondTeam) {
+    if (!firstTeam || !secondTeam || !isLogged) {
       return;
     }
     if (typeof gamesWithBet.data === "undefined") {
@@ -177,132 +184,56 @@ const GameContainer = (props: Game) => {
     }
   }, [gamesWithBet]);
 
-  const Game = styled(Box)({
-    width: "100%",
-    display: "flex",
-    justifyContent: "space-between",
-    gap: 10,
-  });
-
-  const SuccessIcon = styled(CheckCircleIcon)(({ theme }) => ({
-    position: "absolute",
-    top: "50%",
-    transform: "translateY(-50%)",
-    width: 25,
-    height: 25,
-    zIndex: 1,
-    color: theme.palette.secondary.main,
-  }));
-
-  const FailIcon = styled(CancelIcon)(({ theme }) => ({
-    position: "absolute",
-    top: "50%",
-    transform: "translateY(-50%)",
-    width: 25,
-    height: 25,
-    zIndex: 1,
-    color: theme.palette.error.main,
-  }));
-
   return (
-    <Game>
-      <>
-        {teamsList.isLoading || gamesWithBet.isLoading ? (
-          <Skeleton variant="rounded" width="50%" height={78} />
-        ) : (
-          <>
-            {firstTeam && secondTeam ? (
-              <Box
-                sx={{
-                  position: "relative",
-                  width:
-                    selectedTeam === firstTeam.id
-                      ? "75%"
-                      : selectedTeam === secondTeam.id
-                      ? "33%"
-                      : "50%",
-                }}
-                onClick={() => handleClick(firstTeam.id, secondTeam.id)}
-              >
-                {!disabledDay ? null : selectedTeam !==
-                  firstTeam.id ? null : firstTeam.id === props.winner ? (
-                  <SuccessIcon
-                    sx={{
-                      left: isBiggerThanMobile ? 15 : 5,
-                    }}
-                  />
-                ) : (
-                  <FailIcon
-                    sx={{
-                      left: isBiggerThanMobile ? 15 : 5,
-                    }}
-                  />
-                )}
-
-                <FirstTeam
-                  team={firstTeam}
-                  notSelected={notSelected}
-                  disabledDay={disabledDay}
-                  noBet={noBet}
-                />
-              </Box>
-            ) : null}
-          </>
-        )}
-      </>
-
-      {createBet.isLoading || updateBet.isLoading || deleteBet.isLoading ? (
-        <CircularProgress color="secondary" />
-      ) : null}
-      {teamsList.isLoading || gamesWithBet.isLoading ? (
-        <Skeleton variant="rounded" width="50%" height={78} />
-      ) : (
+    <>
+      <div className="w-full flex justify-between gap-2 sm:gap-3">
         <>
-          {firstTeam && secondTeam ? (
-            <Box
-              sx={{
-                position: "relative",
-                width:
-                  selectedTeam === secondTeam.id
-                    ? "75%"
-                    : selectedTeam === firstTeam.id
-                    ? "33%"
-                    : "50%",
-              }}
-              onClick={() => handleClick(secondTeam.id, firstTeam.id)}
-            >
-              <SecondTeam
-                team={secondTeam}
-                notSelected={notSelected}
-                disabledDay={disabledDay}
-                noBet={noBet}
-              />
-              {!disabledDay ? null : selectedTeam !==
-                secondTeam.id ? null : secondTeam.id === props.winner ? (
-                <SuccessIcon
-                  sx={{
-                    right: isBiggerThanMobile ? 15 : 5,
-                  }}
-                />
-              ) : (
-                <FailIcon
-                  sx={{
-                    right: isBiggerThanMobile ? 15 : 5,
-                  }}
+          {teamsList.isLoading || (isLogged && gamesWithBet.isLoading) ? (
+            <Skeleton
+              width="100%"
+              height="64px"
+              rounded
+              ariaLabel="Chargement des équipes"
+            />
+          ) : (
+            <>
+              {!firstTeam || !secondTeam ? null : (
+                <FirstTeamContainer
+                  {...teamContainerProps}
+                  handleClick={handleClick}
                 />
               )}
-            </Box>
-          ) : null}
-          {betError || gamesWithBet.isError ? (
-            <ErrorModal
-              betError={betError}
-              setBetError={setBetError}
-              errorMessage={errorMessage}
-            />
-          ) : null}
+            </>
+          )}
         </>
-      )}
-    </Game>
+        {teamsList.isLoading || (isLogged && gamesWithBet.isLoading) ? (
+          <Skeleton
+            width="100%"
+            height="64px"
+            rounded
+            ariaLabel="Chargement des équipes"
+          />
+        ) : (
+          <>
+            {!firstTeam || !secondTeam ? null : (
+              <SecondTeamContainer
+                {...teamContainerProps}
+                handleClick={handleClick}
+              />
+            )}
+          </>
+        )}
+      </div>
+      {betError || gamesWithBet.isError ? (
+        <ErrorModal
+          betError={betError}
+          setBetError={setBetError}
+          errorMessage={errorMessage}
+        />
+      ) : null}
+
+      <AuthModal {...authProps} />
+    </>
   );
 };
 

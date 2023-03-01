@@ -1,23 +1,21 @@
-import { useTheme, styled } from "@mui/material/styles";
-import Drawer from "@mui/material/Drawer";
+import { useState } from "react";
+import { Transition } from "@headlessui/react";
 import { DrawerProps } from "@/src/types/navigation";
-import CloseIcon from "@mui/icons-material/Close";
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import Button from "@mui/material/Button";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
 import { logoutUser } from "@/src/utils/api/auth/logoutUser";
 import { useRouter } from "next/router";
 import { useAuthContext } from "@/context/AuthContext";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import AuthModal from "../Modals/AuthModal";
 
 const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
-  const theme = useTheme();
-  const { setIsLogged } = useAuthContext();
+  const { isLogged, setIsLogged } = useAuthContext();
   const { push } = useRouter();
+  const [userAuth, setUserAuth] = useState(false);
+
+  const formProps = { userAuth, setUserAuth };
 
   const handleClose = () => {
     return setOpen(false);
@@ -27,9 +25,14 @@ const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
     mutationFn: logoutUser,
     onSuccess: () => {
       setIsLogged(false);
-      push("/login");
+      handleClose();
     },
   });
+
+  const handleAuthClick = () => {
+    handleClose();
+    return setUserAuth(true);
+  };
 
   const handleLogoutButton = () => {
     handleClose();
@@ -58,106 +61,86 @@ const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
       pathname: "/rules",
     },
     {
-      name: "Profil",
-      pathname: "/profile",
+      name: isLogged ? "Profil" : "",
+      pathname: isLogged ? "/profile" : "#",
     },
   ];
 
-  const ItemList = styled(List)(({ theme }) => ({
-    width: 250,
-    padding: 16,
-    color: theme.palette.neutral.light,
-    "& 	a": {
-      marginBottom: 15,
-      textDecoration: "none",
-      color: "inherit",
-      fontWeight: 700,
-      fontSize: 18,
-      [theme.breakpoints.up("md")]: {
-        fontSize: 20,
-      },
-    },
-    [theme.breakpoints.up("sm")]: {
-      width: 290,
-    },
-  }));
-
-  const LogoutButton = styled(Button)(({ theme }) => ({
-    position: "absolute",
-    bottom: 0,
-    left: 16,
-    width: "fit-content",
-    color: theme.palette.neutral.dark,
-    backgroundColor: theme.palette.secondary.main,
-    marginBottom: 15,
-    textDecoration: "none",
-    fontWeight: 700,
-    fontSize: 18,
-    textTransform: "none",
-    "&:hover": {
-      backgroundColor: theme.palette.secondary.light,
-    },
-  }));
-
-  const ListHeader = styled(Box)({
-    width: "100%",
-    padding: 16,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-  });
-
   return (
-    <Drawer
-      anchor="right"
-      variant="temporary"
-      open={open}
-      onClose={handleClose}
-      ModalProps={{
-        keepMounted: true,
-      }}
-      sx={{
-        "&	.MuiDrawer-paper": {
-          backgroundColor: theme.palette.primary.dark,
-        },
-      }}
-    >
-      <ListHeader>
-        <IconButton sx={{ width: 44, height: 44 }} onClick={handleClose}>
-          <CloseIcon
-            sx={{ width: 1, height: 1, color: theme.palette.neutral.light }}
-          />
-        </IconButton>
-      </ListHeader>
-      <ItemList>
-        {navLinks.map((item) => {
-          return item.name !== "Live" ? (
-            <ListItem key={item.name} disablePadding>
-              <Link href={item.pathname} onClick={handleClose}>
-                {item.name}
-              </Link>
-            </ListItem>
+    <>
+      <Transition show={open}>
+        {/* Background overlay */}
+        <Transition.Child
+          enter="transition-opacity ease-linear duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="transition-opacity ease-linear duration-300"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+          className="fixed inset-0 bg-black/90 z-10"
+          onClick={handleClose}
+        />
+
+        {/* Sliding sidebar */}
+        <Transition.Child
+          as="nav"
+          aria-label="menu"
+          enter="transition ease-in-out duration-300 transform"
+          enterFrom="translate-x-full"
+          enterTo="translate-x-0"
+          leave="transition ease-in duration-500 transform"
+          leaveFrom="translate-x-0"
+          leaveTo="translate-x-full"
+          className="fixed top-0 right-0 w-64 min-h-screen bg-main-dark z-20"
+        >
+          <div className="w-full p-4 flex items-center justify-end">
+            <button tabIndex={0} className="w-9 h-9 m-2" onClick={handleClose}>
+              <XMarkIcon className="text-neutral-light" />
+            </button>
+          </div>
+
+          <ul className="w-full px-6 py-4 flex flex-col gap-6 text-xl font-bold text-neutral-light ">
+            {navLinks.map((item) => {
+              return item.name !== "Live" ? (
+                <li key={item.name}>
+                  <Link href={item.pathname} onClick={handleClose}>
+                    {item.name}
+                  </Link>
+                </li>
+              ) : (
+                <li className="flex items-center gap-1" key={item.name}>
+                  <a href={item.pathname} target="_blank" rel="noreferrer">
+                    {item.name} <span style={{ fontSize: 15 }}>(OTP LoL)</span>
+                  </a>
+                  <ArrowTopRightOnSquareIcon
+                    className="w-4 h-4"
+                    aria-label="lien externe vers la chaîne twitch OTP lol"
+                  />
+                </li>
+              );
+            })}
+          </ul>
+          {!isLogged ? (
+            <button
+              tabIndex={0}
+              className="absolute bottom-0 left-6 w-auto px-6 py-2 rounded mb-4 mx-auto shadow font-bold text-lg focus:shadow-outline focus:outline-none hover:bg-secondary-light  text-neutral-dark bg-secondary"
+              onClick={handleAuthClick}
+            >
+              Se connecter
+            </button>
           ) : (
-            <ListItem key={item.name} disablePadding>
-              <a href={item.pathname} target="_blank" rel="noreferrer">
-                {item.name} <span style={{ fontSize: 15 }}>(OTP LoL)</span>
-              </a>
-              <OpenInNewIcon
-                sx={{
-                  width: 15,
-                  height: 15,
-                  marginLeft: 0.5,
-                  marginBottom: 1,
-                }}
-              />
-            </ListItem>
-          );
-        })}
-      </ItemList>
-      <LogoutButton variant="contained" onClick={handleLogoutButton}>
-        Se déconnecter
-      </LogoutButton>
-    </Drawer>
+            <button
+              tabIndex={0}
+              className="absolute bottom-0 left-6 w-auto px-6 py-2 rounded mb-4 mx-auto shadow font-bold text-lg focus:shadow-outline focus:outline-none hover:bg-secondary-light  text-neutral-dark bg-secondary"
+              onClick={handleLogoutButton}
+            >
+              Se déconnecter
+            </button>
+          )}
+        </Transition.Child>
+      </Transition>
+      <AuthModal {...formProps} />
+    </>
   );
 };
 

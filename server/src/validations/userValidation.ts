@@ -25,10 +25,7 @@ export const createUserSchema = yup.object({
     .required("Veuillez remplir ce champ"),
   confirmPassword: yup
     .string()
-    .oneOf(
-      [yup.ref("password")],
-      "Les mots de passe doivent être similaires"
-    )
+    .oneOf([yup.ref("password")], "Les mots de passe doivent être similaires")
     .required("Veuillez remplir ce champ"),
 });
 
@@ -46,9 +43,7 @@ export const logUserSchema = yup.object({
     .required("Adresse email et/ou mot de passe incorrect"),
 });
 
-export const userCredentials = yup.object({
-  email: yup
-    .string()
-    .email("Adresse email et/ou mot de passe incorrect")
-    .required("Adresse email et/ou mot de passe incorrect"),
-});
+export const userCredentials = yup
+  .string()
+  .email("Adresse email et/ou mot de passe incorrect")
+  .required("Adresse email et/ou mot de passe incorrect");

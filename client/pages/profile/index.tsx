@@ -1,52 +1,35 @@
 import Head from "next/head";
 import { useState } from "react";
-import { styled, useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import Skeleton from "@mui/material/Skeleton";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import SendEmailForm from "@/src/components/Forms/SendEmailForm";
-import ConfirmDelete from "@/src/components/Forms/ConfirmDelete";
+import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import { TrashIcon } from "@heroicons/react/24/outline";
+import ConfirmDeleteModal from "@/src/components/Modals/ConfirmDeleteModal";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { User, UserRank } from "@/src/types/user";
 import { getUserById } from "@/src/utils/api/user/getUserById";
 import { getUserRank } from "@/src/utils/api/user/getUserRank";
 import { useAuthContext } from "@/context/AuthContext";
+import ResetPasswordModal from "@/src/components/Modals/ResetPasswordModal";
+import Skeleton from "@/src/components/Loaders/Skeleton";
 
 const Profile = () => {
   const { isLogged } = useAuthContext();
 
-  const theme = useTheme();
   const [resetPassword, setResetPassword] = useState(false);
   const [deleteAccount, setDeleteAccount] = useState(false);
+  const deleteAccountProps = { deleteAccount, setDeleteAccount };
+  const resetPasswordProps = { resetPassword, setResetPassword };
 
   const currentUser: UseQueryResult<User> = useQuery(["user"], getUserById, {
     staleTime: 10 * (60 * 1000), // 10 mins
     cacheTime: 15 * (60 * 1000), // 15 mins
+    enabled: isLogged,
   });
 
   const userRank: UseQueryResult<UserRank> = useQuery(["rank"], getUserRank, {
     staleTime: 10 * (60 * 1000), // 10 mins
     cacheTime: 15 * (60 * 1000), // 15 mins
+    enabled: isLogged,
   });
-
-  const resetPasswordProps = {
-    open: resetPassword,
-    setOpen: setResetPassword,
-    url: "user/reset-password",
-    title: "Réinitialisation du mot de passe",
-    buttonName: "réinitialiser le mot de passe",
-  };
-
-  const deleteAccountProps = { deleteAccount, setDeleteAccount };
 
   const handlePasswordClick = () => {
     return resetPassword ? setResetPassword(false) : setResetPassword(true);
@@ -56,68 +39,6 @@ const Profile = () => {
     return deleteAccount ? setDeleteAccount(false) : setDeleteAccount(true);
   };
 
-  const Page = styled(Box)(({ theme }) => ({
-    width: "100%",
-    padding: "32px 0 15px 0",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "space-between",
-    [theme.breakpoints.up("sm")]: {
-      paddingTop: 50,
-    },
-  }));
-
-  const ProfileHeader = styled(Box)(({ theme }) => ({
-    width: "100%",
-    display: "flex",
-    justifyContent: "space-between",
-    color: theme.palette.neutral.light,
-  }));
-
-  const UserName = styled(Typography)({
-    fontSize: 22,
-    fontWeight: 700,
-    textAlign: "center",
-    borderRadius: "8px 8px 0 0",
-    [theme.breakpoints.up("sm")]: {
-      maxWidth: 395,
-    },
-    [theme.breakpoints.up("lg")]: {
-      maxWidth: 445,
-    },
-  });
-
-  const PointsCounter = styled(Typography)(({ theme }) => ({
-    padding: "3px 7px",
-    color: theme.palette.secondary.main,
-    fontWeight: 700,
-    textTransform: "uppercase",
-    border: `2px solid ${theme.palette.secondary.main}`,
-    borderRadius: 8,
-  }));
-
-  const SectionDivider = styled(Divider)(({ theme }) => ({
-    width: "66%",
-    maxWidth: 650,
-    margin: "25px auto",
-    backgroundColor: theme.palette.primary.light,
-  }));
-
-  const ProfileList = styled(List)(({ theme }) => ({
-    padding: 0,
-    color: theme.palette.neutral.light,
-  }));
-
-  const ListIcon = styled(ListItemIcon)(({ theme }) => ({
-    minWidth: 0,
-    marginRight: 10,
-    padding: 2,
-    border: `2px solid ${theme.palette.neutral.light}`,
-    borderRadius: 8,
-    color: theme.palette.neutral.light,
-  }));
-
   return (
     <>
       <Head>
@@ -126,79 +47,104 @@ const Profile = () => {
       </Head>
 
       {isLogged ? (
-        <Page component="section">
-          <>
-            <Container maxWidth="md">
-              <ProfileHeader>
-                {currentUser.isLoading ? (
-                  <>
-                    <Skeleton variant="text" width={120} height={30} />
-                    <Skeleton variant="rounded" width={70} height={30} />
-                  </>
-                ) : currentUser.isError ? (
-                  <>
-                    <UserName>User</UserName>
-                    <PointsCounter>N/A pts </PointsCounter>
-                  </>
+        <section>
+          <div className="w-full px-5 m-auto sm:max-w-3xl lg:max-w-4xl lg:px-0 ">
+            <div className="w-full flex justify-between text-neutral-light">
+              {currentUser.isLoading ? (
+                <>
+                  <Skeleton
+                    width="120px"
+                    height="30px"
+                    rounded
+                    ariaLabel="Chargement du pseudo"
+                  />
+                  <Skeleton
+                    width="70px"
+                    height="30px"
+                    rounded
+                    ariaLabel="Chargement des points"
+                  />
+                </>
+              ) : currentUser.isError ? (
+                <>
+                  <h1 className="max-w-sm text-lg font-bold lg:max-w-md lg:text-xl">
+                    User
+                  </h1>
+                  <p className="points_counter">N/A pts </p>
+                </>
+              ) : (
+                <>
+                  <h1 className="max-w-sm text-lg font-bold lg:max-w-md lg:text-xl">
+                    {currentUser.data.userName}
+                  </h1>
+                  <p className="points_counter">
+                    {currentUser.data.points} pts
+                  </p>
+                </>
+              )}
+            </div>
+
+            <hr aria-hidden="true"  className="w-2/3 max-w-2xl my-8 mx-auto border-main-light sm:my-12" />
+
+            <ul className="icons flex flex-col gap-6">
+              <li>
+                {userRank.isLoading ? (
+                  <Skeleton
+                    width="200px"
+                    height="30px"
+                    rounded
+                    ariaLabel="Chargement du rang"
+                  />
+                ) : userRank.isError ? (
+                  "Classement actuel: N/A"
                 ) : (
-                  <>
-                    <UserName>{currentUser.data.userName}</UserName>
-                    <PointsCounter>{currentUser.data.points} pts</PointsCounter>
-                  </>
+                  `Classement actuel: ${userRank.data.userRank}`
                 )}
-              </ProfileHeader>
-              <SectionDivider />
+              </li>
+              <li>
+                {userRank.isLoading ? (
+                  <Skeleton
+                    width="100px"
+                    height="30px"
+                    rounded
+                    ariaLabel="Chargement du rang"
+                  />
+                ) : userRank.isError ? (
+                  "Top: N/A"
+                ) : (
+                  `Top: ${userRank.data.top}%`
+                )}
+              </li>
+            </ul>
 
-              <ProfileList>
-                <ListItem disableGutters>
-                  {userRank.isLoading ? (
-                    <Skeleton variant="rounded" width={200} height={30} />
-                  ) : userRank.isError ? (
-                    <ListItemText primary={`Classement actuel: N/A`} />
-                  ) : (
-                    <ListItemText
-                      primary={`Classement actuel: ${userRank.data.userRank}`}
-                    />
-                  )}
-                </ListItem>
-                <ListItem disableGutters>
-                  {userRank.isLoading ? (
-                    <Skeleton variant="rounded" width={100} height={30} />
-                  ) : userRank.isError ? (
-                    <ListItemText primary={`Top: N/A`} />
-                  ) : (
-                    <ListItemText primary={`Top: ${userRank.data.top}%`} />
-                  )}
-                </ListItem>
-              </ProfileList>
-              <SectionDivider />
+            <hr aria-hidden="true"  className="w-2/3 max-w-2xl my-8 mx-auto border-main-light sm:my-12" />
 
-              <ProfileList>
-                <ListItem disableGutters sx={{ width: "fit-content" }}>
-                  <ListItemButton disableGutters onClick={handlePasswordClick}>
-                    <ListIcon>
-                      <EditIcon />
-                    </ListIcon>
-                    <ListItemText primary="Modifier le mot de passe" />
-                  </ListItemButton>
-                </ListItem>
-                <ListItem disableGutters sx={{ width: "fit-content" }}>
-                  <ListItemButton
-                    disableGutters
-                    onClick={handleDeleteAccountClick}
-                  >
-                    <ListIcon>
-                      <DeleteIcon />
-                    </ListIcon>
-                    <ListItemText primary="Supprimer le compte" />
-                  </ListItemButton>
-                </ListItem>
-              </ProfileList>
-            </Container>
-            <SendEmailForm {...resetPasswordProps} />
-            <ConfirmDelete {...deleteAccountProps} />
-          </>
-        </Page>
+            <ul className="w-full  py-4 flex flex-col gap-6 md:gap-3">
+              <li>
+                <button
+                  type="button"
+                  className="w-fit flex items-center gap-3 rounded-sm text-neutral-light hover:shadow-md hover:bg-main-light md:py-2 md:pl-1 md:pr-6"
+                  onClick={handlePasswordClick}
+                >
+                  <PencilSquareIcon aria-hidden="true" className="w-6 h-6" />
+                  Modifier le mot de passe
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  className="w-fit flex items-center gap-3 rounded-sm text-neutral-light hover:shadow-md hover:bg-main-light md:py-2 md:pl-1 md:pr-6"
+                  onClick={handleDeleteAccountClick}
+                >
+                  <TrashIcon aria-hidden="true" className="w-6 h-6 -ml-[2px]" />
+                  Supprimer le compte
+                </button>
+              </li>
+            </ul>
+          </div>
+          <ResetPasswordModal {...resetPasswordProps} />
+          <ConfirmDeleteModal {...deleteAccountProps} />
+        </section>
       ) : null}
     </>
   );

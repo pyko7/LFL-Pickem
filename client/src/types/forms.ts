@@ -6,14 +6,26 @@ export interface AuthForm {
 }
 
 export interface EmailFormProps {
+  url: string;
+  buttonName: string;
+}
+
+export interface AuthProps {
+  userAuth: boolean;
+  setUserAuth: (userAuth: boolean) => void;
+}
+
+export interface ConfirmEmailProps {
   open: boolean;
   setOpen: (open: boolean) => void;
-  url: string;
-  title: string;
-  buttonName: string;
 }
 
 export interface DeleteAccountProps {
   deleteAccount: boolean;
   setDeleteAccount: (deleteAccount: boolean) => void;
+}
+
+export interface ResetPasswordProps {
+  resetPassword: boolean;
+  setResetPassword: (resetPassword: boolean) => void;
 }

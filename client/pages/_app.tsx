@@ -1,10 +1,8 @@
 import type { AppProps as NextAppProps } from "next/app";
-import { ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
 import Layout from "../src/components/Layout";
-import { theme } from "../src/style/theme";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "@/context/AuthContext";
+import "../src/style/globals.css";
 
 type AppProps<P = any> = {
   pageProps: P;
@@ -20,14 +18,11 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   });
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <AuthProvider>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </AuthProvider>
-      </ThemeProvider>
+      <AuthProvider>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

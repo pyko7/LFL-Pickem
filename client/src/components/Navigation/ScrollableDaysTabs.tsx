@@ -1,89 +1,45 @@
-import { useEffect, useState } from "react";
-import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Skeleton from "@mui/material/Skeleton";
-import Typography from "@mui/material/Typography";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
+import { useState } from "react";
+import Skeleton from "../Loaders/Skeleton";
 import { useGameContext } from "@/context/GameContext";
-import { Day } from "@/src/types/teams";
+import Tab from "./Tab";
+import Tabs from "./Tabs";
 
 const ScrollableDaysTabs = () => {
   const { allDays, dayData, setDayData } = useGameContext();
-  const [value, setValue] = useState(0);
-
-  const handleClick = (day: Day) => {
-    setDayData(day);
-  };
-
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
-
-  useEffect(() => {
-    if (!dayData) {
-      setValue(0);
-    } else {
-      setValue(dayData?.id! - 1);
-    }
-  }, [dayData]);
-
-  const Container = styled(Box)(({ theme }) => ({
-    position: "absolute",
-    top: 32,
-    left: "50%",
-    transform: "translateX(-50%)",
-    width: "100%",
-    height: 48,
-    maxWidth: 900,
-    backgroundColor: theme.palette.primary.light,
-  }));
-
-  const Days = styled(Tabs)(({ theme }) => ({
-    height: "100%",
-    "& .MuiTabs-indicator": {
-      backgroundColor: theme.palette.secondary.light,
-      height: 3,
-    },
-    "& .MuiTab-root.Mui-selected": {
-      color: theme.palette.secondary.light,
-      fontWeight: 700,
-    },
-  }));
-
-  const Day = styled(Tab)(({ theme }) => ({
-    height: "100%",
-    padding: "0 20px",
-    textTransform: "none",
-    color: theme.palette.neutral.light,
-  }));
+  const [position, setPosition] = useState(0);
+  const dayDataProps = { dayData, setDayData };
 
   return (
-    <Container>
+    <div className="absolute top-8 left-1/2 -translate-x-1/2 w-full max-w-4xl bg-main-light">
       {allDays.isLoading ? (
-        <Skeleton variant="rectangular" height={48} />
+        <Skeleton
+          width="100%"
+          height="64px"
+          rounded
+          ariaLabel="Chargement des journées"
+        />
       ) : allDays.isError ? (
-        <Typography sx={{ padding: "0 5px" }}>
-          Une erreur est survenue, veuillez réessayer plus tard.
-        </Typography>
+        <div>
+          <p className="w-full h-16 px-4 flex items-center justify-center text-neutral-light">
+            Une erreur est survenue, veuillez réessayer plus tard.
+          </p>
+        </div>
       ) : (
-        <Days
-          value={value}
-          onChange={handleChange}
-          variant="scrollable"
-          scrollButtons="auto"
-          aria-label="Selecteur de journée"
-        >
-          {allDays.data?.map((day) => (
-            <Day
-              label={`Journée ${day.id}`}
-              key={day.id}
-              onClick={() => handleClick(day)}
-            />
-          ))}
-        </Days>
+        <nav aria-label="Selecteur de journée" className=" w-full h-full ">
+          <Tabs position={position}>
+            {allDays.data?.map((day) => (
+              <Tab
+                {...dayDataProps}
+                setPosition={setPosition}
+                label={`Journée ${day.id}`}
+                value={day}
+                key={day.id}
+              />
+            ))}
+          </Tabs>
+        </nav>
       )}
-    </Container>
+    </div>
   );
 };
 

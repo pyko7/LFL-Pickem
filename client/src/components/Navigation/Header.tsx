@@ -1,61 +1,37 @@
 import { useState } from "react";
-import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import lflLogo from "@/public/white_lfl.webp";
+import Link from "next/link";
 import Image from "next/image";
 import NavigationDrawer from "./NavigationDrawer";
+import { Bars3Icon } from "@heroicons/react/24/outline";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    return setOpen(true);
+  };
 
   const imageUrl =
     "https://res.cloudinary.com/dkferpmf6/image/upload/v1674578020/LFL/white_lfl.webp";
 
   const drawerProps = { open, setOpen };
 
-  const ImageContainer = styled("a")(({ theme }) => ({
-    width: 65,
-    height: 65,
-    [theme.breakpoints.up("sm")]: {
-      width: 75,
-      height: 75,
-    },
-  }));
-
   return (
-    <>
-      <AppBar position="static" sx={{ boxShadow: "none" }}>
-        <Toolbar
-          sx={{
-            width: 1,
-            height: 80,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <ImageContainer href="/">
-            <Image src={imageUrl} alt="logo" width={65} height={65} priority />
-          </ImageContainer>
-          <IconButton
-            sx={{ padding: 0 }}
-            size="large"
-            color="inherit"
-            aria-label="menu"
-            onClick={() => setOpen(true)}
-          >
-            <MenuIcon sx={{ width: 38, height: 38 }} />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      <Box component="nav">
+    <header className="w-full h-24 px-4 flex justify-between items-center sm:px-6 lg:px-8 xl:px-9">
+      <Link href="/">
+        <Image src={imageUrl} alt="logo" width={65} height={65} priority />
+      </Link>
+      <button type="button" name="menu" aria-label="menu" onClick={handleClick}>
+        <Bars3Icon
+          aria-hidden="true"
+          className="w-10 h-10  text-neutral-light"
+        />
+      </button>
+
+      <div className="absolute top-0 -right-0">
         <NavigationDrawer {...drawerProps} />
-      </Box>
-    </>
+      </div>
+    </header>
   );
 };
 

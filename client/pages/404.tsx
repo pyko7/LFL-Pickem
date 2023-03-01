@@ -2,32 +2,13 @@ import Link from "next/link";
 
 const Custom404 = () => {
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        textAlign: "center",
-        gap: 6,
-        color: "#fff",
-      }}
-    >
-      <h1 style={{ fontSize: 52 }}>Oops</h1>
-      <p style={{ fontSize: 28 }}>Cette page n&apos;existe pas </p>
+    <div className="w-full flex flex-col items-center  gap-6 text-neutral-light">
+      <h1 className="text-5xl">Oops</h1>
+      <p className="text-3xl">Cette page n&apos;existe pas </p>
 
       <Link
         href="/"
-        style={{
-          width: "100%",
-          maxWidth: 275,
-          padding: "10px 15px",
-          backgroundColor: "#B8933A",
-          color: "#000",
-          textDecoration: "none",
-          borderRadius: 10,
-        }}
+        className="w-full max-w-[275px] py-2 px-4 text-center font-bold bg-secondary text-neutral-dark shadow-md no-underline rounded-lg"
       >
         Accueil
       </Link>

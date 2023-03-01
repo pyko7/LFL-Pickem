@@ -23,9 +23,6 @@ export const getUserById = async () => {
     return data;
   } catch (error) {
     if (error instanceof Error) {
-      if (error.message === "Token invalide") {
-        window.location.href = "/login";
-      }
       throw new Error("Une erreur est survenue");
     }
   }
