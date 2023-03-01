@@ -13,14 +13,10 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 const LoginForm = ({ handleClose }: { handleClose: () => void }) => {
   const { push, pathname } = useRouter();
   const { setIsLogged } = useAuthContext();
-  const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleEmailValueChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setEmailValue(event.target.value);
-  };
   const handlePasswordValueChange = (event: ChangeEvent<HTMLInputElement>) => {
     setPasswordValue(event.target.value);
   };
@@ -75,17 +71,18 @@ const LoginForm = ({ handleClose }: { handleClose: () => void }) => {
           type="email"
           id="emailInput"
           className="peer"
+          placeholder=" "
           required
           {...register("email")}
-          onChange={handleEmailValueChange}
         />
         <label
           htmlFor="emailInput"
-          className={`input_label ${
-            emailValue.length > 0
-              ? "-translate-y-[34px] -translate-x-2 scale-[0.8] px-2"
-              : ""
-          } peer-focus:-translate-y-[34px] peer-focus:-translate-x-2 peer-focus:scale-[0.8]
+          className={`input_label 
+          peer-[:not(:placeholder-shown)]:-translate-y-[34px]
+          peer-[:not(:placeholder-shown)]:-translate-x-2
+          peer-[:not(:placeholder-shown)]:scale-[0.8]
+          peer-[:not(:placeholder-shown)]:px-2
+          peer-focus:-translate-y-[34px] peer-focus:-translate-x-2 peer-focus:scale-[0.8]
     peer-focus:px-2`}
         >
           Adresse email
@@ -97,19 +94,18 @@ const LoginForm = ({ handleClose }: { handleClose: () => void }) => {
           type={passwordVisible ? "text" : "password"}
           id="passwordInput"
           className="peer password_input"
+          placeholder=" "
           required
           {...register("password")}
-          onChange={handlePasswordValueChange}
         />
         <label
           htmlFor="passwordInput"
           className={`input_label
-          ${
-            passwordValue.length > 0
-              ? "-translate-y-[34px] -translate-x-2 scale-[0.8] px-2"
-              : ""
-          }
-           peer-focus:-translate-y-[34px] peer-focus:-translate-x-2 peer-focus:scale-[0.8]
+          peer-[:not(:placeholder-shown)]:-translate-y-[34px]
+          peer-[:not(:placeholder-shown)]:-translate-x-2
+          peer-[:not(:placeholder-shown)]:scale-[0.8]
+          peer-[:not(:placeholder-shown)]:px-2
+          peer-focus:-translate-y-[34px] peer-focus:-translate-x-2 peer-focus:scale-[0.8]
     peer-focus:px-2`}
         >
           Mot de passe

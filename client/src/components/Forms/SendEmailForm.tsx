@@ -8,7 +8,6 @@ import { useMutation } from "@tanstack/react-query";
 import Spinner from "../Loaders/Spinner";
 
 const SendEmailForm = ({ url, buttonName }: EmailFormProps) => {
-  const [emailValue, setEmailValue] = useState("");
   const successMessage = `Demande réussie ! Vous recevrez un email sous peu contenant un lien pour ${buttonName}.`;
   const [errorMessage, setErrorMessage] = useState("");
   const {
@@ -20,10 +19,6 @@ const SendEmailForm = ({ url, buttonName }: EmailFormProps) => {
     reValidateMode: "onSubmit",
     resolver: yupResolver(sendEmailSchema),
   });
-
-  const handleEmailValueChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setEmailValue(event.target.value);
-  };
 
   const mutation = useMutation({
     onError: (error) => {
@@ -48,17 +43,18 @@ const SendEmailForm = ({ url, buttonName }: EmailFormProps) => {
           type="email"
           id="emailInput"
           className="peer"
+          placeholder=" "
           required
           {...register("email")}
-          onChange={handleEmailValueChange}
         />
         <label
           htmlFor="emailInput"
-          className={`input_label ${
-            emailValue.length > 0
-              ? "-translate-y-[34px] -translate-x-2 scale-[0.8] px-1"
-              : ""
-          } peer-focus:-translate-y-[34px] peer-focus:-translate-x-2 peer-focus:scale-[0.8]
+          className={`input_label 
+          peer-[:not(:placeholder-shown)]:-translate-y-[34px]
+          peer-[:not(:placeholder-shown)]:-translate-x-2
+          peer-[:not(:placeholder-shown)]:scale-[0.8]
+          peer-[:not(:placeholder-shown)]:px-2
+          peer-focus:-translate-y-[34px] peer-focus:-translate-x-2 peer-focus:scale-[0.8]
     peer-focus:px-2`}
         >
           Adresse email
