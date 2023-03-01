@@ -19,7 +19,7 @@ const LoginPage = () => {
   const imageUrl =
     "https://res.cloudinary.com/dkferpmf6/image/upload/v1674578020/LFL/white_lfl.webp";
 
-  const [days, hours, minutes, seconds] = useCountdown("2023-03-01 10:00:00");
+  const [days, hours, minutes, seconds] = useCountdown("2023-03-01 12:00:00");
 
   const formProps = {
     open,
