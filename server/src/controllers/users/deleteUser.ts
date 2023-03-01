@@ -12,8 +12,18 @@ export const deleteUser = async (req: Request, res: Response) => {
         id: decodedToken.uid,
       },
     });
-    res.clearCookie("session");
-    res.clearCookie("pid");
+    res.clearCookie("session", {
+      domain:
+        process.env.NODE_ENV === "production"
+          ? process.env.PROD_DOMAIN
+          : process.env.ENV_DOMAIN,
+    });
+    res.clearCookie("pid", {
+      domain:
+        process.env.NODE_ENV === "production"
+          ? process.env.PROD_DOMAIN
+          : process.env.ENV_DOMAIN,
+    });
     res.status(200).json({ message: "User deleted" });
   } catch (error) {
     return res.status(403).json(error);

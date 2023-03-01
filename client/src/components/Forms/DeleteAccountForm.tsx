@@ -6,8 +6,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { AuthForm } from "@/src/types/forms";
 import { sendEmailSchema } from "@/src/validations/authValidation";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/router";
+import { useAuthContext } from "@/context/AuthContext";
 
 const DeleteAccountForm = ({ handleClose }: { handleClose: () => void }) => {
+  const { push } = useRouter();
+  const { setIsLogged } = useAuthContext();
   const successMessage = `Suppression confirmée, merci d'avoir fait partie de l'aventure !`;
   const [emailValue, setEmailValue] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -33,7 +37,9 @@ const DeleteAccountForm = ({ handleClose }: { handleClose: () => void }) => {
     },
     onSuccess: () => {
       setTimeout(() => {
+        setIsLogged(false);
         handleClose();
+        push("/");
       }, 1000);
     },
     mutationFn: (data: AuthForm) => deleteUser(data),

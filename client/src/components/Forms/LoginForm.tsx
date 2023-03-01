@@ -11,7 +11,7 @@ import { useAuthContext } from "@/context/AuthContext";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
 const LoginForm = ({ handleClose }: { handleClose: () => void }) => {
-  const { push } = useRouter();
+  const { push, pathname } = useRouter();
   const { setIsLogged } = useAuthContext();
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
@@ -53,6 +53,9 @@ const LoginForm = ({ handleClose }: { handleClose: () => void }) => {
       setIsLogged(false);
     },
     onSuccess: () => {
+      if (pathname !== "/") {
+        push("/");
+      }
       setIsLogged(true);
       handleClose();
     },
@@ -118,7 +121,11 @@ const LoginForm = ({ handleClose }: { handleClose: () => void }) => {
           <button
             type="button"
             role="button"
-            aria-label={`${passwordVisible ? "Masquer le mot de passe" : "Afficher le mot de passe"}`}
+            aria-label={`${
+              passwordVisible
+                ? "Masquer le mot de passe"
+                : "Afficher le mot de passe"
+            }`}
             className="w-full h-full text-neutral-light focus-visible:text-neutral-light focus-visible:p-0"
             onClick={handleClickShowPassword}
           >
