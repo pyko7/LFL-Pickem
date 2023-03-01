@@ -21,10 +21,10 @@ const Header = () => {
       <Link href="/">
         <Image src={imageUrl} alt="logo" width={65} height={65} priority />
       </Link>
-      <button onClick={handleClick}>
+      <button type="button" name="menu" aria-label="menu" onClick={handleClick}>
         <Bars3Icon
+          aria-hidden="true"
           className="w-10 h-10  text-neutral-light"
-          aria-label="menu"
         />
       </button>
 

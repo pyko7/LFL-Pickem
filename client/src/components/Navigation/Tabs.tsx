@@ -46,16 +46,16 @@ const Tabs = ({
     <>
       {scrollX !== 0 ? (
         <button
+          name="naviguer vers la gauche dans les journées"
+          aria-label="naviguer vers la gauche dans les journées"
           className="hidden absolute left-0 top-1/2 -translate-y-1/2 w-7 h-[90%] m-auto items-center justify-center z-10 bg-main-light cursor-pointer sm:flex"
           onClick={() => handleClick(-200)}
         >
-          <ChevronLeftIcon
-            className="w-6 h-6"
-            aria-label="scroller vers la gauche dans les journées"
-          />
+          <ChevronLeftIcon className="w-6 h-6" aria-hidden="true" />
         </button>
       ) : null}
       <ul
+        role="tablist"
         ref={ref}
         id="tabs"
         className="tabs__scrollbar--hide relative w-full h-full px-6 flex items-center gap-10 overflow-x-scroll scroll-smooth sm:px-10"
@@ -64,12 +64,13 @@ const Tabs = ({
         {children}
       </ul>
       {!scrollEnd ? (
-        <button className="hidden absolute right-0 top-1/2 -translate-y-1/2 w-7 h-[90%] m-auto items-center justify-center z-50 bg-main-light cursor-pointer sm:flex">
-          <ChevronRightIcon
-            className="w-6 h-6"
-            aria-label="scroller vers la droite dans les journées"
-            onClick={() => handleClick(200)}
-          />
+        <button
+          name="scroller vers la droite dans les journées"
+          aria-label="scroller vers la droite dans les journées"
+          className="hidden absolute right-0 top-1/2 -translate-y-1/2 w-7 h-[90%] m-auto items-center justify-center z-50 bg-main-light cursor-pointer sm:flex"
+          onClick={() => handleClick(200)}
+        >
+          <ChevronRightIcon className="w-6 h-6" aria-hidden="true" />
         </button>
       ) : null}
     </>
