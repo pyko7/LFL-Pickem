@@ -12,7 +12,7 @@ import AuthModal from "../Modals/AuthModal";
 
 const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
   const { isLogged, setIsLogged } = useAuthContext();
-  const { push } = useRouter();
+  const { push, pathname } = useRouter();
   const [userAuth, setUserAuth] = useState(false);
 
   const formProps = { userAuth, setUserAuth };
@@ -35,6 +35,9 @@ const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
   };
 
   const handleLogoutButton = () => {
+    if (pathname !== "/") {
+      push("/");
+    }
     handleClose();
     mutation.mutate();
   };
