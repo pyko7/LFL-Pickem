@@ -49,6 +49,7 @@ const FirstTeam = ({
             ? "opacity-1 "
             : ""
         }
+        ${disabledDay && !visible ? "opacity-0" : ""}
         ${firstTeam ? "mr-5" : "ml-5"}
         team_card_title--opacity max-w-[75px] whitespace-pre-wrap text-sm font-bold sm:max-w-none sm:text-base`}
       >
