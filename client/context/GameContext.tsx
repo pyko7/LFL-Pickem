@@ -45,6 +45,12 @@ export const GameProvider = ({ children }: any) => {
     }
   );
 
+  useQuery(["score"], updateUserScore, {
+    staleTime: 10 * (60 * 1000), // 10 mins
+    cacheTime: 15 * (60 * 1000), // 15 mins
+    enabled: isLogged,
+  });
+
   useEffect(() => {
     if (typeof allDays.data !== "undefined") {
       const getClosestDay = async () => {
@@ -70,13 +76,6 @@ export const GameProvider = ({ children }: any) => {
       gamesWithBet.refetch();
     }
   }, [dayData?.id]);
-
-  useEffect(() => {
-    if (!isLogged) {
-      return;
-    }
-    updateUserScore();
-  }, []);
 
   return (
     <GameContext.Provider
