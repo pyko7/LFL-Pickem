@@ -8,38 +8,39 @@ export const createUser = async (req: Request, res: Response) => {
   const user = req.body;
   const pseudo = user.pseudo.toLowerCase();
   try {
-    await createUserSchema.validate(user);
+    res.status(400);
+    // await createUserSchema.validate(user);
 
-    const results = await auth.listUsers();
-    results.users.forEach((existingUser) => {
-      if (existingUser.displayName === user.pseudo) {
-        throw new Error("Le pseudo est déjà utilisé");
-      }
-    });
+    // const results = await auth.listUsers();
+    // results.users.forEach((existingUser) => {
+    //   if (existingUser.displayName === user.pseudo) {
+    //     throw new Error("Le pseudo est déjà utilisé");
+    //   }
+    // });
 
-    const newUser = await auth.createUser({
-      email: user.email,
-      emailVerified: false,
-      password: user.password,
-      displayName: pseudo,
-      disabled: false,
-    });
+    // const newUser = await auth.createUser({
+    //   email: user.email,
+    //   emailVerified: false,
+    //   password: user.password,
+    //   displayName: pseudo,
+    //   disabled: false,
+    // });
 
-    await prisma.user.create({
-      data: {
-        id: newUser.uid,
-        email: newUser.email!,
-        userName: newUser.displayName!,
-      },
-    });
+    // await prisma.user.create({
+    //   data: {
+    //     id: newUser.uid,
+    //     email: newUser.email!,
+    //     userName: newUser.displayName!,
+    //   },
+    // });
 
-    const verificationEmail = await auth.generateEmailVerificationLink(
-      user.email
-    );
+    // const verificationEmail = await auth.generateEmailVerificationLink(
+    //   user.email
+    // );
 
-    sendVerificationEmail(user.email, verificationEmail);
+    // sendVerificationEmail(user.email, verificationEmail);
 
-    res.status(201).json({ message: "User created!" });
+    // res.status(201).json({ message: "User created!" });
   } catch (error) {
     if (error instanceof Error) {
       return res.status(400).json(error.message);

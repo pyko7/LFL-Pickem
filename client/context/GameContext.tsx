@@ -18,7 +18,10 @@ export const useGameContext = () => {
 
 export const GameProvider = ({ children }: any) => {
   const { isLogged } = useAuthContext();
-  const [dayData, setDayData] = useState<Day | null>(null);
+  const [dayData, setDayData] = useState<Day | null>({
+    id: 18,
+    date: "2023-03-22 18:00:00.000",
+  });
 
   const allDays = useQuery(["allDays"], getAllDays, {
     staleTime: 10 * (60 * 1000), // 10 mins
@@ -51,19 +54,19 @@ export const GameProvider = ({ children }: any) => {
     enabled: isLogged,
   });
 
-  useEffect(() => {
-    if (typeof allDays.data !== "undefined") {
-      const getClosestDay = async () => {
-        const date = getClosestDayFromNow(allDays.data);
-        allDays.data.map((day: Day) => {
-          if (new Date(day.date).toDateString() == date) {
-            return setDayData(day);
-          }
-        });
-      };
-      getClosestDay();
-    }
-  }, [allDays.data]);
+  // useEffect(() => {
+  //   if (typeof allDays.data !== "undefined") {
+  //     const getClosestDay = async () => {
+  //       const date = getClosestDayFromNow(allDays.data);
+  //       allDays.data.map((day: Day) => {
+  //         if (new Date(day.date).toDateString() == date) {
+  //           return setDayData(day);
+  //         }
+  //       });
+  //     };
+  //     getClosestDay();
+  //   }
+  // }, [allDays.data]);
 
   useEffect(() => {
     if (dayData === null) {
