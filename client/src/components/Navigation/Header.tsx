@@ -6,26 +6,21 @@ import { Bars3Icon } from "@heroicons/react/24/outline";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
+  const drawerProps = { open, setOpen };
+  const imageUrl =
+    "https://res.cloudinary.com/dkferpmf6/image/upload/v1674578020/LFL/white_lfl.webp";
 
   const handleClick = () => {
     return setOpen(true);
   };
 
-  const imageUrl =
-    "https://res.cloudinary.com/dkferpmf6/image/upload/v1674578020/LFL/white_lfl.webp";
-
-  const drawerProps = { open, setOpen };
-
   return (
     <header className="w-full h-24 px-4 flex justify-between items-center sm:px-6 lg:px-8 xl:px-9">
-      <Link href="/">
-        <Image src={imageUrl} alt="logo" width={65} height={65} priority />
+      <Link href="/" className="relative w-16 h-16">
+        <Image src={imageUrl} alt="logo" fill priority />
       </Link>
       <button type="button" name="menu" aria-label="menu" onClick={handleClick}>
-        <Bars3Icon
-          aria-hidden="true"
-          className="w-10 h-10  text-neutral-light"
-        />
+        <Bars3Icon aria-hidden="true" className="w-10 h-10" />
       </button>
 
       <div className="absolute top-0 -right-0">

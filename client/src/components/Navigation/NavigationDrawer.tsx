@@ -1,45 +1,17 @@
-import { useState } from "react";
 import { Transition } from "@headlessui/react";
-import { DrawerProps } from "@/src/types/navigation";
+import { OpenState } from "@/src/types/types";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { useMutation } from "@tanstack/react-query";
-import { logoutUser } from "@/src/utils/api/auth/logoutUser";
-import { useRouter } from "next/router";
 import { useAuthContext } from "@/context/AuthContext";
 import AuthModal from "../Modals/AuthModal";
+import LogoutButton from "../Buttons/LogoutButton";
+import LoginButton from "../Buttons/LoginButton";
 
-const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
+const NavigationDrawer = ({ open, setOpen }: OpenState) => {
   const { isLogged, setIsLogged } = useAuthContext();
-  const { push, pathname } = useRouter();
-  const [userAuth, setUserAuth] = useState(false);
-
-  const formProps = { userAuth, setUserAuth };
 
   const handleClose = () => {
     return setOpen(false);
-  };
-
-  const mutation = useMutation({
-    mutationFn: logoutUser,
-    onSuccess: () => {
-      setIsLogged(false);
-      handleClose();
-    },
-  });
-
-  const handleAuthClick = () => {
-    handleClose();
-    return setUserAuth(true);
-  };
-
-  const handleLogoutButton = () => {
-    if (pathname !== "/") {
-      push("/");
-    }
-    handleClose();
-    mutation.mutate();
   };
 
   const navLinks = [
@@ -47,17 +19,17 @@ const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
       name: "Accueil",
       pathname: "/",
     },
-    // {
-    //   name: "Classement",
-    //   pathname: "/rank",
-    // },
-    // {
-    //   name: "Calendrier",
-    //   pathname: "/schedule",
-    // },
     {
-      name: "Live",
-      pathname: "https://www.twitch.tv/otplol_",
+      name: "LFL",
+      pathname: "/lfl",
+    },
+    {
+      name: "Div2",
+      pathname: "/div2",
+    },
+    {
+      name: "Classement",
+      pathname: "/rank",
     },
     {
       name: "Règles",
@@ -80,7 +52,7 @@ const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
           leave="transition-opacity ease-linear duration-300"
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
-          className="fixed inset-0 bg-black/90 z-10"
+          className="fixed inset-0 bg-neutral-950/80 z-10"
           onClick={handleClose}
         />
 
@@ -94,55 +66,40 @@ const NavigationDrawer = ({ open, setOpen }: DrawerProps) => {
           leave="transition ease-in duration-500 transform"
           leaveFrom="translate-x-0"
           leaveTo="translate-x-full"
-          className="fixed top-0 right-0 w-64 min-h-screen bg-main-dark z-20"
+          className="fixed top-0 right-0 w-64 min-h-screen bg-neutral-950 z-20 xl:w-72"
         >
           <div className="w-full p-4 flex items-center justify-end">
-            <button tabIndex={0} className="w-9 h-9 m-2" onClick={handleClose}>
-              <XMarkIcon className="text-neutral-light" />
+            <button className="w-9 h-9 m-2" onClick={handleClose}>
+              <XMarkIcon />
             </button>
           </div>
 
-          <ul className="w-full px-6 py-4 flex flex-col gap-6 text-xl font-bold text-neutral-light ">
-            {navLinks.map((item) => {
-              return item.name !== "Live" ? (
-                <li key={item.name}>
-                  <Link href={item.pathname} onClick={handleClose}>
-                    {item.name}
-                  </Link>
-                </li>
-              ) : (
-                <li className="flex items-center gap-1" key={item.name}>
-                  <a href={item.pathname} target="_blank" rel="noreferrer">
-                    {item.name} <span style={{ fontSize: 15 }}>(OTP LoL)</span>
-                  </a>
-                  <ArrowTopRightOnSquareIcon
-                    className="w-4 h-4"
-                    aria-label="lien externe vers la chaîne twitch OTP lol"
-                  />
-                </li>
-              );
-            })}
+          <ul className="w-full pl-2 pr-10 py-4 flex flex-col gap-4 text-lg font-bold xl:pl-5">
+            {navLinks.map((item) => (
+              <li
+                key={item.name}
+                className={`${
+                  item.pathname === "#" ? "hidden" : ""
+                } w-full flex`}
+              >
+                <Link
+                  href={item.pathname}
+                  className="w-full px-4 py-2 rounded-3xl hover:bg-neutral-600/30"
+                  onClick={handleClose}
+                >
+                  {item.name}
+                </Link>
+              </li>
+            ))}
           </ul>
           {!isLogged ? (
-            <button
-              tabIndex={0}
-              className="absolute bottom-0 left-6 w-auto px-6 py-2 rounded mb-4 mx-auto shadow font-bold text-lg focus:shadow-outline focus:outline-none hover:bg-secondary-light  text-neutral-dark bg-secondary"
-              onClick={handleAuthClick}
-            >
-              Se connecter
-            </button>
+            <LoginButton handleClose={handleClose} />
           ) : (
-            <button
-              tabIndex={0}
-              className="absolute bottom-0 left-6 w-auto px-6 py-2 rounded mb-4 mx-auto shadow font-bold text-lg focus:shadow-outline focus:outline-none hover:bg-secondary-light  text-neutral-dark bg-secondary"
-              onClick={handleLogoutButton}
-            >
-              Se déconnecter
-            </button>
+            <LogoutButton setIsLogged={setIsLogged} handleClose={handleClose} />
           )}
         </Transition.Child>
       </Transition>
-      <AuthModal {...formProps} />
+      {/* <AuthModal {...formProps} /> */}
     </>
   );
 };
