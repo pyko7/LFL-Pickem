@@ -10,8 +10,6 @@ module.exports = {
         secondary: "#B8933A",
         "secondary-light": "#C5A047",
         "neutral-light": "#FFFFFE",
-        neutral: "#9E9E9E",
-        "neutral-dark": "#121212",
       },
       borderRadius: {
         circle: "50%",
