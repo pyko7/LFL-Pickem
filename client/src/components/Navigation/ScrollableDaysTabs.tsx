@@ -10,7 +10,7 @@ const ScrollableDaysTabs = () => {
   const dayDataProps = { dayData, setDayData };
 
   return (
-    <div className="absolute top-8 left-1/2 -translate-x-1/2 w-full max-w-4xl bg-main-light">
+    <div className="absolute top-8 left-1/2 -translate-x-1/2 w-full max-w-7xl rounded-md bg-neutral-700">
       {allDays.isLoading ? (
         <Skeleton
           width="100%"

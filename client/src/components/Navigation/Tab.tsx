@@ -1,7 +1,7 @@
-import { TabProps } from "@/src/types/navigation";
+import { Tab } from "@/src/types/tabs";
 import { useEffect, useRef, useState } from "react";
 
-const Tab = ({ dayData, setDayData, label, value, setPosition }: TabProps) => {
+const Tab = ({ dayData, setDayData, label, value, setPosition }: Tab) => {
   const [active, setActive] = useState(false);
   const ref = useRef<HTMLLIElement>(null);
 
@@ -36,11 +36,11 @@ const Tab = ({ dayData, setDayData, label, value, setPosition }: TabProps) => {
   return (
     <li
       ref={ref}
-      className={`tab w-fit h-full py-2 flex  items-center justify-center ${
+      className={`w-fit h-full py-4 flex  items-center justify-center ${
         active
           ? "text-secondary-light border-b-secondary-light font-bold"
           : "text-neutral-light border-b-transparent"
-      } border-b-2 whitespace-nowrap cursor-pointer select-none hover:text-secondary-light focus-visible:border-b-secondary-light md:py-3 `}
+      } border-b-2 whitespace-nowrap cursor-pointer select-none hover:text-secondary-light focus-visible:border-b-secondary-light`}
       onClick={handleClick}
       role="tab"
       tabIndex={0}
