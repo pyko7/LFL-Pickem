@@ -9,8 +9,8 @@ const ErrorModal = ({
 
 
   const props = {
-    open: betError,
-    setOpen: setBetError,
+    isOpen: betError,
+    setIsOpen: setBetError,
     title: "Erreur",
     description: errorMessage,
   };

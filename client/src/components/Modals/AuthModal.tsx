@@ -1,15 +1,18 @@
-import { AuthFormProps } from "@/src/types/forms";
 import { useState } from "react";
 import SwitchAuthModalButton from "../Buttons/SwitchAuthModalButton";
 import LoginForm from "../Forms/LoginForm";
 import SignUpForm from "../Forms/SignUpForm";
 import FormModal from "./FormModal";
 import ResetPasswordModal from "./ResetPasswordModal";
+import { ModalStateProps } from "@/src/types/modal";
 
-const AuthModal = ({ isOpen, setIsOpen }: AuthFormProps) => {
+const AuthModal = ({ isOpen, setIsOpen }: ModalStateProps) => {
   const [resetPassword, setResetPassword] = useState(false);
   const [signUpForm, setSignUpForm] = useState(false);
-  const resetPasswordProps = { resetPassword, setResetPassword };
+  const resetPasswordProps = {
+    isOpen: resetPassword,
+    setIsOpen: setResetPassword,
+  };
 
   const signUpProps = {
     isOpen,
@@ -20,10 +23,6 @@ const AuthModal = ({ isOpen, setIsOpen }: AuthFormProps) => {
     isOpen,
     setIsOpen,
     title: "Connexion",
-  };
-
-  const handleClose = () => {
-    return setIsOpen(false);
   };
 
   const handleClick = () => {
@@ -39,6 +38,10 @@ const AuthModal = ({ isOpen, setIsOpen }: AuthFormProps) => {
     label: "Pas encore de compte ?",
     name: "Inscrivez-vous",
     handleClick,
+  };
+
+  const handleClose = () => {
+    return setIsOpen(false);
   };
 
   return (

@@ -16,8 +16,14 @@ const Profile = () => {
 
   const [resetPassword, setResetPassword] = useState(false);
   const [deleteAccount, setDeleteAccount] = useState(false);
-  const deleteAccountProps = { deleteAccount, setDeleteAccount };
-  const resetPasswordProps = { resetPassword, setResetPassword };
+  const deleteAccountProps = {
+    isOpen: deleteAccount,
+    setIsOpen: setDeleteAccount,
+  };
+  const resetPasswordProps = {
+    isOpen: resetPassword,
+    setIsOpen: setResetPassword,
+  };
 
   const currentUser: UseQueryResult<User> = useQuery(["user"], getUserById, {
     staleTime: 10 * (60 * 1000), // 10 mins
@@ -84,7 +90,10 @@ const Profile = () => {
               )}
             </div>
 
-            <hr aria-hidden="true"  className="w-2/3 max-w-2xl my-8 mx-auto border-main-light sm:my-12" />
+            <hr
+              aria-hidden="true"
+              className="w-2/3 max-w-2xl my-8 mx-auto border-main-light sm:my-12"
+            />
 
             <ul className="icons flex flex-col gap-6">
               <li>
@@ -117,7 +126,10 @@ const Profile = () => {
               </li>
             </ul>
 
-            <hr aria-hidden="true"  className="w-2/3 max-w-2xl my-8 mx-auto border-main-light sm:my-12" />
+            <hr
+              aria-hidden="true"
+              className="w-2/3 max-w-2xl my-8 mx-auto border-main-light sm:my-12"
+            />
 
             <ul className="w-full  py-4 flex flex-col gap-6 md:gap-3">
               <li>

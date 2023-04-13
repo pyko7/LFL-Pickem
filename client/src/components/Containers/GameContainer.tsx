@@ -28,7 +28,7 @@ const GameContainer = (props: Game) => {
   const [noBet, setNoBet] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const { teamsList, gamesWithBet } = useGameContext();
-  const authProps = { userAuth, setUserAuth };
+  const authProps = { isOpen: userAuth, setIsOpen: setUserAuth };
 
   const teamContainerProps = {
     game: props,
@@ -100,12 +100,12 @@ const GameContainer = (props: Game) => {
       teamId: currentTeamId,
       dayId: props.dayId,
     };
-    if (!isLogged) {
-      return setUserAuth(true);
-    }
 
     if (disabledDay) {
       return;
+    }
+    if (!isLogged) {
+      return setUserAuth(true);
     }
     if (selectedTeam === 0) {
       createBet.mutate(credentials);

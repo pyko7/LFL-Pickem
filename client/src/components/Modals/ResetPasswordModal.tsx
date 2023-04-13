@@ -1,14 +1,11 @@
-import { ResetPasswordProps } from "@/src/types/forms";
 import FormModal from "./FormModal";
 import SendEmailForm from "../Forms/SendEmailForm";
+import { ModalStateProps } from "@/src/types/modal";
 
-const ResetPasswordModal = ({
-  resetPassword,
-  setResetPassword,
-}: ResetPasswordProps) => {
+const ResetPasswordModal = ({ isOpen, setIsOpen }: ModalStateProps) => {
   const props = {
-    open: resetPassword,
-    setOpen: setResetPassword,
+    isOpen,
+    setIsOpen,
     title: "Modification de l'email",
     description:
       "Entrez votre adresse email afin de recevoir un lien pour la modification du mot de passe",

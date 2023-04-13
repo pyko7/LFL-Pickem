@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { sendAuthEmail } from "@/src/utils/api/auth/sendAuthEmail";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -66,7 +66,7 @@ const SendEmailForm = ({ url, buttonName }: EmailFormProps) => {
 
       <button
         type="submit"
-        className="w-auto mt-3 px-4 py-2 rounded shadow text-[14px] font-bold uppercase focus:shadow-outline focus:outline-none hover:bg-secondary-light  text-neutral-dark bg-secondary sm:text-base"
+        className="w-full max-w-[275px] mt-3 py-3 px-2 rounded shadow font-bold uppercase focus:shadow-outline focus:outline-none hover:bg-neutral-400  text-neutral-dark bg-neutral-500 focus-visible:border-neutral-light"
       >
         {mutation.isLoading ? (
           <Spinner dark ariaLabel="En attente de l'envoie de l'email" />

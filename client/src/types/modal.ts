@@ -13,3 +13,8 @@ export interface SwitchForm {
   name: string;
   handleClick: () => void;
 }
+
+export interface ModalStateProps {
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+}

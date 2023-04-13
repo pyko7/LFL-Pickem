@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { deleteUser } from "@/src/utils/api/user/deleteUser";
 import Spinner from "../Loaders/Spinner";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -75,7 +75,7 @@ const DeleteAccountForm = ({ handleClose }: { handleClose: () => void }) => {
 
       <button
         type="submit"
-        className="w-full max-w-[275px] mt-3 py-3 rounded shadow text-base font-bold uppercase focus:shadow-outline focus:outline-none hover:bg-secondary-light  text-neutral-dark bg-secondary focus-visible:border-neutral-light"
+        className="w-full max-w-[275px] mt-3 py-3 px-2 rounded shadow font-bold uppercase focus:shadow-outline focus:outline-none hover:bg-neutral-400  text-neutral-dark bg-neutral-500 focus-visible:border-neutral-light"
       >
         {mutation.isLoading ? (
           <Spinner dark ariaLabel="Attente de la suppression" />

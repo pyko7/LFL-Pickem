@@ -1,11 +1,11 @@
-import { ConfirmEmailProps } from "@/src/types/forms";
 import FormModal from "./FormModal";
 import SendEmailForm from "../Forms/SendEmailForm";
+import { ModalStateProps } from "@/src/types/modal";
 
-const ConfirmEmailModal = ({ open, setOpen }: ConfirmEmailProps) => {
+const ConfirmEmailModal = ({ isOpen, setIsOpen }: ModalStateProps) => {
   const props = {
-    open,
-    setOpen,
+    isOpen,
+    setIsOpen,
     title: "Envoie d'un email de confirmation",
     description:
       "Entrez votre adresse email afin de recevoir un lien de confirmation",

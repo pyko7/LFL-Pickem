@@ -104,7 +104,7 @@ const NavigationDrawer = ({ open, setOpen }: OpenState) => {
           )}
         </Transition.Child>
       </Transition>
-      <AuthModal {...authModalProps} />
+      {isOpen ? <AuthModal {...authModalProps} /> : null}
     </>
   );
 };
