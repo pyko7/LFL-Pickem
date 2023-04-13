@@ -1,24 +1,16 @@
-import { ReactNode } from "react";
 import { Dialog } from "@headlessui/react";
 import { Transition } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import CloseButton from "../Buttons/CloseButton";
+import { FormModal } from "@/src/types/modal";
 
-interface Props {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-  title: string;
-  description?: string;
-  children?: ReactNode;
-}
-
-const FormModal = ({ open, setOpen, title, description, children }: Props) => {
+const FormModal = ({ isOpen, setIsOpen, title, description, children }: FormModal) => {
   const handleClose = () => {
-    setOpen(false);
+    return setIsOpen(false);
   };
 
   return (
-    <Transition show={open}>
-      <Dialog open={open} onClose={handleClose} className="relative z-50">
+    <Transition show={isOpen}>
+      <Dialog open={isOpen} onClose={handleClose} className="relative z-50">
         <Transition.Child
           enter="transition-opacity ease-in-out duration-300"
           enterFrom="opacity-0"
@@ -27,18 +19,16 @@ const FormModal = ({ open, setOpen, title, description, children }: Props) => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black/90" aria-hidden="true" />
+          <div className="fixed inset-0 bg-neutral-950/90" aria-hidden="true" />
 
           <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex w-full min-h-full items-center justify-center p-4">
-              <Dialog.Panel className="w-full py-6 px-4 flex flex-col items-center gap-6 rounded-md bg-main text-neutral-light md:max-w-lg md:px-6">
-                <div className="w-full px-2 flex flex-row-reverse">
-                  <button
-                    type="button"
-                    className="w-7 h-7 flex flex-row-reverse text-neutral-light focus-visible:p-0"
-                  >
-                    <XMarkIcon className="w-full" onClick={handleClose} />
-                  </button>
+            <div className="flex w-full min-h-full items-center justify-center p-4 text-neutral-200">
+              <Dialog.Panel className="w-full py-6 px-4 flex flex-col items-center gap-6 rounded-md bg-neutral-800 sm:max-w-lg md:px-6">
+                <div className="w-full flex flex-row-reverse">
+                  <CloseButton
+                    ariaLabel="Fermer la fenêtre modale"
+                    handleClose={handleClose}
+                  />
                 </div>
                 <Dialog.Title className="text-center text-xl">
                   {title}

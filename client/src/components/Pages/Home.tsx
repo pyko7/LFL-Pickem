@@ -9,7 +9,6 @@ import { fr } from "date-fns/locale";
 import GameContainerSkeleton from "../Loaders/GameContainerSkeleton";
 import { useAuthContext } from "@/context/AuthContext";
 import Skeleton from "../Loaders/Skeleton";
-import InformationModal from "../Modals/InformationModal";
 
 const Homepage = () => {
   const { isLogged } = useAuthContext();
@@ -27,7 +26,6 @@ const Homepage = () => {
 
   return (
     <section>
-      <InformationModal />
       <ScrollableDaysTabs />
       <div className="w-full px-3 m-auto sm:max-w-3xl lg:max-w-4xl lg:px-0 ">
         <div className="w-full mt-20 mb-10 flex justify-between text-neutral-light">

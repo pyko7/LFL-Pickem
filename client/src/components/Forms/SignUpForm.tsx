@@ -8,6 +8,7 @@ import { createUser } from "@/src/utils/api/auth/createUser";
 import { useRouter } from "next/router";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import Spinner from "../Loaders/Spinner";
+import TogglePasswordVisibility from "../Buttons/TogglePasswordVisibility";
 
 const SignUpForm = ({ handleClose }: { handleClose: () => void }) => {
   const { push } = useRouter();
@@ -173,23 +174,10 @@ const SignUpForm = ({ handleClose }: { handleClose: () => void }) => {
             htmlFor="passwordInput"
             className="absolute top-1/2 right-4 -translate-y-1/2 w-5 h-5 "
           >
-            <button
-              type="button"
-              role="button"
-              aria-label={`${
-                passwordVisible
-                  ? "Masquer le mot de passe"
-                  : "Afficher le mot de passe"
-              }`}
-              className="w-full h-full text-neutral-light focus-visible:text-neutral-light focus-visible:p-0"
-              onClick={handleClickShowPassword}
-            >
-              {passwordVisible ? (
-                <EyeSlashIcon aria-hidden="true" className="w-full h-full" />
-              ) : (
-                <EyeIcon aria-hidden="true" className="w-full h-full" />
-              )}
-            </button>
+            <TogglePasswordVisibility
+              passwordVisible={passwordVisible}
+              handleClickShowPassword={handleClickShowPassword}
+            />
           </label>
         </div>
         {mutation.isError && errorMessage.length > 0 ? (
@@ -231,23 +219,10 @@ const SignUpForm = ({ handleClose }: { handleClose: () => void }) => {
             htmlFor="confirmPasswordInput"
             className="absolute top-1/2 right-4 -translate-y-1/2 w-5 h-5 "
           >
-            <button
-              type="button"
-              role="button"
-              aria-label={`${
-                passwordVisible
-                  ? "Masquer la confirmation du mot de passe"
-                  : "Afficher la confirmation du mot de passe"
-              }`}
-              className="w-full h-full text-neutral-light focus-visible:text-neutral-light focus-visible:p-0"
-              onClick={handleClickShowConfirmPassword}
-            >
-              {confirmPasswordVisible ? (
-                <EyeSlashIcon aria-hidden="true" className="w-full h-full" />
-              ) : (
-                <EyeIcon aria-hidden="true" className="w-full h-full" />
-              )}
-            </button>
+            <TogglePasswordVisibility
+              passwordVisible={passwordVisible}
+              handleClickShowPassword={handleClickShowConfirmPassword}
+            />
           </label>
         </div>
         {mutation.isError && errorMessage.length > 0 ? (
@@ -266,7 +241,7 @@ const SignUpForm = ({ handleClose }: { handleClose: () => void }) => {
 
       <button
         type="submit"
-        className="w-full max-w-[275px] mt-3 py-3 rounded shadow text-base font-bold uppercase focus:shadow-outline focus:outline-none hover:bg-secondary-light  text-neutral-dark bg-secondary focus-visible:border-neutral-light"
+        className="w-full max-w-[275px] mt-3 py-3 rounded shadow text-base font-bold uppercase focus:shadow-outline focus:outline-none hover:bg-neutral-400  text-neutral-dark bg-neutral-500 focus-visible:border-neutral-light"
       >
         {mutation.isLoading ? (
           <Spinner dark ariaLabel="Attente de l'inscription" />

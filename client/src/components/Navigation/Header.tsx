@@ -19,7 +19,7 @@ const Header = () => {
       <Link href="/" className="relative w-16 h-16">
         <Image src={imageUrl} alt="logo" fill priority />
       </Link>
-      <button type="button" name="menu" aria-label="menu" onClick={handleClick}>
+      <button type="button" aria-label="menu" onClick={handleClick}>
         <Bars3Icon aria-hidden="true" className="w-10 h-10" />
       </button>
 

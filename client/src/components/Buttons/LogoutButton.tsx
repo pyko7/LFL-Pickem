@@ -1,9 +1,9 @@
-import { AuthButton } from "@/src/types/authbutton.type";
+import { LogoutButton } from "@/src/types/buttons";
 import { logoutUser } from "@/src/utils/api/auth/logoutUser";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 
-const LogoutButton = ({ setIsLogged, handleClose }: AuthButton) => {
+const LogoutButton = ({ setIsLogged, handleClose }: LogoutButton) => {
   const { pathname, push } = useRouter();
 
   const mutation = useMutation({

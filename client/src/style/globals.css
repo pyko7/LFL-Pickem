@@ -56,15 +56,15 @@
   /*form & inputs*/
 
   .input_label_container {
-    @apply relative w-full max-w-[290px] h-11 rounded-sm  sm:max-w-none;
+    @apply relative w-full max-w-[290px] h-11 rounded-lg  sm:max-w-none;
   }
   .input_label_container input {
-    @apply w-full h-full pl-3 rounded-sm border-2 border-secondary-light/20 bg-transparent transition-all duration-200 ease-linear focus:placeholder:opacity-100 focus:border-secondary outline-none;
+    @apply w-full h-full pl-3 rounded-lg border-2 border-neutral-700 bg-transparent transition-all duration-200 ease-linear focus:placeholder:opacity-100 focus:border-neutral-400 outline-none;
   }
   .password_input {
     @apply pr-10;
   }
   .input_label {
-    @apply pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 bg-main transition-all duration-200 ease-out motion-reduce:transition-none;
+    @apply pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 bg-neutral-800 transition-all duration-200 ease-out motion-reduce:transition-none;
   }
 }
