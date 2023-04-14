@@ -15,6 +15,7 @@ import AuthModal from "../Modals/AuthModal";
 import FirstTeamContainer from "./FirstTeamContainer";
 import SecondTeamContainer from "./SecondTeamContainer";
 import Skeleton from "../Loaders/Skeleton";
+import Image from "next/image";
 
 const GameContainer = (props: Game) => {
   const { isLogged } = useAuthContext();
@@ -40,6 +41,9 @@ const GameContainer = (props: Game) => {
     notSelected,
     noBet,
   };
+
+  const imageUrl =
+    "https://res.cloudinary.com/dkferpmf6/image/upload/v1674578020/LFL/white_lfl.webp";
 
   const createBet = useMutation({
     mutationFn: addSelectedTeams,
@@ -188,63 +192,71 @@ const GameContainer = (props: Game) => {
   return (
     <>
       <div
-        className="w-full pb-4 flex justify-between items-end gap-2 rounded-md bg-neutral-700 overflow-hidden sm:gap-3
-        py-4"
+        className="w-full py-4 flex flex-col gap-3 rounded-md bg-neutral-700
+       "
         style={{
           boxShadow:
             "	0px 8px 10px 1px hsla(0,0%,0%,0.14), 0px 3px 14px 2px hsla(0,0%,0%,0.12), 0px 5px 5px -3px hsla(0,0%,0%,0.2)",
         }}
       >
-        <>
+        <div className="relative w-full px-1 flex gap-2 items-end text-neutral-200 text-sm sm:px-4">
+          <Image src={imageUrl} alt="" width={30} height={30} />
+          LFL - J{props.dayId}
+        </div>
+        <div
+          className="w-full py-4 flex justify-between items-end gap-2 overflow-hidden sm:gap-3
+        "
+        >
+          <>
+            {teamsList.isLoading || (isLogged && gamesWithBet.isLoading) ? (
+              <Skeleton
+                width="100%"
+                height="64px"
+                rounded
+                ariaLabel="Chargement des équipes"
+              />
+            ) : (
+              <>
+                {!firstTeam || !secondTeam ? null : (
+                  <FirstTeamContainer
+                    {...teamContainerProps}
+                    handleClick={handleClick}
+                  />
+                )}
+              </>
+            )}
+          </>
+          <p className="h-10 flex items-center text-sm sm:text-base ">
+            {gameTime}
+          </p>
           {teamsList.isLoading || (isLogged && gamesWithBet.isLoading) ? (
-            <Skeleton
-              width="100%"
-              height="64px"
-              rounded
-              ariaLabel="Chargement des équipes"
-            />
+            <>
+              <Skeleton
+                width="100%"
+                height="152px"
+                rounded
+                ariaLabel="Chargement des équipes"
+              />
+            </>
           ) : (
             <>
               {!firstTeam || !secondTeam ? null : (
-                <FirstTeamContainer
+                <SecondTeamContainer
                   {...teamContainerProps}
                   handleClick={handleClick}
                 />
               )}
             </>
           )}
-        </>
-        <p className="h-10 flex items-center text-sm sm:text-base ">
-          {gameTime}
-        </p>
-        {teamsList.isLoading || (isLogged && gamesWithBet.isLoading) ? (
-          <>
-            <Skeleton
-              width="100%"
-              height="152px"
-              rounded
-              ariaLabel="Chargement des équipes"
-            />
-          </>
-        ) : (
-          <>
-            {!firstTeam || !secondTeam ? null : (
-              <SecondTeamContainer
-                {...teamContainerProps}
-                handleClick={handleClick}
-              />
-            )}
-          </>
-        )}
+        </div>
+        {betError || gamesWithBet.isError ? (
+          <ErrorModal
+            betError={betError}
+            setBetError={setBetError}
+            errorMessage={errorMessage}
+          />
+        ) : null}
       </div>
-      {betError || gamesWithBet.isError ? (
-        <ErrorModal
-          betError={betError}
-          setBetError={setBetError}
-          errorMessage={errorMessage}
-        />
-      ) : null}
-
       <AuthModal {...authProps} />
     </>
   );
