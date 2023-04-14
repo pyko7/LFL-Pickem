@@ -8,7 +8,7 @@ const Custom404 = () => {
 
       <Link
         href="/"
-        className="w-full max-w-[275px] py-2 px-4 text-center font-bold bg-secondary text-neutral-dark shadow-md no-underline rounded-lg"
+        className="w-full max-w-[275px] py-2 px-4 text-center font-bold bg-lfl text-neutral-dark shadow-md no-underline rounded-lg"
       >
         Accueil
       </Link>
