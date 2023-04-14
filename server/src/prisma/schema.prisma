@@ -15,14 +15,22 @@ model User {
   bets     Bet[]
 }
 
+model League {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  Team Team[]
+  Game Game[]
+}
+
 model Team {
   id         Int    @id @default(autoincrement())
   name       String @unique
   logo       String
-  color      String
   Bet        Bet[]
   FirstTeam  Game[] @relation("FirstTeam")
   SecondTeam Game[] @relation("SecondTeam")
+  LeagueId   League @relation(references: [id], fields: [leagueId], onDelete: Cascade, onUpdate: Cascade)
+  leagueId   Int    @default(0)
 }
 
 model Game {
@@ -36,6 +44,8 @@ model Game {
   Day          Day      @relation(fields: [dayId], references: [id], onDelete: NoAction, onUpdate: Cascade)
   dayId        Int      @default(0)
   Bet          Bet[]
+  LeagueId     League   @relation(references: [id], fields: [leagueId], onDelete: Cascade, onUpdate: Cascade)
+  leagueId     Int      @default(0)
 
   @@unique([id, date])
 }
