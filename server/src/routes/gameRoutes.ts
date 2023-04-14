@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { addSelectedTeams } from "../controllers/game/addSelectedTeams";
 import { deleteSelectedTeams } from "../controllers/game/deleteSelectedTeams";
-import { getAllDays } from "../controllers/game/getAllDays";
-import { getAllTeams } from "../controllers/game/getAllTeams";
+import { getDaysByLeague } from "../controllers/game/getDaysByLeague";
+import { getTeamsByLeague } from "../controllers/game/getTeamsByLeague";
 import { getGamesByDayId } from "../controllers/game/getGamesByDayId";
 import { getGamesWithBetByDay } from "../controllers/game/getGamesWithBetByDay";
 import { updateSelectedTeams } from "../controllers/game/updateSelectedTeams";
@@ -12,10 +12,10 @@ import { verifySession } from "../middleware/verifySession";
 
 export const gameRoutes = Router();
 
-gameRoutes.get("/teams", getAllTeams);
-gameRoutes.get("/days", getAllDays);
-gameRoutes.get("/days/:id", verifySession, getGamesWithBetByDay);
-gameRoutes.get("/day/:id", getGamesByDayId);
+gameRoutes.get("/teams/:id", getTeamsByLeague);
+gameRoutes.get("/days/:id", getDaysByLeague);
+// gameRoutes.get("/days/:id", verifySession, getGamesWithBetByDay);
+gameRoutes.get("/days/:id", getGamesByDayId);
 
 
 gameRoutes.post("/selected",verifySession, betLimiter,  verifyDate, addSelectedTeams);
