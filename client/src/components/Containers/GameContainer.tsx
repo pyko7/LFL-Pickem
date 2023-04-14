@@ -29,6 +29,7 @@ const GameContainer = (props: Game) => {
   const [errorMessage, setErrorMessage] = useState("");
   const { teamsList, gamesWithBet } = useGameContext();
   const authProps = { isOpen: userAuth, setIsOpen: setUserAuth };
+  const gameTime = props.date.slice(11, 16).replace(":", "h");
 
   const teamContainerProps = {
     game: props,
@@ -186,7 +187,14 @@ const GameContainer = (props: Game) => {
 
   return (
     <>
-      <div className="w-full flex justify-between gap-2 sm:gap-3">
+      <div
+        className="w-full pb-4 flex justify-between items-end gap-2 rounded-md bg-neutral-700 overflow-hidden sm:gap-3
+        py-4"
+        style={{
+          boxShadow:
+            "	0px 8px 10px 1px hsla(0,0%,0%,0.14), 0px 3px 14px 2px hsla(0,0%,0%,0.12), 0px 5px 5px -3px hsla(0,0%,0%,0.2)",
+        }}
+      >
         <>
           {teamsList.isLoading || (isLogged && gamesWithBet.isLoading) ? (
             <Skeleton
@@ -206,13 +214,18 @@ const GameContainer = (props: Game) => {
             </>
           )}
         </>
+        <p className="h-10 flex items-center text-sm sm:text-base ">
+          {gameTime}
+        </p>
         {teamsList.isLoading || (isLogged && gamesWithBet.isLoading) ? (
-          <Skeleton
-            width="100%"
-            height="64px"
-            rounded
-            ariaLabel="Chargement des équipes"
-          />
+          <>
+            <Skeleton
+              width="100%"
+              height="152px"
+              rounded
+              ariaLabel="Chargement des équipes"
+            />
+          </>
         ) : (
           <>
             {!firstTeam || !secondTeam ? null : (

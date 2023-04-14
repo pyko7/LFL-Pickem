@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { TeamProps } from "@/src/types/teams";
+import { TeamCard } from "@/src/types/teams";
 import Image from "next/image";
 
 const FirstTeam = ({
@@ -7,77 +7,51 @@ const FirstTeam = ({
   notSelected,
   disabledDay,
   noBet,
-  firstTeam,
-}: TeamProps) => {
-  const [visible, setVisible] = useState(true);
+  winningBet,
+}: TeamCard) => {
+  const [selected, setSelected] = useState(false);
 
   useEffect(() => {
-    if (notSelected === team.id) {
-      setVisible(false);
+    if (notSelected === team.id || notSelected === 0) {
+      setSelected(false);
     } else {
-      setVisible(true);
+      setSelected(true);
     }
   }, [notSelected, team.id]);
 
   return (
-    <button
-      type="button"
-      name={team.name}
-      className={`relative team__card w-full 
-      ${disabledDay ? "contrast-0 cursor-not-allowed" : ""}
-      ${
-        visible && !noBet && !disabledDay ? "filter-none hover:filter-none" : ""
-      }
-      `}
-      style={{
-        background: firstTeam
-          ? `linear-gradient(90deg, rgb(10, 14, 19) 0%, ${team.color} 75%)`
-          : `linear-gradient(-90deg, rgb(10, 14, 19) 0%, ${team.color} 75%)`,
-      }}
+    <article
+      aria-label={team.name}
+      className={`w-full px-1 -mt-2 flex flex-col items-center sm:mt-0`}
     >
-      <h2
-        className={`${
-          noBet || disabledDay
-            ? "animate-none"
-            : !visible && firstTeam
-            ? "opacity-0 "
-            : !visible && !firstTeam
-            ? "opacity-0 "
-            : visible && firstTeam
-            ? "opacity-1 "
-            : visible && !firstTeam
-            ? "opacity-1 "
+      <div className="relative w-24 h-24 sm:w-28 sm:h-28">
+        <Image
+          loader={() => team.logo}
+          unoptimized
+          src={team.logo}
+          alt=""
+          fill
+          className="opacity-20 object-contain"
+        />
+      </div>
+      <button
+        type="button"
+        className={`w-full max-w-[150px] h-10 -mt-2 rounded-lg z-[2] text-neutral-950 text-sm font-bold 
+        ${selected ? "bg-lfl" : "bg-neutral-400 hover:bg-neutral-300"}
+        ${disabledDay ? "cursor-default" : ""}
+        ${disabledDay && !selected ? "hover:bg-neutral-400" : ""}
+        ${
+          winningBet
+            ? "bg-emerald-400"
+            : winningBet === false
+            ? "bg-red-400"
             : ""
         }
-        ${disabledDay && !visible ? "opacity-0" : ""}
-        ${firstTeam ? "mr-5" : "ml-5"}
-        team_card_title--opacity max-w-[75px] whitespace-pre-wrap text-sm font-bold sm:max-w-none sm:text-base`}
+         `}
       >
         {team.name}
-      </h2>
-
-      <Image
-        loader={() => team.logo}
-        unoptimized
-        src={team.logo}
-        alt={team.name}
-        width={50}
-        height={50}
-        className={`absolute top-1/2 ${firstTeam ? "right-3" : "left-3"} 
-        ${
-          !visible && firstTeam
-            ? "animate-centerFirstTeamLogo"
-            : !visible && !firstTeam
-            ? "animate-centerSecondTeamLogo"
-            : visible && firstTeam
-            ? "slideLogoToRight"
-            : visible && !firstTeam
-            ? "animate-slideLogoToLeft"
-            : ""
-        }
-        -translate-y-1/2 w-10 h-10 object-contain sm:w-12 sm:h-12`}
-      />
-    </button>
+      </button>
+    </article>
   );
 };
 

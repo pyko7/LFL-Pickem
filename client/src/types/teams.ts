@@ -18,15 +18,15 @@ export interface Team {
   color: string;
 }
 
-export interface TeamProps {
+export interface TeamCard {
   team: Team;
   notSelected: number;
   disabledDay: boolean;
   noBet: boolean;
-  firstTeam: boolean;
+  winningBet: null | boolean;
 }
 
-export interface TeamContainerProps {
+export interface TeamCardContainer {
   game: Game;
   firstTeam: Team;
   secondTeam: Team;

@@ -27,7 +27,7 @@ const Homepage = () => {
   return (
     <section>
       <ScrollableDaysTabs />
-      <div className="w-full px-3 m-auto sm:max-w-3xl lg:max-w-4xl lg:px-0 ">
+      <div className="w-full px-3 m-auto sm:max-w-3xl lg:max-w-3xl lg:px-0 ">
         <div className="w-full mt-20 mb-10 flex justify-between text-neutral-light">
           <h1 className="max-w-sm text-lg font-bold lg:max-w-md lg:text-xl">
             {dayData === null

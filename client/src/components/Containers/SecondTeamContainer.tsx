@@ -1,9 +1,10 @@
+import { useEffect, useState } from "react";
 import TeamCard from "../Cards/TeamCard";
-import { CheckIcon } from "@heroicons/react/24/outline";
-import { XMarkIcon } from "@heroicons/react/24/outline";
-import { TeamContainerProps } from "@/src/types/teams";
+import { TeamCardContainer } from "@/src/types/teams";
 
-const SecondTeamContainer = (props: TeamContainerProps) => {
+const SecondTeamContainer = (props: TeamCardContainer) => {
+  const [winningBet, setWinningBet] = useState<boolean | null>(null);
+
   const {
     game,
     firstTeam,
@@ -14,15 +15,20 @@ const SecondTeamContainer = (props: TeamContainerProps) => {
     noBet,
     handleClick,
   } = props;
+
+  useEffect(() => {
+    if (!disabledDay || selectedTeam !== secondTeam.id) {
+      return;
+    }
+    if (secondTeam.id !== game.winner) {
+      return setWinningBet(false);
+    }
+    return setWinningBet(true);
+  }, [disabledDay, secondTeam.id, game.winner]);
+
   return (
     <div
-      className={`relative ${
-        selectedTeam === secondTeam.id
-          ? "w-3/4"
-          : selectedTeam === firstTeam.id
-          ? "w-1/3"
-          : "w-1/2"
-      } team_card_animation--width`}
+      className={`relative w-1/2`}
       onClick={() => handleClick(secondTeam.id, firstTeam.id)}
     >
       <TeamCard
@@ -30,20 +36,8 @@ const SecondTeamContainer = (props: TeamContainerProps) => {
         notSelected={notSelected}
         disabledDay={disabledDay}
         noBet={noBet}
-        firstTeam={false}
+        winningBet={winningBet}
       />
-      {!disabledDay ? null : selectedTeam !==
-        secondTeam.id ? null : secondTeam.id === game.winner ? (
-        <CheckIcon
-          aria-label="pari gagnant"
-          className="result_icon result_icon--success right-2 sm:right-4"
-        />
-      ) : (
-        <XMarkIcon
-          aria-label="pari perdant"
-          className="result_icon result_icon--failure right-2 sm:right-4"
-        />
-      )}
     </div>
   );
 };

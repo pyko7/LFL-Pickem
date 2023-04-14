@@ -38,9 +38,9 @@ const Tab = ({ dayData, setDayData, label, value, setPosition }: Tab) => {
       ref={ref}
       className={`w-fit h-full py-4 flex  items-center justify-center ${
         active
-          ? "text-secondary-light border-b-secondary-light font-bold"
+          ? "text-lfl-light border-b-lfl-light font-bold"
           : "text-neutral-light border-b-transparent"
-      } border-b-2 whitespace-nowrap cursor-pointer select-none hover:text-secondary-light focus-visible:border-b-secondary-light`}
+      } border-b-2 whitespace-nowrap cursor-pointer select-none hover:text-lfl-light focus-visible:border-b-lfl-light`}
       onClick={handleClick}
       role="tab"
       tabIndex={0}

@@ -7,7 +7,7 @@
     font-family: Lato, sans-serif;
   }
   *:focus-visible {
-    @apply px-2 outline-none border-2 outline border-secondary rounded-sm;
+    @apply px-2 outline-none border-2 outline border-lfl rounded-sm;
   }
 
   section {
@@ -26,33 +26,21 @@
 
   /*game informations*/
   .points_counter {
-    @apply text-sm py-1 px-2 text-secondary font-bold uppercase border-2 border-secondary rounded-lg;
+    @apply text-sm py-1 px-2 text-lfl font-bold uppercase border-2 border-lfl rounded-lg;
   }
   .result_icon {
     @apply absolute top-1/2 -translate-y-1/2 w-7 h-7 p-1 z-[1]  rounded-circle;
   }
   .result_icon--success {
-    @apply bg-secondary;
+    @apply bg-lfl;
   }
   .result_icon--failure {
     @apply bg-red-600;
   }
   /*****************/
+}
 
-  /*team card*/
-  .team__card {
-    @apply w-full max-h-16 py-8 px-3 flex items-center justify-center  rounded-md bg-black overflow-hidden grayscale-75 hover:grayscale-30 sm:max-h-[72px] lg:max-h-20;
-    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
-      0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-  }
-
-  .team_card_animation--width {
-    transition: width 1s ease-out;
-  }
-  .team_card_title--opacity {
-    transition: opacity 0.5s ease-out;
-  }
-
+@layer components {
   /*form & inputs*/
 
   .input_label_container {
