@@ -199,7 +199,7 @@ const GameContainer = (props: Game) => {
             "	0px 8px 10px 1px hsla(0,0%,0%,0.14), 0px 3px 14px 2px hsla(0,0%,0%,0.12), 0px 5px 5px -3px hsla(0,0%,0%,0.2)",
         }}
       >
-        <div className="relative w-full px-1 flex gap-2 items-end text-neutral-200 text-sm sm:px-4">
+        <div className="relative w-full px-2 flex gap-2 items-end text-neutral-200 text-sm sm:px-4">
           <Image src={imageUrl} alt="" width={30} height={30} />
           LFL - J{props.dayId}
         </div>

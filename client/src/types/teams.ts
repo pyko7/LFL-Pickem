@@ -24,6 +24,7 @@ export interface TeamCard {
   disabledDay: boolean;
   noBet: boolean;
   winningBet: null | boolean;
+  reversed?: boolean;
 }
 
 export interface TeamCardContainer {

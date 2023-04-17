@@ -8,9 +8,9 @@ const FirstTeam = ({
   disabledDay,
   noBet,
   winningBet,
+  reversed
 }: TeamCard) => {
   const [selected, setSelected] = useState(false);
-
   useEffect(() => {
     if (notSelected === team.id || notSelected === 0) {
       setSelected(false);
@@ -22,21 +22,20 @@ const FirstTeam = ({
   return (
     <article
       aria-label={team.name}
-      className={`w-full px-1 -mt-2 flex flex-col items-center sm:mt-0`}
+      className={`relative w-full px-2 mt-2 flex items-center justify-center`}
     >
-      <div className="relative w-24 h-24 sm:w-28 sm:h-28">
-        <Image
-          loader={() => team.logo}
-          unoptimized
-          src={team.logo}
-          alt=""
-          fill
-          className="opacity-20 object-contain"
-        />
-      </div>
+      <Image
+        loader={() => team.logo}
+        unoptimized
+        src={team.logo}
+        alt=""
+        width={50}
+        height={50}
+        className={`hidden sm:block absolute top-1/2 -translate-y-1/2 ${reversed ? "sm:right-2 md:right-5" :"sm:left-2 md:left-5"} object-contain opacity-50`}
+      />
       <button
         type="button"
-        className={`w-full max-w-[150px] h-10 -mt-2 rounded-lg z-[2] text-neutral-950 text-sm font-bold 
+        className={`w-full max-w-[150px] h-10 rounded-lg z-[2] text-neutral-950 text-sm font-bold  shadow-lg
         ${selected ? "bg-lfl" : "bg-neutral-400 hover:bg-neutral-300"}
         ${disabledDay ? "cursor-default" : ""}
         ${disabledDay && !selected ? "hover:bg-neutral-400" : ""}
@@ -52,6 +51,7 @@ const FirstTeam = ({
         {team.name}
       </button>
     </article>
+
   );
 };
 
