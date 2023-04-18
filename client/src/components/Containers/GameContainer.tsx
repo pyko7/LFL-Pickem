@@ -194,8 +194,7 @@ const GameContainer = (props: Game) => {
   return (
     <>
       <div
-        className="w-full py-4 flex flex-col gap-3 rounded-md bg-neutral-700
-       "
+        className="w-full py-4 flex flex-col gap-3 rounded-md bg-neutral-700"
         style={{
           boxShadow:
             "	0px 8px 10px 1px hsla(0,0%,0%,0.14), 0px 3px 14px 2px hsla(0,0%,0%,0.12), 0px 5px 5px -3px hsla(0,0%,0%,0.2)",
@@ -216,8 +215,7 @@ const GameContainer = (props: Game) => {
         </div>
 
         <div
-          className="w-full py-4 flex justify-between items-end gap-2 overflow-hidden sm:gap-3
-        "
+          className="w-full py-4 flex justify-between items-end gap-2 overflow-hidden sm:gap-3"
         >
           <>
             {teamsList.isLoading || (isLogged && gamesWithBet.isLoading) ? (
