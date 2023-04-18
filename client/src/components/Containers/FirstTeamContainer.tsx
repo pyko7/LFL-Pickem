@@ -23,7 +23,7 @@ const FirstTeamContainer = (props: TeamCardContainer) => {
       return setWinningBet(false);
     }
     return setWinningBet(true);
-  }, [disabledDay, firstTeam.id, game.winner]);
+  }, [selectedTeam, disabledDay, firstTeam.id, game.winner]);
 
   return (
     <div

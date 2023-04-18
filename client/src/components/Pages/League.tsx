@@ -30,7 +30,7 @@ const League = () => {
       setLeagueId(2);
     }
     return;
-  }, [pathname]);
+  }, [pathname, setLeagueId]);
 
   return (
     <section>
