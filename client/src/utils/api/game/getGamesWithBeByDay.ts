@@ -3,7 +3,7 @@ import { GamesWithBet } from "@/src/types/teams";
 export const getGamesWithBetByDay = async (id: number): Promise<GamesWithBet> => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/game/days/${id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/game/days/bet/${id}`,
       {
         method: "GET",
         headers: {

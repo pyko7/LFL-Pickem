@@ -16,7 +16,7 @@ export const gameRoutes = Router();
 gameRoutes.get("/teams/:id?", getTeamsByLeague);
 gameRoutes.get("/days", getAllDays);
 gameRoutes.get("/days/:id", getDaysByLeague);
-// gameRoutes.get("/days/:id", verifySession, getGamesWithBetByDay);
+gameRoutes.get("/days/bet/:id", verifySession, getGamesWithBetByDay);
 gameRoutes.get("/day/:id", getGamesByDayId);
 
 
