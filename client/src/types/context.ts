@@ -13,9 +13,11 @@ export interface AuthContextInterface {
 
 export interface GameContextInterface {
   allDays: UseQueryResult<Day[]>;
+  DaysByLeague: UseQueryResult<Day[]>;
   teamsList: UseQueryResult<TeamList>;
   gamesByDayId: UseQueryResult<Game[]>;
   gamesWithBet: UseQueryResult<GamesWithBet>;
   dayData: Day | null;
   setDayData: (dayData: Day) => void;
+  setLeagueId: (leagueId: number) => void;
 }

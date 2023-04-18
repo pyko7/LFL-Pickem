@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Day } from "./teams";
-
+import { UseQueryResult } from "@tanstack/react-query";
 
 export interface Tabs {
   children: ReactNode;
@@ -13,4 +13,10 @@ export interface Tab {
   label: string;
   value: Day;
   setPosition: (position: number) => void;
+}
+
+export interface GameTabs {
+  schedule: UseQueryResult<Day[]>;
+  dayData: Day | null;
+  setDayData: (dayData: Day) => void;
 }

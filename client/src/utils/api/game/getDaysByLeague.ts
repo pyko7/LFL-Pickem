@@ -1,9 +1,9 @@
-import { Game } from "@/src/types/teams";
+import { Day } from "@/src/types/teams";
 
-export const getGamesByDayId = async (id: number): Promise<Game[]> => {
+export const getDaysByLeague = async (leagueId: number): Promise<Day[]> => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/game/day/${id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/game/days/${leagueId}`,
       {
         method: "GET",
         headers: {
@@ -23,7 +23,3 @@ export const getGamesByDayId = async (id: number): Promise<Game[]> => {
     throw new Error("Server error");
   }
 };
-
-/**
- * less height on cards 
- *   Create div2 */

@@ -1,9 +1,13 @@
 import Link from "next/link";
 import { UserIcon } from "@heroicons/react/24/outline";
 import { useAuthContext } from "@/context/AuthContext";
+import { useState } from "react";
+import { useRouter } from "next/router";
 
 const Navbar = ({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) => {
+  const { pathname } = useRouter();
   const { isLogged } = useAuthContext();
+  const [active, setActive] = useState(false);
   const handleClick = () => {
     return setIsOpen(true);
   };
@@ -41,7 +45,10 @@ const Navbar = ({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) => {
           <li key={item.name}>
             <Link
               href={item.pathname}
-              className="px-4 py-2 rounded-3xl hover:bg-neutral-600/30"
+              className={`px-4 py-2 rounded-3xl
+              ${
+                item.pathname !== pathname.slice(0) ? "" : "bg-neutral-600/30"
+              }   hover:bg-neutral-600/30`}
             >
               {item.name}
             </Link>

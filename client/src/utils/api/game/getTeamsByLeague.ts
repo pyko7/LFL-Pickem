@@ -1,13 +1,16 @@
 import { TeamList } from "@/src/types/teams";
 
-export const getAllTeams = async (): Promise<TeamList> => {
+export const getTeamsByLeague = async (): Promise<TeamList> => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/game/teams`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/game/teams`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     const data = await res.json();
     if (!res.ok) {
       throw new Error(res.statusText);

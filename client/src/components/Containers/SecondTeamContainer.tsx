@@ -37,6 +37,8 @@ const SecondTeamContainer = (props: TeamCardContainer) => {
         disabledDay={disabledDay}
         noBet={noBet}
         winningBet={winningBet}
+        reversed={true}
+
       />
     </div>
   );

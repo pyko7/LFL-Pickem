@@ -7,6 +7,7 @@ const Tab = ({ dayData, setDayData, label, value, setPosition }: Tab) => {
 
   const handleClick = () => {
     setDayData(value);
+    console.log(value);
     if (!ref.current) {
       return;
     }

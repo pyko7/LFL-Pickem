@@ -42,8 +42,10 @@ const GameContainer = (props: Game) => {
     noBet,
   };
 
-  const imageUrl =
+  const lflLogo =
     "https://res.cloudinary.com/dkferpmf6/image/upload/v1674578020/LFL/white_lfl.webp";
+  const div2Logo =
+    "https://res.cloudinary.com/dkferpmf6/image/upload/v1681475197/div2-logo_su2wug.svg";
 
   const createBet = useMutation({
     mutationFn: addSelectedTeams,
@@ -200,9 +202,19 @@ const GameContainer = (props: Game) => {
         }}
       >
         <div className="relative w-full px-2 flex gap-2 items-end text-neutral-200 text-sm sm:px-4">
-          <Image src={imageUrl} alt="" width={30} height={30} />
-          LFL - J{props.dayId}
+          {props.dayId < 19 ? (
+            <>
+              <Image src={lflLogo} alt="" width={30} height={30} />
+              LFL - J{props.dayId}
+            </>
+          ) : (
+            <>
+              <Image src={div2Logo} alt="" width={15} height={15} />
+              Div2 - J{props.dayId - 18}
+            </>
+          )}
         </div>
+
         <div
           className="w-full py-4 flex justify-between items-end gap-2 overflow-hidden sm:gap-3
         "

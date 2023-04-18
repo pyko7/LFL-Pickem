@@ -50,6 +50,7 @@ export interface Game {
   firstTeamId: number;
   secondTeamId: number;
   winner: number;
+  index?: number;
 }
 
 export interface DayId {
