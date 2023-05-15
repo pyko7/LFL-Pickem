@@ -2,7 +2,7 @@ import { useState } from "react";
 import { sendAuthEmail } from "@/src/utils/api/auth/sendAuthEmail";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { AuthForm } from "@/src/types/forms";
+import { AuthForm } from "@/src/types/types";
 import { sendEmailSchema } from "@/src/validations/authValidation";
 import { useMutation } from "@tanstack/react-query";
 import Spinner from "../Loaders/Spinner";

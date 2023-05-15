@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { AuthForm } from "@/src/types/forms";
+import { AuthForm } from "@/src/types/types";
 import { createUserSchema } from "@/src/validations/authValidation";
 import { useMutation } from "@tanstack/react-query";
 import { createUser } from "@/src/utils/api/auth/createUser";

@@ -2,7 +2,7 @@ import { useState } from "react";
 import Spinner from "../Loaders/Spinner";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { AuthForm } from "@/src/types/forms";
+import { AuthForm } from "@/src/types/types";
 import { logUserSchema } from "@/src/validations/authValidation";
 import { useMutation } from "@tanstack/react-query";
 import { logUser } from "@/src/utils/api/auth/logUser";

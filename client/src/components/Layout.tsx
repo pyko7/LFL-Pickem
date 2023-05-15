@@ -25,7 +25,7 @@ const Layout = ({ children }: { children?: ReactNode }) => {
 
       <div className="w-full min-h-screen bg-neutral-900 text-neutral-200">
         <Header />
-        <main className="w-full h-full my-0 mx-auto p-0">{children}</main>
+        <main className="w-full h-full">{children}</main>
       </div>
     </>
   );
