@@ -9,7 +9,7 @@ type Props = {
   setAuthModal: (authModal: boolean) => void;
   title: string;
   description?: string;
-  children: ReactNode;
+  children?: ReactNode;
 };
 
 const FormModal = ({

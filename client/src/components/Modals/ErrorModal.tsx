@@ -6,8 +6,6 @@ const ErrorModal = ({
   setBetError,
   errorMessage,
 }: ErrorModalProps) => {
-
-
   const props = {
     isOpen: betError,
     setIsOpen: setBetError,
@@ -15,7 +13,14 @@ const ErrorModal = ({
     description: errorMessage,
   };
 
-  return <FormModal {...props} />;
+  return (
+    <FormModal
+      authModal={betError}
+      setAuthModal={setBetError}
+      title={"Erreur"}
+      description={errorMessage}
+    />
+  );
 };
 
 export default ErrorModal;
