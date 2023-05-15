@@ -16,20 +16,20 @@ import FirstTeamContainer from "./FirstTeamContainer";
 import SecondTeamContainer from "./SecondTeamContainer";
 import Skeleton from "../Loaders/Skeleton";
 import Image from "next/image";
+import { LockClosedIcon } from "@heroicons/react/24/outline";
 
 const GameContainer = (props: Game) => {
   const { isLogged } = useAuthContext();
   const [firstTeam, setFirstTeam] = useState<Team>();
   const [secondTeam, setSecondTeam] = useState<Team>();
   const [disabledDay, setDisabledDay] = useState(false);
-  const [userAuth, setUserAuth] = useState(false);
+  const [authModal, setAuthModal] = useState(false);
   const [betError, setBetError] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState(0);
   const [notSelected, setNotSelected] = useState(0);
   const [noBet, setNoBet] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const { teamsList, gamesWithBet } = useGameContext();
-  const authProps = { isOpen: userAuth, setIsOpen: setUserAuth };
   const gameTime = props.date.slice(11, 16).replace(":", "h");
 
   const teamContainerProps = {
@@ -46,6 +46,10 @@ const GameContainer = (props: Game) => {
     "https://res.cloudinary.com/dkferpmf6/image/upload/v1674578020/LFL/white_lfl.webp";
   const div2Logo =
     "https://res.cloudinary.com/dkferpmf6/image/upload/v1681475197/div2-logo_su2wug.svg";
+
+  const handleAuthModalClick = () => {
+    return setAuthModal(true);
+  };
 
   const createBet = useMutation({
     mutationFn: addSelectedTeams,
@@ -112,7 +116,7 @@ const GameContainer = (props: Game) => {
       return;
     }
     if (!isLogged) {
-      return setUserAuth(true);
+      return setAuthModal(true);
     }
     if (selectedTeam === 0) {
       createBet.mutate(credentials);
@@ -193,81 +197,22 @@ const GameContainer = (props: Game) => {
 
   return (
     <>
-      <div
-        className="w-full py-4 flex flex-col gap-3 rounded-md bg-neutral-700"
-        style={{
-          boxShadow:
-            "	0px 8px 10px 1px hsla(0,0%,0%,0.14), 0px 3px 14px 2px hsla(0,0%,0%,0.12), 0px 5px 5px -3px hsla(0,0%,0%,0.2)",
-        }}
-      >
-        <div className="relative w-full px-2 flex gap-2 items-end text-neutral-200 text-sm sm:px-4">
-          {props.dayId < 19 ? (
-            <>
-              <Image src={lflLogo} alt="" width={30} height={30} />
-              LFL - J{props.dayId}
-            </>
-          ) : (
-            <>
-              <Image src={div2Logo} alt="" width={15} height={15} />
-              Div2 - J{props.dayId - 18}
-            </>
-          )}
+      <div className="w-full p-4 flex flex-col gap-3 rounded-md bg-neutral-700 shadow-elevation">
+        <div className="flex flex-col gap-1">
+          <span>Ven 07 avril</span>
+          <div className="flex gap-1">
+            <LockClosedIcon aria-hidden="true" className="w-4 h-4" />
+            <span className="text-xs">Fin des prédictions: 07/04 18h</span>
+          </div>
         </div>
 
-        <div
-          className="w-full py-4 flex justify-between items-end gap-2 overflow-hidden sm:gap-3"
-        >
-          <>
-            {teamsList.isLoading || (isLogged && gamesWithBet.isLoading) ? (
-              <Skeleton
-                width="100%"
-                height="64px"
-                rounded
-                ariaLabel="Chargement des équipes"
-              />
-            ) : (
-              <>
-                {!firstTeam || !secondTeam ? null : (
-                  <FirstTeamContainer
-                    {...teamContainerProps}
-                    handleClick={handleClick}
-                  />
-                )}
-              </>
-            )}
-          </>
-          <p className="h-10 flex items-center text-sm sm:text-base ">
-            {gameTime}
-          </p>
-          {teamsList.isLoading || (isLogged && gamesWithBet.isLoading) ? (
-            <>
-              <Skeleton
-                width="100%"
-                height="152px"
-                rounded
-                ariaLabel="Chargement des équipes"
-              />
-            </>
-          ) : (
-            <>
-              {!firstTeam || !secondTeam ? null : (
-                <SecondTeamContainer
-                  {...teamContainerProps}
-                  handleClick={handleClick}
-                />
-              )}
-            </>
-          )}
-        </div>
-        {betError || gamesWithBet.isError ? (
-          <ErrorModal
-            betError={betError}
-            setBetError={setBetError}
-            errorMessage={errorMessage}
-          />
-        ) : null}
+        <div></div>
       </div>
-      <AuthModal {...authProps} />
+      <AuthModal
+        authModal={authModal}
+        setAuthModal={setAuthModal}
+        handleClick={handleAuthModalClick}
+      />
     </>
   );
 };

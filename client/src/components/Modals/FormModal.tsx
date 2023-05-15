@@ -1,16 +1,31 @@
 import { Dialog } from "@headlessui/react";
 import { Transition } from "@headlessui/react";
-import CloseButton from "../Buttons/CloseButton";
-import { FormModal } from "@/src/types/modal";
+import { ReactNode } from "react";
+import IconButton from "../Buttons/IconButton";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 
-const FormModal = ({ isOpen, setIsOpen, title, description, children }: FormModal) => {
+type Props = {
+  authModal: boolean;
+  setAuthModal: (authModal: boolean) => void;
+  title: string;
+  description?: string;
+  children: ReactNode;
+};
+
+const FormModal = ({
+  authModal = false,
+  setAuthModal,
+  title,
+  description,
+  children,
+}: Props) => {
   const handleClose = () => {
-    return setIsOpen(false);
+    return setAuthModal(false);
   };
 
   return (
-    <Transition show={isOpen}>
-      <Dialog open={isOpen} onClose={handleClose} className="relative z-50">
+    <Transition show={authModal}>
+      <Dialog open={authModal} onClose={handleClose} className="relative z-50">
         <Transition.Child
           enter="transition-opacity ease-in-out duration-300"
           enterFrom="opacity-0"
@@ -25,10 +40,9 @@ const FormModal = ({ isOpen, setIsOpen, title, description, children }: FormModa
             <div className="flex w-full min-h-full items-center justify-center p-4 text-neutral-200">
               <Dialog.Panel className="w-full py-6 px-4 flex flex-col items-center gap-6 rounded-md bg-neutral-800 sm:max-w-lg md:px-6">
                 <div className="w-full flex flex-row-reverse">
-                  <CloseButton
-                    ariaLabel="Fermer la fenêtre modale"
-                    handleClose={handleClose}
-                  />
+                  <IconButton onClick={handleClose}>
+                    <XMarkIcon />
+                  </IconButton>
                 </div>
                 <Dialog.Title className="text-center text-xl">
                   {title}

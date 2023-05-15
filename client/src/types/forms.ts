@@ -4,8 +4,3 @@ export interface AuthForm {
   password: string;
   confirmPassword: string;
 }
-
-export interface EmailFormProps {
-  url: string;
-  buttonName: string;
-}

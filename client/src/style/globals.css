@@ -10,9 +10,9 @@
     @apply px-2 outline-none border-2 outline border-lfl rounded-sm;
   }
 
-  section {
+  /* section {
     @apply relative w-full py-12 flex flex-col items-center justify-between;
-  }
+  } */
 
   /*Navigation tabs*/
   .tabs__scrollbar--hide::-webkit-scrollbar {
@@ -52,9 +52,7 @@
   .password_input {
     @apply pr-10;
   }
-  .input_label {
-    @apply pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 bg-neutral-800 transition-all duration-200 ease-out motion-reduce:transition-none;
-  }
+
   .result::after {
     @apply absolute -top-7 right-0 text-sm font-bold md:text-base;
   }

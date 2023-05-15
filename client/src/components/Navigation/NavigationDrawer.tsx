@@ -1,13 +1,24 @@
 import { Transition } from "@headlessui/react";
-import { MobileNavbar } from "@/src/types/types";
 import Link from "next/link";
 import { useAuthContext } from "@/context/AuthContext";
-import LogoutButton from "../Buttons/LogoutButton";
-import LoginButton from "../Buttons/LoginButton";
-import CloseButton from "../Buttons/CloseButton";
+import Button from "../Buttons/Button";
 
-const NavigationDrawer = ({ open, setOpen, setIsOpen,handleClose }: MobileNavbar) => {
-  const { isLogged, setIsLogged } = useAuthContext();
+type Props = {
+  open: boolean;
+  setAuthModal: (authModal: boolean) => void;
+  handleNavDrawerClick: () => void;
+};
+
+const NavigationDrawer = ({
+  open,
+  setAuthModal,
+  handleNavDrawerClick,
+}: Props) => {
+  const { isLogged } = useAuthContext();
+
+  const handleModalClick = () => {
+    return setAuthModal(true);
+  };
 
   const navLinks = [
     {
@@ -47,7 +58,7 @@ const NavigationDrawer = ({ open, setOpen, setIsOpen,handleClose }: MobileNavbar
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
         className="fixed inset-0 bg-neutral-950/80 z-10"
-        onClick={handleClose}
+        onClick={handleNavDrawerClick}
       />
 
       {/* Sliding sidebar */}
@@ -62,15 +73,7 @@ const NavigationDrawer = ({ open, setOpen, setIsOpen,handleClose }: MobileNavbar
         leaveTo="translate-x-full"
         className="fixed top-0 right-0 w-64 min-h-screen bg-neutral-950 z-20 xl:w-72"
       >
-        <div className="w-full p-6 flex items-center justify-end">
-          <CloseButton
-            size="large"
-            ariaLabel="Fermer le formulaire de connexion"
-            handleClose={handleClose}
-          />
-        </div>
-
-        <ul className="w-full pl-2 pr-10 py-4 flex flex-col gap-4 text-lg font-bold xl:pl-5">
+        <ul className="w-full pl-2 pr-10 py-20 flex flex-col gap-3 text-lg font-bold xl:pl-5">
           {navLinks.map((item) => (
             <li
               key={item.name}
@@ -78,19 +81,21 @@ const NavigationDrawer = ({ open, setOpen, setIsOpen,handleClose }: MobileNavbar
             >
               <Link
                 href={item.pathname}
-                className="w-full px-4 py-2 rounded-3xl hover:bg-neutral-600/30"
-                onClick={handleClose}
+                className="w-full px-4 py-1 rounded-3xl hover:bg-neutral-600/30"
+                onClick={handleNavDrawerClick}
               >
                 {item.name}
               </Link>
             </li>
           ))}
         </ul>
-        {!isLogged ? (
-          <LoginButton setIsOpen={setIsOpen} handleClose={handleClose} />
-        ) : (
-          <LogoutButton setIsLogged={setIsLogged} handleClose={handleClose} />
-        )}
+        <Button
+          type="button"
+          className="absolute bottom-4 left-6 w-auto text-sm"
+          onClick={handleModalClick}
+        >
+          {!isLogged ? "Se connecter" : "Se déconnecter"}
+        </Button>
       </Transition.Child>
     </Transition>
   );

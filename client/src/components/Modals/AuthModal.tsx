@@ -1,73 +1,66 @@
 import { useState } from "react";
-import SwitchAuthModalButton from "../Buttons/SwitchAuthModalButton";
 import LoginForm from "../Forms/LoginForm";
 import SignUpForm from "../Forms/SignUpForm";
 import FormModal from "./FormModal";
-import ResetPasswordModal from "./ResetPasswordModal";
-import { ModalStateProps } from "@/src/types/modal";
+import Button from "../Buttons/Button";
+import SendEmailForm from "../Forms/SendEmailForm";
 
-const AuthModal = ({ isOpen, setIsOpen }: ModalStateProps) => {
+type Props = {
+  authModal: boolean;
+  setAuthModal: (authModal: boolean) => void;
+  handleClick: () => void;
+};
+
+const AuthModal = ({ authModal, setAuthModal, handleClick }: Props) => {
   const [resetPassword, setResetPassword] = useState(false);
   const [signUpForm, setSignUpForm] = useState(false);
-  const resetPasswordProps = {
-    isOpen: resetPassword,
-    setIsOpen: setResetPassword,
-  };
 
-  const signUpProps = {
-    isOpen,
-    setIsOpen,
-    title: "S'inscrire",
-  };
-  const loginProps = {
-    isOpen,
-    setIsOpen,
-    title: "Connexion",
-  };
-
-  const handleClick = () => {
+  const handleSignUpForm = () => {
     return signUpForm ? setSignUpForm(false) : setSignUpForm(true);
-  };
-
-  const switchToLoginModalProps = {
-    label: "Déjà inscrit ?",
-    name: "Se connecter",
-    handleClick,
-  };
-  const switchToSignUpModalProps = {
-    label: "Pas encore de compte ?",
-    name: "Inscrivez-vous",
-    handleClick,
-  };
-
-  const handleClose = () => {
-    return setIsOpen(false);
   };
 
   return (
     <>
       {signUpForm ? (
-        <FormModal {...signUpProps}>
-          <SignUpForm handleClose={handleClose} />
-          <hr aria-hidden="true" className="w-4/5 max-w-2xl mx-auto" />
-          <SwitchAuthModalButton {...switchToLoginModalProps} />
+        <FormModal
+          authModal={authModal}
+          setAuthModal={setAuthModal}
+          title={"S'inscrire"}
+        >
+          <SignUpForm handleClose={handleClick} />
+          <Button variant="text" onClick={handleSignUpForm}>
+            Se connecter
+          </Button>
         </FormModal>
       ) : (
-        <FormModal {...loginProps}>
-          <LoginForm handleClose={handleClose} />
-          <button
-            type="button"
-            className="text-base hover:underline hover:underline-offset-2 sm:-mt-8"
-            onClick={() => setResetPassword(true)}
-          >
-            Mot de passe oublié ?
-          </button>
-          <hr aria-hidden="true" className="w-4/5 max-w-2xl mx-auto" />
+        <FormModal
+          authModal={authModal}
+          setAuthModal={setAuthModal}
+          title={"Connexion"}
+        >
+          <LoginForm handleClose={handleClick} />
+          <div className="flex flex-col gap-2">
+            <Button variant="text" onClick={() => setResetPassword(true)}>
+              Mot de passe oublié ?
+            </Button>
+            <Button variant="text" onClick={handleSignUpForm}>
+              Créer un compte
+            </Button>
+          </div>
 
-          <SwitchAuthModalButton {...switchToSignUpModalProps} />
-          {resetPassword ? (
-            <ResetPasswordModal {...resetPasswordProps} />
-          ) : null}
+          <FormModal
+            authModal={resetPassword}
+            setAuthModal={setAuthModal}
+            title={"Modification de l'email"}
+            description={
+              "Entrez votre adresse email afin de recevoir un lien pour la modification du mot de passe"
+            }
+          >
+            <SendEmailForm
+              url={"user/reset-password"}
+              buttonName={"Réinitialiser le mot de passe"}
+            />
+          </FormModal>
         </FormModal>
       )}
     </>

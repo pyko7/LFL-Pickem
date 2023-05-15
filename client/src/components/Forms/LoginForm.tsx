@@ -8,7 +8,12 @@ import { useMutation } from "@tanstack/react-query";
 import { logUser } from "@/src/utils/api/auth/logUser";
 import { useRouter } from "next/router";
 import { useAuthContext } from "@/context/AuthContext";
-import TogglePasswordVisibility from "../Buttons/TogglePasswordVisibility";
+import Label from "../Inputs/Label";
+import IconLabel from "../Inputs/IconLabel";
+import IconButton from "../Buttons/IconButton";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import InputErrorMessage from "../Inputs/InputErrorMessage";
+import Button from "../Buttons/Button";
 
 const LoginForm = ({ handleClose }: { handleClose: () => void }) => {
   const { push, pathname } = useRouter();
@@ -70,18 +75,7 @@ const LoginForm = ({ handleClose }: { handleClose: () => void }) => {
           required
           {...register("email")}
         />
-        <label
-          htmlFor="emailInput"
-          className={`input_label 
-          peer-[:not(:placeholder-shown)]:-translate-y-[34px]
-          peer-[:not(:placeholder-shown)]:-translate-x-2
-          peer-[:not(:placeholder-shown)]:scale-[0.8]
-          peer-[:not(:placeholder-shown)]:px-2
-          peer-focus:-translate-y-[34px] peer-focus:-translate-x-2 peer-focus:scale-[0.8]
-    peer-focus:px-2`}
-        >
-          Adresse email
-        </label>
+        <Label htmlFor="emailInput">Adresse email</Label>
       </div>
 
       <div className="input_label_container">
@@ -93,47 +87,36 @@ const LoginForm = ({ handleClose }: { handleClose: () => void }) => {
           required
           {...register("password")}
         />
-        <label
-          htmlFor="passwordInput"
-          className={`input_label
-          peer-[:not(:placeholder-shown)]:-translate-y-[34px]
-          peer-[:not(:placeholder-shown)]:-translate-x-2
-          peer-[:not(:placeholder-shown)]:scale-[0.8]
-          peer-[:not(:placeholder-shown)]:px-2
-          peer-focus:-translate-y-[34px] peer-focus:-translate-x-2 peer-focus:scale-[0.8]
-    peer-focus:px-2`}
-        >
-          Mot de passe
-        </label>
-        <label
-          htmlFor="passwordInput"
-          className="absolute top-1/2 right-4 -translate-y-1/2 w-5 h-5 "
-        >
-          <TogglePasswordVisibility
-            passwordVisible={passwordVisible}
-            handleClickShowPassword={handleClickShowPassword}
-          />
-        </label>
+        <Label htmlFor="passwordInput">Mot de passe</Label>
+        <IconLabel htmlFor="passwordInput" aria-label="toggle password">
+          <IconButton size="small" onClick={handleClickShowPassword}>
+            {passwordVisible ? (
+              <EyeSlashIcon aria-hidden="true" className="w-full h-full" />
+            ) : (
+              <EyeIcon aria-hidden="true" className="w-full h-full" />
+            )}
+          </IconButton>
+        </IconLabel>
       </div>
 
       {mutation.isError ? (
-        <p className="w-full text-red-400">{errorMessage}</p>
+        <InputErrorMessage>{errorMessage}</InputErrorMessage>
       ) : errors.email || errors.password ? (
-        <p className="w-full text-red-400">
+        <InputErrorMessage>
           Adresse email et/ou mot de passe incorrect
-        </p>
+        </InputErrorMessage>
       ) : null}
 
-      <button
+      <Button
         type="submit"
-        className="w-full max-w-[275px] mt-3 py-3 rounded shadow text-base font-bold uppercase focus:shadow-outline focus:outline-none hover:bg-neutral-400  text-neutral-dark bg-neutral-500 focus-visible:border-neutral-light"
+        className="w-fit mt-6 text-neutral-dark focus-visible:border-neutral-light"
       >
         {mutation.isLoading ? (
-          <Spinner dark ariaLabel="Attente de la connexion" />
+          <Spinner dark ariaLabel="Attente de l'inscription" />
         ) : (
           "Se connecter"
         )}
-      </button>
+      </Button>
     </form>
   );
 };

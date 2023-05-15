@@ -1,16 +1,26 @@
 import Link from "next/link";
 import { UserIcon } from "@heroicons/react/24/outline";
 import { useAuthContext } from "@/context/AuthContext";
-import { useState } from "react";
 import { useRouter } from "next/router";
+import { useQuery } from "@tanstack/react-query";
+import { getUserById } from "@/src/utils/api/user/getUserById";
+import IconButton from "../Buttons/IconButton";
 
-const Navbar = ({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) => {
+type Props = {
+  setAuthModal: (authModal: boolean) => void;
+};
+
+const Navbar = ({ setAuthModal }: Props) => {
   const { pathname } = useRouter();
   const { isLogged } = useAuthContext();
-  const [active, setActive] = useState(false);
   const handleClick = () => {
-    return setIsOpen(true);
+    return setAuthModal(true);
   };
+  const user = useQuery(["user"], getUserById, {
+    staleTime: 10 * (60 * 1000), // 10 mins
+    cacheTime: 15 * (60 * 1000), // 15 mins
+    enabled: isLogged,
+  });
 
   const navLinks = [
     {
@@ -38,7 +48,7 @@ const Navbar = ({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) => {
   return (
     <nav
       role="navigation"
-      className="hidden md:w-full md:h-full md:px-10 md:flex"
+      className="hidden lg:w-full lg:h-full lg:px-10 lg:flex"
     >
       <ul className="w-full flex h-full items-center gap-4 font-bold">
         {navLinks.map((item) => (
@@ -59,8 +69,10 @@ const Navbar = ({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) => {
       {isLogged ? (
         <div className="w-fit h-full flex items-center gap-2">
           <div className="w-fit h-full flex flex-col justify-center items-center font-bold text-sm">
-            <p>Pseudo</p>
-            <p className="text-lfl">5pts</p>
+            {user.isLoading ? <p>loading...</p> : null}
+            {user.isError ? <p>error...</p> : null}
+            <p>{user.data?.userName}</p>
+            <p className="text-lfl">{user.data?.points} pts</p>
           </div>
           <Link href="/profile" aria-label="Profil">
             <UserIcon className="w-8 h-8" aria-hidden="true" />
@@ -68,13 +80,13 @@ const Navbar = ({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) => {
         </div>
       ) : (
         <div className="w-fit h-full flex items-center gap-2">
-          <button
-            type="button"
-            aria-label="Se connecter ou s'inscrire"
+          <IconButton
+            aria-label="Authentication button"
+            className="w-8 h-8"
             onClick={handleClick}
           >
-            <UserIcon className="w-8 h-8" aria-hidden="true" />
-          </button>
+            <UserIcon aria-hidden="true" />
+          </IconButton>
         </div>
       )}
     </nav>
