@@ -133,14 +133,18 @@ const SignUpForm = ({ handleClose }: { handleClose: () => void }) => {
             {...register("password")}
           />
           <Label htmlFor="passwordInput">Mot de passe</Label>
-          <IconLabel htmlFor="passwordInput" aria-label="toggle password">
-            <IconButton size="small" onClick={handleClickShowPassword}>
+          <IconLabel
+            htmlFor="passwordInput"
+            aria-label="toggle password"
+            onClick={handleClickShowPassword}
+          >
+            <div className="w-5 h-5">
               {passwordVisible ? (
                 <EyeSlashIcon aria-hidden="true" className="w-full h-full" />
               ) : (
                 <EyeIcon aria-hidden="true" className="w-full h-full" />
               )}
-            </IconButton>
+            </div>
           </IconLabel>
         </div>
         {mutation.isError && errorMessage.length > 0 ? (
@@ -169,14 +173,15 @@ const SignUpForm = ({ handleClose }: { handleClose: () => void }) => {
           <IconLabel
             htmlFor="confirmPasswordInput"
             aria-label="toggle confirm password"
+            onClick={handleClickShowConfirmPassword}
           >
-            <IconButton size="small" onClick={handleClickShowConfirmPassword}>
+            <div className="w-5 h-5">
               {confirmPasswordVisible ? (
                 <EyeSlashIcon aria-hidden="true" className="w-full h-full" />
               ) : (
                 <EyeIcon aria-hidden="true" className="w-full h-full" />
               )}
-            </IconButton>
+            </div>
           </IconLabel>
         </div>
         {mutation.isError && errorMessage.length > 0 ? (

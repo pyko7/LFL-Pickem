@@ -88,14 +88,18 @@ const LoginForm = ({ handleClose }: { handleClose: () => void }) => {
           {...register("password")}
         />
         <Label htmlFor="passwordInput">Mot de passe</Label>
-        <IconLabel htmlFor="passwordInput" aria-label="toggle password">
-          <IconButton size="small" onClick={handleClickShowPassword}>
+        <IconLabel
+          htmlFor="passwordInput"
+          aria-label="toggle password"
+          onClick={handleClickShowPassword}
+        >
+          <div className="w-5 h-5">
             {passwordVisible ? (
               <EyeSlashIcon aria-hidden="true" className="w-full h-full" />
             ) : (
               <EyeIcon aria-hidden="true" className="w-full h-full" />
             )}
-          </IconButton>
+          </div>
         </IconLabel>
       </div>
 
