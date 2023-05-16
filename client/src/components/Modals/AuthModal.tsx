@@ -1,7 +1,7 @@
 import { useState } from "react";
 import LoginForm from "../Forms/LoginForm";
 import SignUpForm from "../Forms/SignUpForm";
-import FormModal from "./FormModal";
+import Modal from "./Modal";
 import Button from "../Buttons/Button";
 import SendEmailForm from "../Forms/SendEmailForm";
 
@@ -22,7 +22,7 @@ const AuthModal = ({ authModal, setAuthModal, handleClick }: Props) => {
   return (
     <>
       {signUpForm ? (
-        <FormModal
+        <Modal
           authModal={authModal}
           setAuthModal={setAuthModal}
           title={"S'inscrire"}
@@ -31,9 +31,9 @@ const AuthModal = ({ authModal, setAuthModal, handleClick }: Props) => {
           <Button variant="text" onClick={handleSignUpForm}>
             Se connecter
           </Button>
-        </FormModal>
+        </Modal>
       ) : (
-        <FormModal
+        <Modal
           authModal={authModal}
           setAuthModal={setAuthModal}
           title={"Connexion"}
@@ -48,7 +48,7 @@ const AuthModal = ({ authModal, setAuthModal, handleClick }: Props) => {
             </Button>
           </div>
 
-          <FormModal
+          <Modal
             authModal={resetPassword}
             setAuthModal={setAuthModal}
             title={"Modification de l'email"}
@@ -60,8 +60,8 @@ const AuthModal = ({ authModal, setAuthModal, handleClick }: Props) => {
               url={"user/reset-password"}
               buttonName={"Réinitialiser le mot de passe"}
             />
-          </FormModal>
-        </FormModal>
+          </Modal>
+        </Modal>
       )}
     </>
   );

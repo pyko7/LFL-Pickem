@@ -12,8 +12,6 @@ import { useMutation } from "@tanstack/react-query";
 import ErrorModal from "../Modals/ErrorModal";
 import { useAuthContext } from "@/context/AuthContext";
 import AuthModal from "../Modals/AuthModal";
-import FirstTeamContainer from "./FirstTeamContainer";
-import SecondTeamContainer from "./SecondTeamContainer";
 import Skeleton from "../Loaders/Skeleton";
 import Image from "next/image";
 import { LockClosedIcon } from "@heroicons/react/24/outline";

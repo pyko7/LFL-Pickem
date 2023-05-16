@@ -2,28 +2,21 @@ import Head from "next/head";
 import { useState } from "react";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { TrashIcon } from "@heroicons/react/24/outline";
-import ConfirmDeleteModal from "@/src/components/Modals/ConfirmDeleteModal";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { User, UserRank } from "@/src/types/user";
 import { getUserById } from "@/src/utils/api/user/getUserById";
 import { getUserRank } from "@/src/utils/api/user/getUserRank";
 import { useAuthContext } from "@/context/AuthContext";
-import ResetPasswordModal from "@/src/components/Modals/ResetPasswordModal";
 import Skeleton from "@/src/components/Loaders/Skeleton";
+import Modal from "@/src/components/Modals/Modal";
+import SendEmailForm from "@/src/components/Forms/SendEmailForm";
+import Divider from "@/src/components/Dividers/Divider";
 
 const Profile = () => {
   const { isLogged } = useAuthContext();
 
   const [resetPassword, setResetPassword] = useState(false);
   const [deleteAccount, setDeleteAccount] = useState(false);
-  const deleteAccountProps = {
-    isOpen: deleteAccount,
-    setIsOpen: setDeleteAccount,
-  };
-  const resetPasswordProps = {
-    isOpen: resetPassword,
-    setIsOpen: setResetPassword,
-  };
 
   const currentUser: UseQueryResult<User> = useQuery(["user"], getUserById, {
     staleTime: 10 * (60 * 1000), // 10 mins
@@ -53,7 +46,7 @@ const Profile = () => {
       </Head>
 
       {isLogged ? (
-        <section>
+        <section className="py-10 lg:py-20">
           <div className="w-full px-5 m-auto sm:max-w-3xl lg:max-w-4xl lg:px-0 ">
             <div className="w-full flex justify-between text-neutral-light">
               {currentUser.isLoading ? (
@@ -90,10 +83,7 @@ const Profile = () => {
               )}
             </div>
 
-            <hr
-              aria-hidden="true"
-              className="w-2/3 max-w-2xl my-8 mx-auto border-main-light sm:my-12"
-            />
+            <Divider className="my-8 sm:my-12" size="thin" />
 
             <ul className="icons flex flex-col gap-6">
               <li>
@@ -126,10 +116,7 @@ const Profile = () => {
               </li>
             </ul>
 
-            <hr
-              aria-hidden="true"
-              className="w-2/3 max-w-2xl my-8 mx-auto border-main-light sm:my-12"
-            />
+            <Divider className="my-8 sm:my-12" size="thin" />
 
             <ul className="w-full  py-4 flex flex-col gap-6 md:gap-3">
               <li>
@@ -154,8 +141,32 @@ const Profile = () => {
               </li>
             </ul>
           </div>
-          <ResetPasswordModal {...resetPasswordProps} />
-          <ConfirmDeleteModal {...deleteAccountProps} />
+          <Modal
+            authModal={deleteAccount}
+            setAuthModal={setDeleteAccount}
+            title={"Suppression du compte"}
+            description={
+              "Cette action est irréversible, êtes-vous sûr(e) de vouloir supprimer votre addresse email ? \n   Inscrivez votre adresse email afin de confirmer la suppression définitive de votre compte."
+            }
+          >
+            <SendEmailForm
+              url={"user/reset-password"}
+              buttonName={"Réinitialiser le mot de passe"}
+            />
+          </Modal>
+          <Modal
+            authModal={resetPassword}
+            setAuthModal={setResetPassword}
+            title={"Modification de l'email"}
+            description={
+              "Entrez votre adresse email afin de recevoir un lien pour la modification du mot de passe"
+            }
+          >
+            <SendEmailForm
+              url={"user/reset-password"}
+              buttonName={"Réinitialiser le mot de passe"}
+            />
+          </Modal>
         </section>
       ) : null}
     </>

@@ -12,7 +12,7 @@ type Props = {
   children?: ReactNode;
 };
 
-const FormModal = ({
+const Modal = ({
   authModal = false,
   setAuthModal,
   title,
@@ -63,4 +63,4 @@ const FormModal = ({
   );
 };
 
-export default FormModal;
+export default Modal;
