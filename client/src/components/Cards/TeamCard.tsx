@@ -1,5 +1,5 @@
 import { HTMLAttributes } from "react";
-import { Team } from "@/src/types/teams";
+import { Team } from "@/src/types/types";
 import Image from "next/image";
 import { useThemeContext } from "@/context/ThemeContext";
 

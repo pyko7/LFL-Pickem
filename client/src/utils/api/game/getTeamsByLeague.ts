@@ -1,9 +1,9 @@
-import { TeamList } from "@/src/types/teams";
+import { Team } from "@/src/types/types";
 
-export const getTeamsByLeague = async (): Promise<TeamList> => {
+export const getTeamsByLeague = async (id: number): Promise<Team[]> => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/game/teams`,
+      `${process.env.NEXT_PUBLIC_API_URL}/game/teams/${id}`,
       {
         method: "GET",
         headers: {

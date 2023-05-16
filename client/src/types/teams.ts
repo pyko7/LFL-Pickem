@@ -1,3 +1,5 @@
+import { Game, Team } from "./types";
+
 export type TeamList = {
   teams: Team[];
 };
@@ -10,14 +12,6 @@ export interface TeamLineup {
   support: string;
 }
 
-export interface Team {
-  id: number;
-  name: string;
-  logo: string;
-  lineup: TeamLineup;
-  color: string;
-}
-
 export interface TeamCardContainer {
   game: Game;
   firstTeam: Team;
@@ -27,21 +21,6 @@ export interface TeamCardContainer {
   notSelected: number;
   noBet: boolean;
   handleClick: (currentTeamId: number, otherTeamId: number) => void;
-}
-
-export interface Day {
-  id: number;
-  date: string;
-}
-
-export interface Game {
-  id: number;
-  date: string;
-  dayId: number;
-  firstTeamId: number;
-  secondTeamId: number;
-  winner: number;
-  index?: number;
 }
 
 export interface DayId {

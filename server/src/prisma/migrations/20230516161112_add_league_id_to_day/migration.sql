@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE `day` ADD COLUMN `leagueId` INTEGER NOT NULL DEFAULT 1;
+
+-- AddForeignKey
+ALTER TABLE `Day` ADD CONSTRAINT `Day_leagueId_fkey` FOREIGN KEY (`leagueId`) REFERENCES `League`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

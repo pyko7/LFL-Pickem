@@ -20,6 +20,7 @@ model League {
   name String @unique
   Team Team[]
   Game Game[]
+  Day  Day[]
 }
 
 model Team {
@@ -51,10 +52,12 @@ model Game {
 }
 
 model Day {
-  id    Int      @id @default(autoincrement())
-  games Game[]
-  date  DateTime @default(now())
-  Bet   Bet[]
+  id       Int      @id @default(autoincrement())
+  games    Game[]
+  date     DateTime @default(now())
+  Bet      Bet[]
+  League   League   @relation(fields: [leagueId], references: [id])
+  leagueId Int      @default(1)
 }
 
 model Bet {

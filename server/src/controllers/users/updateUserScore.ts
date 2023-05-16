@@ -31,9 +31,13 @@ export const updateUserScore = async (req: Request, res: Response) => {
         (game: PrismaGame) => bet.teamId === game.winner
       );
       for (let i = 0; i < winnerBet.length; i++) {
-        userScore = userScore + 5;
+        userScore += 3;
       }
     });
+
+    if (userScore - 25 === user.points) {
+      return (userScore += 5);
+    }
 
     if (userScore === user.points) {
       return res.status(200).json(user?.points);

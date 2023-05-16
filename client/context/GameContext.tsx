@@ -6,7 +6,8 @@ import {
   useEffect,
   useState,
 } from "react";
-import { Day, Game, GamesWithBet, TeamList } from "@/src/types/teams";
+import { DayProps, Game } from "@/src/types/types";
+import { GamesWithBet, TeamList } from "@/src/types/teams";
 import { getDaysByLeague } from "@/src/utils/api/game/getDaysByLeague";
 import { getTeamsByLeague } from "@/src/utils/api/game/getTeamsByLeague";
 import { getGamesWithBetByDay } from "@/src/utils/api/game/getGamesWithBeByDay";
@@ -14,19 +15,17 @@ import { updateUserScore } from "@/src/utils/api/user/updateUserScore";
 import { useAuthContext } from "./AuthContext";
 import { getGamesByDayId } from "@/src/utils/api/game/getGamesByDayId";
 import { getAllDays } from "@/src/utils/api/game/getAllDays";
-import { useGetClosestDayFromNow } from "@/src/hooks/useGetClosestDayFromNow";
 import { useThemeContext } from "./ThemeContext";
 
 type Children = { children: ReactNode };
 
 type GameContextInterface = {
-  allDays: UseQueryResult<Day[]>;
-  DaysByLeague: UseQueryResult<Day[]>;
-  teamsList: UseQueryResult<TeamList>;
+  allDays: UseQueryResult<DayProps[]>;
+  DaysByLeague: UseQueryResult<DayProps[]>;
   gamesByDayId: UseQueryResult<Game[]>;
   gamesWithBet: UseQueryResult<GamesWithBet>;
-  dayData: Day | null;
-  setDayData: (dayData: Day) => void;
+  dayData: DayProps | null;
+  setDayData: (dayData: DayProps) => void;
 };
 
 const GameContext = createContext({} as GameContextInterface);
@@ -38,7 +37,7 @@ export const useGameContext = () => {
 export const GameProvider = ({ children }: Children) => {
   const { isLogged } = useAuthContext();
   const { leagueId } = useThemeContext();
-  const [dayData, setDayData] = useState<Day | null>(null);
+  const [dayData, setDayData] = useState<DayProps | null>(null);
 
   const allDays = useQuery(["allDays"], getAllDays, {
     staleTime: 10 * (60 * 1000), // 10 mins
@@ -53,10 +52,6 @@ export const GameProvider = ({ children }: Children) => {
       cacheTime: 15 * (60 * 1000), // 15 mins
     }
   );
-  const teamsList = useQuery(["teams"], getTeamsByLeague, {
-    staleTime: 30 * (60 * 1000), // 30 mins
-    cacheTime: 45 * (60 * 1000), // 45 mins
-  });
 
   const gamesByDayId = useQuery(
     ["gamesByDayId"],
@@ -73,20 +68,12 @@ export const GameProvider = ({ children }: Children) => {
       enabled: dayData !== null && isLogged ? true : false,
     }
   );
-  const closestDay = useGetClosestDayFromNow(DaysByLeague);
 
   useQuery(["score"], updateUserScore, {
     staleTime: 10 * (60 * 1000), // 10 mins
     cacheTime: 15 * (60 * 1000), // 15 mins
     enabled: isLogged,
   });
-
-  useEffect(() => {
-    if (!closestDay) {
-      return;
-    }
-    setDayData(closestDay.closestDay);
-  }, [closestDay.closestDay]);
 
   useEffect(() => {
     if (dayData === null) {
@@ -105,7 +92,6 @@ export const GameProvider = ({ children }: Children) => {
       value={{
         allDays,
         DaysByLeague,
-        teamsList,
         gamesByDayId,
         gamesWithBet,
         dayData,
