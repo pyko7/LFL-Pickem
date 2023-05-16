@@ -15,6 +15,7 @@ import { useAuthContext } from "./AuthContext";
 import { getGamesByDayId } from "@/src/utils/api/game/getGamesByDayId";
 import { getAllDays } from "@/src/utils/api/game/getAllDays";
 import { useGetClosestDayFromNow } from "@/src/hooks/useGetClosestDayFromNow";
+import { useThemeContext } from "./ThemeContext";
 
 type Children = { children: ReactNode };
 
@@ -26,7 +27,6 @@ type GameContextInterface = {
   gamesWithBet: UseQueryResult<GamesWithBet>;
   dayData: Day | null;
   setDayData: (dayData: Day) => void;
-  setLeagueId: (leagueId: number) => void;
 };
 
 const GameContext = createContext({} as GameContextInterface);
@@ -37,7 +37,7 @@ export const useGameContext = () => {
 
 export const GameProvider = ({ children }: Children) => {
   const { isLogged } = useAuthContext();
-  const [leagueId, setLeagueId] = useState(0);
+  const { leagueId } = useThemeContext();
   const [dayData, setDayData] = useState<Day | null>(null);
 
   const allDays = useQuery(["allDays"], getAllDays, {
@@ -110,7 +110,6 @@ export const GameProvider = ({ children }: Children) => {
         gamesWithBet,
         dayData,
         setDayData,
-        setLeagueId,
       }}
     >
       {children}

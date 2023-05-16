@@ -1,32 +1,32 @@
 import Link from "next/link";
 import { UserIcon } from "@heroicons/react/24/outline";
 import { useAuthContext } from "@/context/AuthContext";
-import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
 import { getUserById } from "@/src/utils/api/user/getUserById";
 import IconButton from "../Buttons/IconButton";
 import { navLinks } from "@/src/utils/navLinks";
 import DropdownMenu from "../Menus/DropdownMenu";
+import { useThemeContext } from "@/context/ThemeContext";
 
 type Props = {
   setAuthModal: (authModal: boolean) => void;
 };
 
 const Navbar = ({ setAuthModal }: Props) => {
-  const { pathname } = useRouter();
   const { isLogged, setIsLogged } = useAuthContext();
+  const { leagueId } = useThemeContext();
   const handleClick = () => {
     if (!isLogged) {
       return setAuthModal(true);
     }
     setIsLogged(false);
   };
+
   const user = useQuery(["user"], getUserById, {
     staleTime: 10 * (60 * 1000), // 10 mins
     cacheTime: 15 * (60 * 1000), // 15 mins
     enabled: isLogged,
   });
-
   return (
     <nav
       role="navigation"
@@ -37,10 +37,7 @@ const Navbar = ({ setAuthModal }: Props) => {
           <li key={item.name}>
             <Link
               href={item.pathname}
-              className={`px-4 py-2 rounded-3xl
-              ${
-                item.pathname !== pathname.slice(0) ? "" : "bg-neutral-600/30"
-              }   hover:bg-neutral-600/30`}
+              className="px-4 py-2 rounded-3xl hover:bg-neutral-600/30"
             >
               {item.name}
             </Link>
@@ -57,7 +54,9 @@ const Navbar = ({ setAuthModal }: Props) => {
             {user.isLoading ? <span>loading...</span> : null}
             {user.isError ? <span>error...</span> : null}
             <span>{user.data?.userName}</span>
-            <span className="text-lfl">{user.data?.points} pts</span>
+            <span className={`${leagueId === 1 ? "text-lfl" : "text-divtwo"}`}>
+              {user.data?.points} pts
+            </span>
           </Link>
           <DropdownMenu handleClick={handleClick} />
         </div>

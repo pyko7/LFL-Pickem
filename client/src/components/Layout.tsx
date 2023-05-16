@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import Head from "next/head";
 import Header from "./Navigation/Header";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 const Layout = ({ children }: { children?: ReactNode }) => {
   return (
@@ -23,10 +24,12 @@ const Layout = ({ children }: { children?: ReactNode }) => {
         />
       </Head>
 
-      <div className="w-full min-h-screen bg-neutral-900 text-neutral-200">
-        <Header />
-        <main className="w-full h-full">{children}</main>
-      </div>
+      <ThemeProvider>
+        <div className="w-full min-h-screen bg-neutral-900 text-neutral-200">
+          <Header />
+          <main className="w-full h-full">{children}</main>
+        </div>
+      </ThemeProvider>
     </>
   );
 };

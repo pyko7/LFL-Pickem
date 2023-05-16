@@ -1,3 +1,4 @@
+import { useThemeContext } from "@/context/ThemeContext";
 import { Day } from "@/src/types/teams";
 import { useEffect, useRef, useState } from "react";
 
@@ -10,6 +11,7 @@ type Props = {
 };
 
 const Tab = ({ dayData, setDayData, label, value, setPosition }: Props) => {
+  const { leagueId } = useThemeContext();
   const [active, setActive] = useState(false);
   const ref = useRef<HTMLLIElement>(null);
 
@@ -45,8 +47,10 @@ const Tab = ({ dayData, setDayData, label, value, setPosition }: Props) => {
     <li
       ref={ref}
       className={`w-fit h-full py-4 flex  items-center justify-center ${
-        active
+        active && leagueId === 1
           ? "text-lfl-light border-b-lfl-light font-bold"
+          : active && leagueId === 2
+          ? "text-divtwo-light border-b-divtwo-light font-bold"
           : "text-neutral-light border-b-transparent"
       } border-b-2 whitespace-nowrap cursor-pointer select-none hover:text-lfl-light focus-visible:border-b-lfl-light`}
       onClick={handleClick}

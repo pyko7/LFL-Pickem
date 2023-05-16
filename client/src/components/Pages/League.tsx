@@ -5,11 +5,8 @@ import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
 import GameContainerSkeleton from "../Loaders/GameContainerSkeleton";
 import { useAuthContext } from "@/context/AuthContext";
-import { useEffect } from "react";
-import { useRouter } from "next/router";
 
 const League = () => {
-  const { pathname } = useRouter();
   const { isLogged } = useAuthContext();
   const {
     DaysByLeague,
@@ -18,17 +15,7 @@ const League = () => {
     teamsList,
     gamesWithBet,
     gamesByDayId,
-    setLeagueId,
   } = useGameContext();
-
-  useEffect(() => {
-    if (pathname === "/lfl") {
-      setLeagueId(1);
-    } else if (pathname === "/div2") {
-      setLeagueId(2);
-    }
-    return;
-  }, [pathname, setLeagueId]);
 
   return (
     <section className="relative w-full max-w-7xl mx-auto py-12 flex flex-col items-center justify-between">

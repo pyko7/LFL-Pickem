@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Team } from "@/src/types/teams";
 import Image from "next/image";
-import { useRouter } from "next/router";
+import { useThemeContext } from "@/context/ThemeContext";
 
 type Props = {
   team: Team;
@@ -9,7 +9,7 @@ type Props = {
 };
 
 const TeamCard = ({ team, winningBet }: Props) => {
-  const { pathname } = useRouter();
+  const { leagueId } = useThemeContext();
   const [selected, setSelected] = useState(false);
 
   return (
@@ -20,9 +20,9 @@ const TeamCard = ({ team, winningBet }: Props) => {
        border-1 border-transparent shadow-md outline-1 outline-blue-400
        ${selected ? "bg-neutral-900" : ""}
       ${
-        selected && pathname === "lfl"
+        selected && leagueId === 1
           ? "border-lfl"
-          : selected && pathname === "div2"
+          : selected && leagueId === 2
           ? "border-divtwo"
           : ""
       }
