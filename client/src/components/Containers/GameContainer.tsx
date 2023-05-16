@@ -9,13 +9,13 @@ import {
 import { utcToZonedTime } from "date-fns-tz";
 import { isBefore, parseISO } from "date-fns";
 import { useMutation } from "@tanstack/react-query";
-import ErrorModal from "../Modals/ErrorModal";
 import { useAuthContext } from "@/context/AuthContext";
 import AuthModal from "../Modals/AuthModal";
 import Skeleton from "../Loaders/Skeleton";
 import Image from "next/image";
 import { LockClosedIcon } from "@heroicons/react/24/outline";
 import TeamCard from "../Cards/TeamCard";
+import Modal from "../Modals/Modal";
 
 const GameContainer = (props: Game) => {
   const { isLogged } = useAuthContext();
@@ -208,6 +208,12 @@ const GameContainer = (props: Game) => {
         authModal={authModal}
         setAuthModal={setAuthModal}
         handleClick={handleAuthModalClick}
+      />
+      <Modal
+        authModal={betError}
+        setAuthModal={setBetError}
+        title={"Erreur"}
+        description={errorMessage}
       />
     </>
   );

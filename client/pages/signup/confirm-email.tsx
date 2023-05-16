@@ -1,15 +1,12 @@
 import { useState } from "react";
-import ConfirmEmailModal from "@/src/components/Modals/ConfirmEmailModal";
 import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
 import AuthModal from "@/src/components/Modals/AuthModal";
+import Modal from "@/src/components/Modals/Modal";
 
 const ConfirmEmail = () => {
   const [login, setLogin] = useState(false);
   const [email, setEmail] = useState(false);
-
-  const authProps = { isOpen: login, setIsOpen: setLogin };
-  const formProps = { isOpen: email, setIsOpen: setEmail };
 
   const handleLoginPageClick = () => {
     return login ? setLogin(false) : setLogin(true);
@@ -63,8 +60,20 @@ const ConfirmEmail = () => {
           Renvoyer un email
         </button>
       </div>
-      {!email ? null : <ConfirmEmailModal {...formProps} />}
-      {!login ? null : <AuthModal {...authProps} />}
+      {!email ? null : (
+        <Modal
+          authModal={email}
+          setAuthModal={setEmail}
+          title={"Réinitialisation du mot de passe"}
+        />
+      )}
+      {!login ? null : (
+        <AuthModal
+          authModal={login}
+          setAuthModal={setLogin}
+          handleClick={handleLoginPageClick}
+        />
+      )}
     </section>
   );
 };
