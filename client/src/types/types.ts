@@ -9,3 +9,12 @@ export type League = {
   name: string;
   imageUrl: string;
 };
+
+export type Day = {
+  id: number;
+  date: string;
+  dayId: number;
+  firstTeamId: number;
+  secondTeamId: number;
+  winner: number;
+};

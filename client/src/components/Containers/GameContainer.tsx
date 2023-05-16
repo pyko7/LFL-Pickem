@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Game, Team } from "@/src/types/teams";
+import { KeyboardEvent, useEffect, useState } from "react";
+import { Team } from "@/src/types/teams";
 import { useGameContext } from "@/context/GameContext";
 import {
   addSelectedTeams,
@@ -7,7 +7,8 @@ import {
   deleteSelectedTeams,
 } from "@/src/utils/api/game/handleSelectedTeams";
 import { utcToZonedTime } from "date-fns-tz";
-import { isBefore, parseISO } from "date-fns";
+import { format, isBefore, parseISO } from "date-fns";
+import { fr } from "date-fns/locale";
 import { useMutation } from "@tanstack/react-query";
 import { useAuthContext } from "@/context/AuthContext";
 import AuthModal from "../Modals/AuthModal";
@@ -16,9 +17,17 @@ import Image from "next/image";
 import { LockClosedIcon } from "@heroicons/react/24/outline";
 import TeamCard from "../Cards/TeamCard";
 import Modal from "../Modals/Modal";
+import { Day } from "@/src/types/types";
+import { capitalizeFirstLetter } from "@/src/utils/capitalizeFirstLetter";
 
-const GameContainer = (props: Game) => {
+type Props = {
+  day: Day;
+};
+
+const GameContainer = ({ day }: Props) => {
+  const { id, date, dayId, firstTeamId, secondTeamId, winner } = day;
   const { isLogged } = useAuthContext();
+  const [selected, setSelected] = useState(false);
   const [firstTeam, setFirstTeam] = useState<Team>();
   const [secondTeam, setSecondTeam] = useState<Team>();
   const [disabledDay, setDisabledDay] = useState(false);
@@ -29,7 +38,10 @@ const GameContainer = (props: Game) => {
   const [noBet, setNoBet] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const { teamsList, gamesWithBet } = useGameContext();
-  const gameTime = props.date.slice(11, 16).replace(":", "h");
+  const formatDate = format(parseISO(date), "PPPP", {
+    locale: fr,
+  });
+  const gameDate = capitalizeFirstLetter(formatDate);
 
   const lflLogo =
     "https://res.cloudinary.com/dkferpmf6/image/upload/v1674578020/LFL/white_lfl.webp";
@@ -96,9 +108,9 @@ const GameContainer = (props: Game) => {
 
   const handleClick = (currentTeamId: number, otherTeamId: number) => {
     const credentials = {
-      gameId: props.id,
+      gameId: id,
       teamId: currentTeamId,
-      dayId: props.dayId,
+      dayId: dayId,
     };
 
     if (disabledDay) {
@@ -132,27 +144,34 @@ const GameContainer = (props: Game) => {
     }
   };
 
+  const handleKeyDown = (
+    event: KeyboardEvent<HTMLElement>,
+    currentTeamId: number,
+    otherTeamId: number
+  ) => {
+    if (event.key === "Enter") {
+      handleClick(currentTeamId, otherTeamId);
+    }
+  };
+
   useEffect(() => {
     const dateInFrance = utcToZonedTime(new Date(), "Europe/Paris");
     //date-fns-tz has 1 hour off compare to Paris timezone, this is why timezone is set to London
-    const gameDateInFrance = utcToZonedTime(
-      parseISO(props.date),
-      "Europe/London"
-    );
+    const gameDateInFrance = utcToZonedTime(parseISO(date), "Europe/London");
     const isPast = isBefore(gameDateInFrance, dateInFrance);
     return isPast ? setDisabledDay(true) : setDisabledDay(false);
-  }, [props.date]);
+  }, [date]);
 
   useEffect(() => {
     teamsList.data?.teams.map((team) => {
-      if (team.id === props.firstTeamId) {
+      if (team.id === firstTeamId) {
         setFirstTeam(team);
       }
-      if (team.id === props.secondTeamId) {
+      if (team.id === secondTeamId) {
         setSecondTeam(team);
       }
     });
-  }, [props.id, props.firstTeamId, props.secondTeamId, teamsList.data]);
+  }, [id, firstTeamId, secondTeamId, teamsList.data]);
 
   useEffect(() => {
     if (!firstTeam || !secondTeam || !isLogged) {
@@ -174,7 +193,7 @@ const GameContainer = (props: Game) => {
         return setSelectedTeam(secondTeam.id);
       }
     });
-  }, [gamesWithBet.data?.userBets, props.id, firstTeam, secondTeam]);
+  }, [gamesWithBet.data?.userBets, id, firstTeam, secondTeam]);
 
   useEffect(() => {
     if (gamesWithBet.isError) {
@@ -188,7 +207,7 @@ const GameContainer = (props: Game) => {
     <>
       <div className="w-full max-w-sm px-2 py-4 flex flex-col gap-3 rounded-md bg-neutral-700 shadow-elevation md:px-4">
         <div className="flex flex-col gap-1">
-          <span>Ven 07 avril</span>
+          <span>{gameDate}</span>
           <div className="flex gap-1">
             <LockClosedIcon aria-hidden="true" className="w-4 h-4" />
             <span className="text-xs">Fin des prédictions: 07/04 18h</span>
@@ -198,8 +217,24 @@ const GameContainer = (props: Game) => {
         <div className="py-2 flex flex-col gap-5">
           {!firstTeam || !secondTeam ? null : (
             <>
-              <TeamCard team={firstTeam} winningBet={null} />
-              <TeamCard team={secondTeam} winningBet={null} />
+              <TeamCard
+                role="button"
+                tabIndex={0}
+                selected={selected}
+                team={firstTeam}
+                winningBet={null}
+                onClick={() => handleClick(firstTeam.id, secondTeam.id)}
+                onKeyDown={(e) => handleKeyDown(e, firstTeam.id, secondTeam.id)}
+              />
+              <TeamCard
+                role="button"
+                tabIndex={0}
+                selected={selected}
+                team={secondTeam}
+                winningBet={null}
+                onClick={() => handleClick(firstTeam.id, secondTeam.id)}
+                onKeyDown={(e) => handleKeyDown(e, firstTeam.id, secondTeam.id)}
+              />
             </>
           )}
         </div>

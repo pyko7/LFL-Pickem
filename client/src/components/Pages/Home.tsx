@@ -11,6 +11,7 @@ import Divider from "../Dividers/Divider";
 import Image from "next/image";
 
 const Homepage = () => {
+  const { dayData, setDayData, gamesWithBet, gamesByDayId } = useGameContext();
   const { isLogged } = useAuthContext();
   const { allDays } = useGameContext();
   const { closestDay } = useGetClosestDayFromNow(allDays);
@@ -26,8 +27,6 @@ const Homepage = () => {
       "https://res.cloudinary.com/dkferpmf6/image/upload/v1681475197/div2-logo_su2wug.svg",
   };
 
-  const { dayData, setDayData, gamesWithBet, gamesByDayId } = useGameContext();
-
   useEffect(() => {
     if (!closestDay) {
       return;
@@ -38,7 +37,9 @@ const Homepage = () => {
   return (
     <section className="w-full p-4 flex flex-col gap-10 md:px-8 md:gap-16 xl:gap-20">
       <div className="w-full flex flex-col gap-5 md:gap-14 lg:max-w-7xl lg:mx-auto xl:mt-5">
-        <h2 className="text-center text-lg uppercase lg:text-start">Explorer les leagues:</h2>
+        <h2 className="text-center text-lg uppercase lg:text-start">
+          Explorer les leagues:
+        </h2>
         <div className="flex flex-nowrap justify-center items-center gap-2 sm:gap-5 md:gap-10 lg:justify-start">
           <div className="w-full max-w-[200px] h-40">
             <LeagueCard league={lfl} />
@@ -67,13 +68,13 @@ const Homepage = () => {
         {isLogged ? (
           <div className="w-full flex flex-wrap justify-center gap-5 md:justify-start">
             {gamesWithBet.data?.day?.map((day) => (
-              <GameContainer {...day} key={day.id} />
+              <GameContainer day={day} key={day.id} />
             ))}
           </div>
         ) : (
           <div className="w-full flex flex-wrap justify-center gap-5 md:justify-start">
             {gamesByDayId.data?.map((day) => (
-              <GameContainer {...day} key={day.id} />
+              <GameContainer day={day} key={day.id} />
             ))}
           </div>
         )}

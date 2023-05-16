@@ -46,7 +46,7 @@ const League = () => {
                   return dayData?.id !== day.dayId ? (
                     <GameContainerSkeleton key={day.id} />
                   ) : (
-                    <GameContainer {...day} key={day.id} />
+                    <GameContainer day={day} key={day.id} />
                   );
                 })}
               </>
@@ -65,7 +65,7 @@ const League = () => {
                   return dayData?.id !== day.dayId ? (
                     <GameContainerSkeleton key={day.id} />
                   ) : (
-                    <GameContainer {...day} index={index} key={day.id} />
+                    <GameContainer day={day} key={day.id} />
                   );
                 })}
               </>
