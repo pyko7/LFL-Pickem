@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
 import { getUserById } from "@/src/utils/api/user/getUserById";
 import IconButton from "../Buttons/IconButton";
+import { navLinks } from "@/src/utils/navLinks";
 
 type Props = {
   setAuthModal: (authModal: boolean) => void;
@@ -21,29 +22,6 @@ const Navbar = ({ setAuthModal }: Props) => {
     cacheTime: 15 * (60 * 1000), // 15 mins
     enabled: isLogged,
   });
-
-  const navLinks = [
-    {
-      name: "Accueil",
-      pathname: "/",
-    },
-    {
-      name: "LFL",
-      pathname: "/lfl",
-    },
-    {
-      name: "Div2",
-      pathname: "/div2",
-    },
-    {
-      name: "Classement",
-      pathname: "/rank",
-    },
-    {
-      name: "Règles",
-      pathname: "/rules",
-    },
-  ];
 
   return (
     <nav
@@ -68,14 +46,17 @@ const Navbar = ({ setAuthModal }: Props) => {
 
       {isLogged ? (
         <div className="w-fit h-full flex items-center gap-2">
-          <div className="w-fit h-full flex flex-col justify-center items-center font-bold text-sm">
-            {user.isLoading ? <p>loading...</p> : null}
-            {user.isError ? <p>error...</p> : null}
-            <p>{user.data?.userName}</p>
-            <p className="text-lfl">{user.data?.points} pts</p>
-          </div>
-          <Link href="/profile" aria-label="Profil">
-            <UserIcon className="w-8 h-8" aria-hidden="true" />
+          <Link
+            href="/profile"
+            className="w-fit h-full flex flex-col justify-center items-center font-bold text-sm"
+          >
+            {user.isLoading ? <span>loading...</span> : null}
+            {user.isError ? <span>error...</span> : null}
+            <span>{user.data?.userName}</span>
+            <span className="text-lfl">{user.data?.points} pts</span>
+          </Link>
+          <Link href="/profile">
+            <UserIcon className="w-8 h-8" aria-label="Profil" />
           </Link>
         </div>
       ) : (
