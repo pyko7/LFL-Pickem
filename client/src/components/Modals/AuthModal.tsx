@@ -19,6 +19,11 @@ const AuthModal = ({ authModal, setAuthModal, handleClick }: Props) => {
     return signUpForm ? setSignUpForm(false) : setSignUpForm(true);
   };
 
+  const handleClose = () => {
+    handleClick();
+    return setAuthModal(false);
+  };
+
   return (
     <>
       {signUpForm ? (
@@ -27,7 +32,7 @@ const AuthModal = ({ authModal, setAuthModal, handleClick }: Props) => {
           setAuthModal={setAuthModal}
           title={"S'inscrire"}
         >
-          <SignUpForm handleClose={handleClick} />
+          <SignUpForm handleClose={handleClose} />
           <Button variant="text" onClick={handleSignUpForm}>
             Se connecter
           </Button>
@@ -38,7 +43,7 @@ const AuthModal = ({ authModal, setAuthModal, handleClick }: Props) => {
           setAuthModal={setAuthModal}
           title={"Connexion"}
         >
-          <LoginForm handleClose={handleClick} />
+          <LoginForm handleClose={handleClose} />
           <div className="flex flex-col gap-2">
             <Button variant="text" onClick={() => setResetPassword(true)}>
               Mot de passe oublié ?
@@ -50,7 +55,7 @@ const AuthModal = ({ authModal, setAuthModal, handleClick }: Props) => {
 
           <Modal
             authModal={resetPassword}
-            setAuthModal={setAuthModal}
+            setAuthModal={setResetPassword}
             title={"Modification de l'email"}
             description={
               "Entrez votre adresse email afin de recevoir un lien pour la modification du mot de passe"

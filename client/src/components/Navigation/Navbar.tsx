@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getUserById } from "@/src/utils/api/user/getUserById";
 import IconButton from "../Buttons/IconButton";
 import { navLinks } from "@/src/utils/navLinks";
+import DropdownMenu from "../Menus/DropdownMenu";
 
 type Props = {
   setAuthModal: (authModal: boolean) => void;
@@ -13,9 +14,12 @@ type Props = {
 
 const Navbar = ({ setAuthModal }: Props) => {
   const { pathname } = useRouter();
-  const { isLogged } = useAuthContext();
+  const { isLogged, setIsLogged } = useAuthContext();
   const handleClick = () => {
-    return setAuthModal(true);
+    if (!isLogged) {
+      return setAuthModal(true);
+    }
+    setIsLogged(false);
   };
   const user = useQuery(["user"], getUserById, {
     staleTime: 10 * (60 * 1000), // 10 mins
@@ -48,16 +52,14 @@ const Navbar = ({ setAuthModal }: Props) => {
         <div className="w-fit h-full flex items-center gap-2">
           <Link
             href="/profile"
-            className="w-fit h-full flex flex-col justify-center items-center font-bold text-sm"
+            className="h-full flex flex-col justify-center items-center font-bold text-sm"
           >
             {user.isLoading ? <span>loading...</span> : null}
             {user.isError ? <span>error...</span> : null}
             <span>{user.data?.userName}</span>
             <span className="text-lfl">{user.data?.points} pts</span>
           </Link>
-          <Link href="/profile">
-            <UserIcon className="w-8 h-8" aria-label="Profil" />
-          </Link>
+          <DropdownMenu handleClick={handleClick} />
         </div>
       ) : (
         <div className="w-fit h-full flex items-center gap-2">

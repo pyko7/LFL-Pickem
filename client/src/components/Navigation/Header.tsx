@@ -40,6 +40,7 @@ const Header = () => {
         <div className="absolute top-0 -right-0 lg:hidden">
           <NavigationDrawer
             open={open}
+            setOpen={setOpen}
             setAuthModal={setAuthModal}
             handleNavDrawerClick={handleClick}
           />

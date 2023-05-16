@@ -8,16 +8,18 @@ import { navLinks } from "@/src/utils/navLinks";
 
 type Props = {
   open: boolean;
+  setOpen: (open: boolean) => void;
   setAuthModal: (authModal: boolean) => void;
   handleNavDrawerClick: () => void;
 };
 
 const NavigationDrawer = ({
   open,
+  setOpen,
   setAuthModal,
   handleNavDrawerClick,
 }: Props) => {
-  const { isLogged } = useAuthContext();
+  const { isLogged, setIsLogged } = useAuthContext();
 
   const user = useQuery(["user"], getUserById, {
     staleTime: 10 * (60 * 1000), // 10 mins
@@ -25,8 +27,12 @@ const NavigationDrawer = ({
     enabled: isLogged,
   });
 
-  const handleModalClick = () => {
-    return setAuthModal(true);
+  const handleClick = () => {
+    if (!isLogged) {
+      return setAuthModal(true);
+    }
+    setOpen(false);
+    setIsLogged(false);
   };
 
   return (
@@ -80,11 +86,7 @@ const NavigationDrawer = ({
               <span className="text-lfl">{user.data?.points} pts</span>
             </Link>
           )}
-          <Button
-            type="button"
-            className="w-fit text-sm"
-            onClick={handleModalClick}
-          >
+          <Button type="button" className="w-fit text-sm" onClick={handleClick}>
             {!isLogged ? "Se connecter" : "Se déconnecter"}
           </Button>
         </div>
