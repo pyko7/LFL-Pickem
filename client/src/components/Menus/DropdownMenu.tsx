@@ -8,7 +8,7 @@ type Props = {
 
 const DropdownMenu = ({ handleClick }: Props) => {
   return (
-    <div className="relative">
+    <div className="relative z-10">
       <Menu as="div">
         <Menu.Button>
           <UserIcon className="w-8 h-8" aria-label="Toggle menu" />
@@ -24,7 +24,11 @@ const DropdownMenu = ({ handleClick }: Props) => {
           </Menu.Item>
           <Menu.Item>
             <div className="p-2 pl-4 font-semibold bg-neutral-700  focus:outline-none hover:bg-neutral-600">
-              <button type="button" className="w-full flex items-center gap-1" onClick={handleClick}>
+              <button
+                type="button"
+                className="w-full flex items-center gap-1"
+                onClick={handleClick}
+              >
                 Se déconnecter
               </button>
             </div>
