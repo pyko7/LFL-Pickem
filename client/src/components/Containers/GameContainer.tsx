@@ -17,6 +17,7 @@ import SecondTeamContainer from "./SecondTeamContainer";
 import Skeleton from "../Loaders/Skeleton";
 import Image from "next/image";
 import { LockClosedIcon } from "@heroicons/react/24/outline";
+import TeamCard from "../Cards/TeamCard";
 
 const GameContainer = (props: Game) => {
   const { isLogged } = useAuthContext();
@@ -31,16 +32,6 @@ const GameContainer = (props: Game) => {
   const [errorMessage, setErrorMessage] = useState("");
   const { teamsList, gamesWithBet } = useGameContext();
   const gameTime = props.date.slice(11, 16).replace(":", "h");
-
-  const teamContainerProps = {
-    game: props,
-    firstTeam: firstTeam!,
-    secondTeam: secondTeam!,
-    selectedTeam,
-    disabledDay,
-    notSelected,
-    noBet,
-  };
 
   const lflLogo =
     "https://res.cloudinary.com/dkferpmf6/image/upload/v1674578020/LFL/white_lfl.webp";
@@ -197,7 +188,7 @@ const GameContainer = (props: Game) => {
 
   return (
     <>
-      <div className="w-full p-4 flex flex-col gap-3 rounded-md bg-neutral-700 shadow-elevation">
+      <div className="w-full max-w-sm px-2 py-4 flex flex-col gap-3 rounded-md bg-neutral-700 shadow-elevation md:px-4">
         <div className="flex flex-col gap-1">
           <span>Ven 07 avril</span>
           <div className="flex gap-1">
@@ -206,7 +197,14 @@ const GameContainer = (props: Game) => {
           </div>
         </div>
 
-        <div></div>
+        <div className="py-2 flex flex-col gap-5">
+          {!firstTeam || !secondTeam ? null : (
+            <>
+              <TeamCard team={firstTeam} winningBet={null} />
+              <TeamCard team={secondTeam} winningBet={null} />
+            </>
+          )}
+        </div>
       </div>
       <AuthModal
         authModal={authModal}

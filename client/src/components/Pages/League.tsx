@@ -21,8 +21,6 @@ const League = () => {
     setLeagueId,
   } = useGameContext();
 
-  const tabsProps = { schedule: DaysByLeague, dayData, setDayData };
-
   useEffect(() => {
     if (pathname === "/lfl") {
       setLeagueId(1);
@@ -33,21 +31,23 @@ const League = () => {
   }, [pathname, setLeagueId]);
 
   return (
-    <section>
-      <ScrollableDaysTabs {...tabsProps} />
-      <div className="w-full px-3 m-auto sm:max-w-3xl lg:max-w-3xl lg:px-0 ">
-        <div className="w-full mt-20 mb-10 flex justify-between text-neutral-light">
-          <h1 className="max-w-sm text-lg font-bold lg:max-w-md lg:text-xl">
-            {dayData === null
-              ? "Journée"
-              : format(parseISO(dayData?.date!), "PPPP", {
-                  locale: fr,
-                })}
-          </h1>
-        </div>
+    <section className="relative w-full max-w-7xl mx-auto py-12 flex flex-col items-center justify-between">
+      <ScrollableDaysTabs
+        schedule={DaysByLeague}
+        dayData={dayData}
+        setDayData={setDayData}
+      />
+      <div className="w-full px-3 md:px-5">
+        <h1 className="mt-20 mb-10 text-lg font-bold lg:max-w-md lg:text-xl">
+          {dayData === null
+            ? "Journée"
+            : format(parseISO(dayData?.date!), "PPPP", {
+                locale: fr,
+              })}
+        </h1>
 
         {isLogged ? (
-          <div className="w-full flex flex-col justify-between gap-5">
+          <div className="w-full flex flex-wrap justify-center gap-5 md:justify-start">
             {teamsList.isError ? (
               <p style={{ margin: "0 auto" }}>
                 Une erreur est survenue. Les matchs sont momentanément
@@ -66,7 +66,7 @@ const League = () => {
             )}
           </div>
         ) : (
-          <div className="w-full flex flex-col justify-between gap-5">
+          <div className="w-full flex flex-wrap justify-center gap-5 md:justify-start">
             {teamsList.isError ? (
               <p style={{ margin: "0 auto" }}>
                 Une erreur est survenue. Les matchs sont momentanément

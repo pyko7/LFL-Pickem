@@ -10,10 +10,6 @@
     @apply px-2 outline-none border-2 outline border-lfl rounded-sm;
   }
 
-  /* section {
-    @apply relative w-full py-12 flex flex-col items-center justify-between;
-  } */
-
   /*Navigation tabs*/
   .tabs__scrollbar--hide::-webkit-scrollbar {
     display: none;

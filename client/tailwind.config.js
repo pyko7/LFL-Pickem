@@ -12,8 +12,19 @@ module.exports = {
         divtwo: "#e8378c",
         "divtwo-light": "#ea4b97",
       },
+      borderWidth: {
+        1: "1px",
+      },
       borderRadius: {
         circle: "50%",
+      },
+      boxShadow: {
+        elevation:
+          "0px 8px 10px 1px hsla(0,0%,0%,0.14), 0px 3px 14px 2px hsla(0,0%,0%,0.12), 0px 5px 5px -3px hsla(0,0%,0%,0.2)",
+        "elevation-lfl":
+          "0px 8px 10px 1px hsla(42,52%,47%,0.14), 0px 3px 14px 2px hsla(42,52%,47%,0.12), 0px 5px 5px -3px hsla(42,52%,47%,0.2)",
+        "elevation-divtwo":
+          "0px 8px 10px 1px hsla(331,79%,56%,0.14), 0px 3px 14px 2px hsla(331,79%,56%,0.12), 0px 5px 5px -3px hsla(331,79%,56%,0.2)",
       },
     },
   },

@@ -2,11 +2,17 @@ import { useState } from "react";
 import Skeleton from "../Loaders/Skeleton";
 import Tab from "./Tab";
 import Tabs from "./Tabs";
-import { GameTabs } from "@/src/types/tabs";
+import { UseQueryResult } from "@tanstack/react-query";
+import { Day } from "@/src/types/teams";
 
-const ScrollableDaysTabs = ({schedule, dayData, setDayData}:GameTabs) => {
+type Props = {
+  schedule: UseQueryResult<Day[]>;
+  dayData: Day | null;
+  setDayData: (dayData: Day) => void;
+};
+
+const ScrollableDaysTabs = ({ schedule, dayData, setDayData }: Props) => {
   const [position, setPosition] = useState(0);
-  const dayDataProps = { dayData, setDayData };
 
   return (
     <div className="absolute top-8 left-1/2 -translate-x-1/2 w-full max-w-7xl rounded-md bg-neutral-700">
@@ -26,9 +32,10 @@ const ScrollableDaysTabs = ({schedule, dayData, setDayData}:GameTabs) => {
       ) : (
         <nav aria-label="Selecteur de journée" className=" w-full h-full ">
           <Tabs position={position}>
-            {schedule.data?.map((day,index) => (
+            {schedule.data?.map((day, index) => (
               <Tab
-                {...dayDataProps}
+                dayData={dayData}
+                setDayData={setDayData}
                 setPosition={setPosition}
                 label={`Journée ${index + 1}`}
                 value={day}

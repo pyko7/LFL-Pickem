@@ -18,15 +18,6 @@ export interface Team {
   color: string;
 }
 
-export interface TeamCard {
-  team: Team;
-  notSelected: number;
-  disabledDay: boolean;
-  noBet: boolean;
-  winningBet: null | boolean;
-  reversed?: boolean;
-}
-
 export interface TeamCardContainer {
   game: Game;
   firstTeam: Team;

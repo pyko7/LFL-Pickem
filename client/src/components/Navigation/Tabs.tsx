@@ -1,8 +1,13 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
-import { Tabs } from "@/src/types/tabs";
 import { useScrollX } from "@/src/hooks/useScrollX";
+import { ReactNode } from "react";
 
-const Tabs = ({ children, position }: Tabs) => {
+type Props = {
+  children: ReactNode;
+  position: number;
+};
+
+const Tabs = ({ children, position }: Props) => {
   const { scrollX, scrollEnd, ref, handleClick, handleScroll } =
     useScrollX(position);
 

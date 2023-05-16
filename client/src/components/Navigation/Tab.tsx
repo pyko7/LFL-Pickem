@@ -1,7 +1,15 @@
-import { Tab } from "@/src/types/tabs";
+import { Day } from "@/src/types/teams";
 import { useEffect, useRef, useState } from "react";
 
-const Tab = ({ dayData, setDayData, label, value, setPosition }: Tab) => {
+type Props = {
+  dayData: Day | null;
+  setDayData: (dayData: Day) => void;
+  label: string;
+  value: Day;
+  setPosition: (position: number) => void;
+};
+
+const Tab = ({ dayData, setDayData, label, value, setPosition }: Props) => {
   const [active, setActive] = useState(false);
   const ref = useRef<HTMLLIElement>(null);
 
