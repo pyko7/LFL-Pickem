@@ -64,7 +64,7 @@ const Navbar = ({ setAuthModal }: Props) => {
         <div className="w-fit h-full flex items-center gap-2">
           <IconButton
             aria-label="Authentication button"
-            className="w-8 h-8"
+            className="w-8 h-8 focus:p-0"
             onClick={handleClick}
           >
             <UserIcon aria-hidden="true" />
