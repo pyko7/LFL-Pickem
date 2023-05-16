@@ -1,7 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
-import { createContext, useContext, useEffect, useState } from "react";
-import { GameContextInterface } from "@/src/types/context";
-import { Day } from "@/src/types/teams";
+import { UseQueryResult, useQuery } from "@tanstack/react-query";
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { Day, Game, GamesWithBet, TeamList } from "@/src/types/teams";
 import { getDaysByLeague } from "@/src/utils/api/game/getDaysByLeague";
 import { getTeamsByLeague } from "@/src/utils/api/game/getTeamsByLeague";
 import { getGamesWithBetByDay } from "@/src/utils/api/game/getGamesWithBeByDay";
@@ -11,13 +16,26 @@ import { getGamesByDayId } from "@/src/utils/api/game/getGamesByDayId";
 import { getAllDays } from "@/src/utils/api/game/getAllDays";
 import { useGetClosestDayFromNow } from "@/src/hooks/useGetClosestDayFromNow";
 
+type Children = { children: ReactNode };
+
+type GameContextInterface = {
+  allDays: UseQueryResult<Day[]>;
+  DaysByLeague: UseQueryResult<Day[]>;
+  teamsList: UseQueryResult<TeamList>;
+  gamesByDayId: UseQueryResult<Game[]>;
+  gamesWithBet: UseQueryResult<GamesWithBet>;
+  dayData: Day | null;
+  setDayData: (dayData: Day) => void;
+  setLeagueId: (leagueId: number) => void;
+};
+
 const GameContext = createContext({} as GameContextInterface);
 
 export const useGameContext = () => {
   return useContext(GameContext);
 };
 
-export const GameProvider = ({ children }: any) => {
+export const GameProvider = ({ children }: Children) => {
   const { isLogged } = useAuthContext();
   const [leagueId, setLeagueId] = useState(0);
   const [dayData, setDayData] = useState<Day | null>(null);
