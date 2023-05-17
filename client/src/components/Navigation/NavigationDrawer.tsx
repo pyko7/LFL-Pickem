@@ -8,18 +8,18 @@ import { navLinks } from "@/src/utils/navLinks";
 
 type Props = {
   open: boolean;
-  setOpen: (open: boolean) => void;
   setAuthModal: (authModal: boolean) => void;
-  handleNavDrawerClick: () => void;
+  handleClose: () => void;
+  logoutUser: () => void;
 };
 
 const NavigationDrawer = ({
   open,
-  setOpen,
   setAuthModal,
-  handleNavDrawerClick,
+  handleClose,
+  logoutUser,
 }: Props) => {
-  const { isLogged, setIsLogged } = useAuthContext();
+  const { isLogged } = useAuthContext();
 
   const user = useQuery(["user"], getUserById, {
     staleTime: 10 * (60 * 1000), // 10 mins
@@ -31,8 +31,7 @@ const NavigationDrawer = ({
     if (!isLogged) {
       return setAuthModal(true);
     }
-    setOpen(false);
-    setIsLogged(false);
+    logoutUser();
   };
 
   return (
@@ -46,7 +45,7 @@ const NavigationDrawer = ({
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
         className="fixed inset-0 bg-neutral-950/80 z-10"
-        onClick={handleNavDrawerClick}
+        onClick={handleClose}
       />
 
       {/* Sliding sidebar */}
@@ -67,7 +66,7 @@ const NavigationDrawer = ({
               <Link
                 href={item.pathname}
                 className="w-full px-4 py-1 rounded-3xl hover:bg-neutral-600/30"
-                onClick={handleNavDrawerClick}
+                onClick={handleClose}
               >
                 {item.name}
               </Link>

@@ -6,15 +6,28 @@ import NavigationDrawer from "./NavigationDrawer";
 import AuthModal from "../Modals/AuthModal";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import IconButton from "../Buttons/IconButton";
+import { logoutUser as logout } from "@/src/utils/api/auth/logoutUser";
+import { useAuthContext } from "@/context/AuthContext";
 
 const Header = () => {
+  const { setIsLogged } = useAuthContext();
   const [open, setOpen] = useState(false);
   const [authModal, setAuthModal] = useState(false);
   const logo =
     "https://res.cloudinary.com/dkferpmf6/image/upload/v1674578020/LFL/white_lfl.webp";
 
-  const handleClick = () => {
+  const handleMenu = () => {
     return open ? setOpen(false) : setOpen(true);
+  };
+
+  const handleDropdownMenu = () => {
+    return authModal ? setAuthModal(false) : setAuthModal(true);
+  };
+
+  const logoutUser = async () => {
+    await logout();
+    setIsLogged(false);
+    return setOpen(false);
   };
 
   return (
@@ -23,12 +36,15 @@ const Header = () => {
         <Link href="/" className="relative w-12 h-12">
           <Image src={logo} alt="logo" fill priority />
         </Link>
-        <Navbar setAuthModal={setAuthModal} />
+        <Navbar
+          logoutUser={logoutUser}
+          handleDropdownMenu={handleDropdownMenu}
+        />
 
         <IconButton
           aria-label="toggle menu"
-          className={`w-8 h-8 ${open ? "z-[100]" : ""} lg:hidden`}
-          onClick={handleClick}
+          className={`w-8 h-8 ${open ? "z-[100]" : ""} focus:p-0 lg:hidden`}
+          onClick={handleMenu}
         >
           {!open ? (
             <Bars3Icon aria-hidden="true" className="w-full h-full" />
@@ -40,9 +56,9 @@ const Header = () => {
         <div className="absolute top-0 -right-0 lg:hidden">
           <NavigationDrawer
             open={open}
-            setOpen={setOpen}
             setAuthModal={setAuthModal}
-            handleNavDrawerClick={handleClick}
+            handleClose={handleMenu}
+            logoutUser={logoutUser}
           />
         </div>
       </header>
@@ -50,7 +66,7 @@ const Header = () => {
         <AuthModal
           authModal={authModal}
           setAuthModal={setAuthModal}
-          handleClick={handleClick}
+          handleMenu={handleMenu}
         />
       ) : null}
     </>

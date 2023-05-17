@@ -9,18 +9,13 @@ import DropdownMenu from "../Menus/DropdownMenu";
 import { useThemeContext } from "@/context/ThemeContext";
 
 type Props = {
-  setAuthModal: (authModal: boolean) => void;
+  logoutUser: () => void;
+  handleDropdownMenu: () => void;
 };
 
-const Navbar = ({ setAuthModal }: Props) => {
-  const { isLogged, setIsLogged } = useAuthContext();
+const Navbar = ({ logoutUser, handleDropdownMenu }: Props) => {
+  const { isLogged } = useAuthContext();
   const { leagueId } = useThemeContext();
-  const handleClick = () => {
-    if (!isLogged) {
-      return setAuthModal(true);
-    }
-    setIsLogged(false);
-  };
 
   const user = useQuery(["user"], getUserById, {
     staleTime: 10 * (60 * 1000), // 10 mins
@@ -58,14 +53,14 @@ const Navbar = ({ setAuthModal }: Props) => {
               {user.data?.points} pts
             </span>
           </Link>
-          <DropdownMenu handleClick={handleClick} />
+          <DropdownMenu handleClick={logoutUser} />
         </div>
       ) : (
         <div className="w-fit h-full flex items-center gap-2">
           <IconButton
             aria-label="Authentication button"
             className="w-8 h-8 focus:p-0"
-            onClick={handleClick}
+            onClick={handleDropdownMenu}
           >
             <UserIcon aria-hidden="true" />
           </IconButton>

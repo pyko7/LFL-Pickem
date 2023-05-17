@@ -8,10 +8,10 @@ import SendEmailForm from "../Forms/SendEmailForm";
 type Props = {
   authModal: boolean;
   setAuthModal: (authModal: boolean) => void;
-  handleClick: () => void;
+  handleMenu: () => void;
 };
 
-const AuthModal = ({ authModal, setAuthModal, handleClick }: Props) => {
+const AuthModal = ({ authModal, setAuthModal, handleMenu }: Props) => {
   const [resetPassword, setResetPassword] = useState(false);
   const [signUpForm, setSignUpForm] = useState(false);
 
@@ -20,7 +20,7 @@ const AuthModal = ({ authModal, setAuthModal, handleClick }: Props) => {
   };
 
   const handleClose = () => {
-    handleClick();
+    handleMenu();
     return setAuthModal(false);
   };
 
