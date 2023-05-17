@@ -1,77 +1,48 @@
 import ScrollableDaysTabs from "@/src/components/Navigation/ScrollableDaysTabs";
 import GameContainer from "@/src/components/Containers/GameContainer";
-import { useGameContext } from "@/context/GameContext";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
 import GameContainerSkeleton from "../Loaders/GameContainerSkeleton";
-import { useAuthContext } from "@/context/AuthContext";
+import { DayProps, Game } from "@/src/types/types";
+import { capitalizeFirstLetter } from "@/src/utils/capitalizeFirstLetter";
+import { useState } from "react";
 
-const League = () => {
-  const { isLogged } = useAuthContext();
-  const {
-    DaysByLeague,
-    dayData,
-    setDayData,
-    teamsList,
-    gamesWithBet,
-    gamesByDayId,
-  } = useGameContext();
+type Props = {
+  days: DayProps[];
+  day: DayProps;
+  games: Game[];
+};
+
+const League = ({ days, day, games }: Props) => {
+  const [dayData, setDayData] = useState(day);
+
+  const date = capitalizeFirstLetter(
+    format(parseISO(day?.date.toString()), "PPPP", {
+      locale: fr,
+    })
+  );
 
   return (
     <section className="relative w-full max-w-7xl mx-auto py-12 flex flex-col items-center justify-between">
       <ScrollableDaysTabs
-        schedule={DaysByLeague}
+        schedule={days}
         dayData={dayData}
         setDayData={setDayData}
       />
       <div className="w-full px-3 md:px-5">
         <h1 className="mt-20 mb-10 text-lg font-bold lg:max-w-md lg:text-xl">
-          {dayData === null
-            ? "Journée"
-            : format(parseISO(dayData?.date!), "PPPP", {
-                locale: fr,
-              })}
+          {date}
         </h1>
 
-        {isLogged ? (
-          <div className="w-full flex flex-wrap justify-center gap-5 md:justify-start">
-            {teamsList.isError ? (
-              <p style={{ margin: "0 auto" }}>
-                Une erreur est survenue. Les matchs sont momentanément
-                indisponibles. Veuillez nous excuser pour la gêne occasionnée.
-              </p>
+        <div className="w-full flex flex-wrap justify-center gap-5 md:justify-start">
+          {games.map((currentDay) => {
+            return day?.id !== currentDay.dayId ? (
+              <GameContainerSkeleton key={currentDay.id} />
             ) : (
-              <>
-                {gamesWithBet.data?.day?.map((day) => {
-                  return dayData?.id !== day.dayId ? (
-                    <GameContainerSkeleton key={day.id} />
-                  ) : (
-                    <GameContainer day={day} key={day.id} />
-                  );
-                })}
-              </>
-            )}
-          </div>
-        ) : (
-          <div className="w-full flex flex-wrap justify-center gap-5 md:justify-start">
-            {teamsList.isError ? (
-              <p style={{ margin: "0 auto" }}>
-                Une erreur est survenue. Les matchs sont momentanément
-                indisponibles. Veuillez nous excuser pour la gêne occasionnée.
-              </p>
-            ) : (
-              <>
-                {gamesByDayId.data?.map((day, index) => {
-                  return dayData?.id !== day.dayId ? (
-                    <GameContainerSkeleton key={day.id} />
-                  ) : (
-                    <GameContainer day={day} key={day.id} />
-                  );
-                })}
-              </>
-            )}
-          </div>
-        )}
+              <GameContainer day={currentDay} key={currentDay.id} />
+            );
+          })}
+        </div>
       </div>
     </section>
   );

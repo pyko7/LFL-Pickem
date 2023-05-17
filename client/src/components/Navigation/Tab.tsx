@@ -52,7 +52,10 @@ const Tab = ({ dayData, setDayData, label, value, setPosition }: Props) => {
           : active && leagueId === 2
           ? "text-divtwo-light border-b-divtwo-light font-bold"
           : "text-neutral-light border-b-transparent"
-      } border-b-2 whitespace-nowrap cursor-pointer select-none hover:text-lfl-light focus-visible:border-b-lfl-light`}
+      }
+      ${leagueId === 1 ? "hover:text-lfl-light " : "hover:text-divtwo-light "}
+      
+      border-b-2 whitespace-nowrap cursor-pointer select-none focus-visible:border-b-lfl-light `}
       onClick={handleClick}
       role="tab"
       tabIndex={0}
