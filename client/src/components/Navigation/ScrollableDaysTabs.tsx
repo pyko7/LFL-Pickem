@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Skeleton from "../Loaders/Skeleton";
 import Tab from "./Tab";
 import Tabs from "./Tabs";
 import { DayProps } from "@/src/types/types";
@@ -8,10 +7,21 @@ type Props = {
   schedule: DayProps[];
   dayData: DayProps;
   setDayData: (dayData: DayProps) => void;
+  fetchGames: (id: number) => void;
 };
 
-const ScrollableDaysTabs = ({ schedule, dayData, setDayData }: Props) => {
+const ScrollableDaysTabs = ({
+  schedule,
+  dayData,
+  setDayData,
+  fetchGames,
+}: Props) => {
   const [position, setPosition] = useState(0);
+
+  const handleClick = (value: DayProps) => {
+    fetchGames(value.id);
+    setDayData(value);
+  };
 
   return (
     <div className="absolute top-8 left-1/2 -translate-x-1/2 w-full max-w-7xl rounded-md bg-neutral-700">
@@ -23,8 +33,9 @@ const ScrollableDaysTabs = ({ schedule, dayData, setDayData }: Props) => {
               setDayData={setDayData}
               setPosition={setPosition}
               label={`Journée ${index + 1}`}
-              value={day}
+              value={day.id}
               key={day.id}
+              onClick={() => handleClick(day)}
             />
           ))}
         </Tabs>
