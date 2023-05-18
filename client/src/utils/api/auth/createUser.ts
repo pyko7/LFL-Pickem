@@ -1,7 +1,7 @@
 import { AuthForm } from "@/src/types/types";
 import { getCsrfToken } from "../credentials/getCsrfToken";
 
-export const createUser = async (user: AuthForm) => {
+export const createUser = async (user: AuthForm): Promise<void> => {
   try {
     const csrfToken = await getCsrfToken();
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/signup`, {
@@ -16,7 +16,9 @@ export const createUser = async (user: AuthForm) => {
     const data = await res.json();
     if (!res.ok) {
       if (res.status === 400) {
-        if (data === "The email address is already in use by another account.") {
+        if (
+          data === "The email address is already in use by another account."
+        ) {
           throw new Error("L'email est déjà utilisé");
         }
         if (data === "Le pseudo est déjà utilisé") {
@@ -25,10 +27,10 @@ export const createUser = async (user: AuthForm) => {
       }
       throw new Error(res.statusText);
     }
-    return data;
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message);
     }
+    throw error;
   }
 };

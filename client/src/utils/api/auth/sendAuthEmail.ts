@@ -1,7 +1,10 @@
 import { AuthForm } from "@/src/types/types";
 import { getCsrfToken } from "../credentials/getCsrfToken";
 
-export const sendAuthEmail = async (user: AuthForm, url: string) => {
+export const sendAuthEmail = async (
+  user: AuthForm,
+  url: string
+): Promise<void> => {
   try {
     const csrfToken = await getCsrfToken();
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${url}`, {
@@ -29,10 +32,10 @@ export const sendAuthEmail = async (user: AuthForm, url: string) => {
       }
       throw new Error(res.statusText);
     }
-    return data;
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message);
     }
+    throw error;
   }
 };

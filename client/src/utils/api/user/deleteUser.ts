@@ -2,7 +2,7 @@ import { FirebaseError } from "firebase/app";
 import { AuthForm } from "@/src/types/types";
 import { getCsrfToken } from "../credentials/getCsrfToken";
 
-export const deleteUser = async (user: AuthForm) => {
+export const deleteUser = async (user: AuthForm): Promise<void> => {
   try {
     const csrfToken = await getCsrfToken();
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/delete`, {
@@ -24,7 +24,6 @@ export const deleteUser = async (user: AuthForm) => {
       }
       throw new Error(data);
     }
-    return data;
   } catch (error) {
     if (error instanceof FirebaseError) {
       if (error.code === "auth/user-not-found") {
@@ -39,5 +38,6 @@ export const deleteUser = async (user: AuthForm) => {
     if (error instanceof Error) {
       throw new Error(error.message);
     }
+    throw error;
   }
 };

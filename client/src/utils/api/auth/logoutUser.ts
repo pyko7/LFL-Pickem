@@ -1,6 +1,6 @@
 import { getCsrfToken } from "../credentials/getCsrfToken";
 
-export const logoutUser = async () => {
+export const logoutUser = async (): Promise<void> => {
   try {
     const csrfToken = await getCsrfToken();
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, {
@@ -18,10 +18,10 @@ export const logoutUser = async () => {
       }
       throw new Error(data);
     }
-    return data;
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message);
     }
+    throw error;
   }
 };

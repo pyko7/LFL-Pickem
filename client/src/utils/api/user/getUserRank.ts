@@ -1,4 +1,10 @@
-export const getUserRank = async () => {
+type Rank = {
+  userRank: number;
+  top: number;
+  ranking: number;
+};
+
+export const getUserRank = async (): Promise<Rank> => {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/rank`, {
       method: "GET",
@@ -16,6 +22,6 @@ export const getUserRank = async () => {
     if (error instanceof Error) {
       throw new Error(error.message);
     }
-    throw new Error("Une erreur est survenue");
+    throw error;
   }
 };
