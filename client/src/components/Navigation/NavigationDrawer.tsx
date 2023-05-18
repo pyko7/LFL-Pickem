@@ -44,7 +44,7 @@ const NavigationDrawer = ({
         leave="transition-opacity ease-linear duration-300"
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
-        className="fixed inset-0 bg-neutral-950/80 z-10"
+        className="fixed inset-0 bg-neutral-950/80 z-20"
         onClick={handleClose}
       />
 
@@ -58,7 +58,7 @@ const NavigationDrawer = ({
         leave="transition ease-in duration-500 transform"
         leaveFrom="translate-x-0"
         leaveTo="translate-x-full"
-        className="fixed top-0 right-0 w-64 min-h-screen pl-2 pt-20 pb-4 flex  flex-col justify-between bg-neutral-950 z-20"
+        className="fixed top-0 right-0 w-64 min-h-screen pl-2 pt-20 pb-4 flex  flex-col justify-between bg-neutral-950 z-30"
       >
         <ul className="w-full pr-10 flex flex-col gap-3 text-lg font-bold">
           {navLinks.map((item) => (

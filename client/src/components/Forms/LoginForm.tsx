@@ -49,9 +49,6 @@ const LoginForm = ({ handleClose }: { handleClose: () => void }) => {
       setIsLogged(false);
     },
     onSuccess: () => {
-      if (pathname !== "/") {
-        push("/");
-      }
       setIsLogged(true);
       handleClose();
     },
