@@ -1,5 +1,5 @@
 import { FirebaseError } from "firebase/app";
-import { AuthForm } from "@/src/types/forms";
+import { AuthForm } from "@/src/types/types";
 import { getCsrfToken } from "../credentials/getCsrfToken";
 
 export const deleteUser = async (user: AuthForm) => {

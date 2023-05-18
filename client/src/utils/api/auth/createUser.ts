@@ -1,4 +1,4 @@
-import { AuthForm } from "@/src/types/forms";
+import { AuthForm } from "@/src/types/types";
 import { getCsrfToken } from "../credentials/getCsrfToken";
 
 export const createUser = async (user: AuthForm) => {

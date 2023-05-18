@@ -10,7 +10,6 @@ import { DayProps } from "../types/types";
 export const getClosestDayFromNow = (array: DayProps[]): DayProps => {
   let validDates: DayProps[] = [];
   let dayDates: Date[] = [];
-  let date: any = "";
 
   validDates = array.filter((day) => isAfter(new Date(day.date), new Date()));
   validDates.forEach((day) => {

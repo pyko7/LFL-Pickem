@@ -1,7 +1,12 @@
-import { SelectedTeam } from "@/src/types/teams";
 import { getCsrfToken } from "../credentials/getCsrfToken";
 
-export const addSelectedTeams = async (bet: SelectedTeam) => {
+type Bet = {
+  gameId: number;
+  teamId: number;
+  dayId: number;
+};
+
+export const addSelectedTeams = async (bet: Bet) => {
   try {
     const csrfToken = await getCsrfToken();
     const res = await fetch(
@@ -28,7 +33,7 @@ export const addSelectedTeams = async (bet: SelectedTeam) => {
   }
 };
 
-export const updateSelectedTeams = async (bet: SelectedTeam) => {
+export const updateSelectedTeams = async (bet: Bet) => {
   try {
     const csrfToken = await getCsrfToken();
     const res = await fetch(
@@ -55,7 +60,7 @@ export const updateSelectedTeams = async (bet: SelectedTeam) => {
   }
 };
 
-export const deleteSelectedTeams = async (bet: SelectedTeam) => {
+export const deleteSelectedTeams = async (bet: Bet) => {
   try {
     const csrfToken = await getCsrfToken();
     const res = await fetch(
