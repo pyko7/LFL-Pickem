@@ -10,9 +10,22 @@ export const getUserById = async (req: Request, res: Response) => {
       where: {
         id: decodedToken.uid,
       },
+      include: {
+        bets: {
+          where: {
+            userId: decodedToken.uid,
+          },
+        },
+      },
     });
 
-    res.status(200).json({ userName: user?.userName, points: user?.points });
+    res
+      .status(200)
+      .json({
+        userName: user?.userName,
+        points: user?.points,
+        bets: user?.bets,
+      });
   } catch (error) {
     if (error instanceof Error) {
       res.status(400).json(error.message);

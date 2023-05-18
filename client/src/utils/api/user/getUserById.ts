@@ -1,4 +1,6 @@
-export const getUserById = async () => {
+import { User } from "@/src/types/types";
+
+export const getUserById = async (): Promise<User> => {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user`, {
       method: "GET",
@@ -25,5 +27,6 @@ export const getUserById = async () => {
     if (error instanceof Error) {
       throw new Error("Une erreur est survenue");
     }
+    throw error;
   }
 };

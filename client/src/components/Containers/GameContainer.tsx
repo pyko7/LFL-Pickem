@@ -14,19 +14,20 @@ import Skeleton from "../Loaders/Skeleton";
 import { LockClosedIcon } from "@heroicons/react/24/outline";
 import TeamCard from "../Cards/TeamCard";
 import Modal from "../Modals/Modal";
-import { Game } from "@/src/types/types";
+import { Bet, Game } from "@/src/types/types";
 
 import { capitalizeFirstLetter } from "@/src/utils/capitalizeFirstLetter";
 import { getTeamById } from "@/src/utils/api/game/getTeamById";
 
 type Props = {
   day: Game;
+  bets?: Bet[];
 };
 
-const GameContainer = ({ day }: Props) => {
+const GameContainer = ({ day, bets }: Props) => {
   const { id, date, dayId, firstTeamId, secondTeamId, winner } = day;
   const { isLogged } = useAuthContext();
-  const [selected, setSelected] = useState(false);
+  const [bet, setBet] = useState(0);
 
   const [disabledDay, setDisabledDay] = useState(false);
   const [authModal, setAuthModal] = useState(false);
@@ -167,6 +168,17 @@ const GameContainer = ({ day }: Props) => {
     return isPast ? setDisabledDay(true) : setDisabledDay(false);
   }, [date]);
 
+  useEffect(() => {
+    bets?.forEach((bet) => {
+      if (bet.dayId === dayId && bet.teamId === firstTeamId) {
+        return setBet(firstTeamId);
+      }
+      if (bet.dayId === dayId && bet.teamId === secondTeamId) {
+        return setBet(secondTeamId);
+      }
+    });
+  }, [bets, dayId, firstTeamId, secondTeamId]);
+
   // useEffect(() => {
   //   teamsList.data?.teams.map((team) => {
   //     if (team.id === firstTeamId) {
@@ -227,9 +239,10 @@ const GameContainer = ({ day }: Props) => {
               <TeamCard
                 role="button"
                 tabIndex={0}
-                selected={selected}
+                bet={bet}
                 team={firstTeam.data}
-                winningBet={null}
+                winner={winner}
+                disabledDay={disabledDay}
                 onClick={() =>
                   handleClick(firstTeam.data.id, secondTeam.data.id)
                 }
@@ -240,9 +253,10 @@ const GameContainer = ({ day }: Props) => {
               <TeamCard
                 role="button"
                 tabIndex={0}
-                selected={selected}
+                bet={bet}
                 team={secondTeam.data}
-                winningBet={null}
+                winner={winner}
+                disabledDay={disabledDay}
                 onClick={() =>
                   handleClick(firstTeam.data.id, secondTeam.data.id)
                 }
@@ -257,7 +271,7 @@ const GameContainer = ({ day }: Props) => {
       <AuthModal
         authModal={authModal}
         setAuthModal={setAuthModal}
-        handleClick={handleAuthModalClick}
+        handleMenu={handleAuthModalClick}
       />
       <Modal
         authModal={betError}

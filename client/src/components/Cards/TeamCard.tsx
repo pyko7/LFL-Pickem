@@ -4,31 +4,35 @@ import Image from "next/image";
 import { useThemeContext } from "@/context/ThemeContext";
 
 type Props = HTMLAttributes<HTMLElement> & {
-  selected: boolean;
+  bet: number;
   team: Team;
-  winningBet: null | boolean;
+  winner: number;
+  disabledDay: boolean;
 };
 
-const TeamCard = ({ selected, team, winningBet, ...rest }: Props) => {
+const TeamCard = ({ bet, team, winner, disabledDay, ...rest }: Props) => {
   const { leagueId } = useThemeContext();
+  const selected = bet === team.id;
 
   return (
     <article
       aria-label="select winning team"
-      className={`w-full py-2 px-4 flex items-center justify-between rounded-xl bg-neutral-800
-       border-1 border-transparent shadow-md cursor-pointer outline-1 outline-blue-400
+      className={`relative w-full py-2 px-4 flex items-center justify-between rounded-xl bg-neutral-800
+       border-1 shadow-md  outline-1 outline-blue-400
+      ${disabledDay ? "cursor-default" : ""}
+      ${disabledDay && selected ? "hover:bg-neutral-900" : "hover:bg-neutral-800"}
        ${selected ? "bg-neutral-900" : ""}
       ${
         selected && leagueId === 1
           ? "border-lfl"
           : selected && leagueId === 2
           ? "border-divtwo"
-          : ""
+          : "border-transparent"
       }
       ${
-        winningBet === true
+        winner === team.id
           ? "border-emerald-400"
-          : winningBet === false
+          : winner !== 0
           ? "border-red-400"
           : ""
       }

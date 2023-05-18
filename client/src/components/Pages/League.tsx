@@ -6,6 +6,9 @@ import { DayProps, Game } from "@/src/types/types";
 import { capitalizeFirstLetter } from "@/src/utils/capitalizeFirstLetter";
 import { useState } from "react";
 import { getGamesByDayId } from "@/src/utils/api/game/getGamesByDayId";
+import { useQuery } from "@tanstack/react-query";
+import { getUserById } from "@/src/utils/api/user/getUserById";
+import { useAuthContext } from "@/context/AuthContext";
 
 type Props = {
   days: DayProps[];
@@ -14,6 +17,8 @@ type Props = {
 };
 
 const League = ({ days, day, games }: Props) => {
+  const { isLogged } = useAuthContext();
+
   const [dayData, setDayData] = useState(day);
   const [gamesByDay, setGamesByDay] = useState(games);
 
@@ -22,6 +27,12 @@ const League = ({ days, day, games }: Props) => {
       locale: fr,
     })
   );
+
+  const { data, isLoading, isError } = useQuery(["user"], getUserById, {
+    staleTime: 10 * (60 * 1000), // 10 mins
+    cacheTime: 15 * (60 * 1000), // 15 mins
+    enabled: isLogged,
+  });
 
   const fetchGames = async (id: number) => {
     const games = await getGamesByDayId(id);
@@ -43,7 +54,13 @@ const League = ({ days, day, games }: Props) => {
 
         <div className="w-full flex flex-wrap justify-center gap-5 md:justify-start">
           {gamesByDay.map((currentDay) => {
-            return <GameContainer day={currentDay} key={currentDay.id} />;
+            return (
+              <GameContainer
+                day={currentDay}
+                bets={data?.bets}
+                key={currentDay.id}
+              />
+            );
           })}
         </div>
       </div>

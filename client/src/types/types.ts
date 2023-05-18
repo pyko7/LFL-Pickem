@@ -31,3 +31,17 @@ export type Team = {
   logo: string;
   color: string;
 };
+
+export type Bet = {
+  id: number;
+  dayId: number;
+  gameId: number;
+  teamId: number;
+  userId: string;
+};
+
+export type User = {
+  userName: string;
+  points: number;
+  bets: Bet[];
+};

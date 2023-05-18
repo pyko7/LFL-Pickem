@@ -1,4 +1,4 @@
-import { AuthForm } from "@/src/types/forms";
+import { AuthForm } from "@/src/types/types";
 import { auth } from "@/firebase";
 import {
   signInWithEmailAndPassword,

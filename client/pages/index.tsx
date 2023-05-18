@@ -11,6 +11,9 @@ import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
 import GameContainer from "@/src/components/Containers/GameContainer";
 import { capitalizeFirstLetter } from "@/src/utils/capitalizeFirstLetter";
+import { useQuery } from "@tanstack/react-query";
+import { getUserById } from "@/src/utils/api/user/getUserById";
+import { useAuthContext } from "@/context/AuthContext";
 
 type Props = {
   day: DayProps;
@@ -31,6 +34,7 @@ const Home = ({
   day,
   games,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const { isLogged } = useAuthContext();
   const lfl: League = {
     name: "LFL",
     imageUrl:
@@ -46,6 +50,12 @@ const Home = ({
       locale: fr,
     })
   );
+
+  const { data, isLoading, isError } = useQuery(["user"], getUserById, {
+    staleTime: 10 * (60 * 1000), // 10 mins
+    cacheTime: 15 * (60 * 1000), // 15 mins
+    enabled: isLogged,
+  });
 
   return (
     <>
@@ -82,7 +92,7 @@ const Home = ({
 
           <div className="w-full flex flex-wrap justify-center gap-5 md:justify-start">
             {games.map((day) => (
-              <GameContainer day={day} key={day.id} />
+              <GameContainer day={day} bets={data?.bets} key={day.id} />
             ))}
           </div>
         </div>
