@@ -110,7 +110,7 @@ const Home = ({
             {isLogged && isLoading ? (
               emptyCards.map((c, i) => {
                 return (
-                  <Skeleton className="w-full max-w-sm h-56" rounded key={i} />
+                  <Skeleton className="w-full max-w-sm h-56" rounded key={i} aria-label="Chargement des matchs" />
                 );
               })
             ) : (

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { User, UserRank } from "@/src/types/user";
+import { User } from "@/src/types/types";
 import { getUserById } from "@/src/utils/api/user/getUserById";
 import { getUserRank } from "@/src/utils/api/user/getUserRank";
 import { useAuthContext } from "@/context/AuthContext";
@@ -11,6 +11,12 @@ import Skeleton from "@/src/components/Loaders/Skeleton";
 import Modal from "@/src/components/Modals/Modal";
 import SendEmailForm from "@/src/components/Forms/SendEmailForm";
 import Divider from "@/src/components/Dividers/Divider";
+
+type UserRank = {
+  userRank: number;
+  top: number;
+  ranking: number;
+};
 
 const Profile = () => {
   const { isLogged } = useAuthContext();
@@ -52,16 +58,14 @@ const Profile = () => {
               {currentUser.isLoading ? (
                 <>
                   <Skeleton
-                    width="120px"
-                    height="30px"
+                    className="w-32 h-8"
                     rounded
-                    ariaLabel="Chargement du pseudo"
+                    aria-label="Chargement du pseudo"
                   />
                   <Skeleton
-                    width="70px"
-                    height="30px"
+                    className="w-16 h-8"
                     rounded
-                    ariaLabel="Chargement des points"
+                    aria-label="Chargement des points"
                   />
                 </>
               ) : currentUser.isError ? (
@@ -69,7 +73,9 @@ const Profile = () => {
                   <h1 className="max-w-sm text-lg font-bold lg:max-w-md lg:text-xl">
                     User
                   </h1>
-                  <p className="text-sm py-1 px-2 text-lfl font-bold uppercase border-2 border-lfl rounded-lg">N/A pts </p>
+                  <p className="text-sm py-1 px-2 text-lfl font-bold uppercase border-2 border-lfl rounded-lg">
+                    N/A pts{" "}
+                  </p>
                 </>
               ) : (
                 <>
@@ -89,10 +95,9 @@ const Profile = () => {
               <li>
                 {userRank.isLoading ? (
                   <Skeleton
-                    width="200px"
-                    height="30px"
+                    className="w-52 h-8"
                     rounded
-                    ariaLabel="Chargement du rang"
+                    aria-label="Chargement du rang"
                   />
                 ) : userRank.isError ? (
                   "Classement actuel: N/A"
@@ -103,10 +108,9 @@ const Profile = () => {
               <li>
                 {userRank.isLoading ? (
                   <Skeleton
-                    width="100px"
-                    height="30px"
+                    className="w-24 h-8"
                     rounded
-                    ariaLabel="Chargement du rang"
+                    aria-label="Chargement du rang"
                   />
                 ) : userRank.isError ? (
                   "Top: N/A"

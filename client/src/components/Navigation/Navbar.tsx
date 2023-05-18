@@ -49,8 +49,8 @@ const Navbar = ({ logoutUser, handleDropdownMenu }: Props) => {
           >
             {user.isLoading ? (
               <>
-                <Skeleton className="w-20 h-5 bg-neutral-700" rounded />
-                <Skeleton className="w-4/5 h-5 mt-2 bg-neutral-700" rounded />
+                <Skeleton className="w-20 h-5 bg-neutral-700" rounded aria-label="Chargement du pseudo" />
+                <Skeleton className="w-4/5 h-5 mt-2 bg-neutral-700" rounded aria-label="Chargement du score"/>
               </>
             ) : null}
             {user.isError ? (
