@@ -7,6 +7,7 @@ import IconButton from "../Buttons/IconButton";
 import { navLinks } from "@/src/utils/navLinks";
 import DropdownMenu from "../Menus/DropdownMenu";
 import { useThemeContext } from "@/context/ThemeContext";
+import Skeleton from "../Loaders/Skeleton";
 
 type Props = {
   logoutUser: () => void;
@@ -44,12 +45,23 @@ const Navbar = ({ logoutUser, handleDropdownMenu }: Props) => {
         <div className="w-fit h-full flex items-center gap-2">
           <Link
             href="/profile"
-            className="h-full flex flex-col justify-center items-center font-bold text-sm"
+            className="h-full flex flex-col justify-center items-end font-bold text-sm"
           >
-            {user.isLoading ? <span>loading...</span> : null}
-            {user.isError ? <span>error...</span> : null}
-            <span>{user.data?.userName}</span>
-            <span className={`${leagueId === 1 ? "text-lfl" : "text-divtwo"}`}>
+            {user.isLoading ? (
+              <>
+                <Skeleton className="w-20 h-5 bg-neutral-700" rounded />
+                <Skeleton className="w-4/5 h-5 mt-2 bg-neutral-700" rounded />
+              </>
+            ) : null}
+            {user.isError ? (
+              <span>Récupération des données impossible</span>
+            ) : null}
+            <span className="whitespace-nowrap">{user.data?.userName}</span>
+            <span
+              className={`whitespace-nowrap ${
+                leagueId === 1 ? "text-lfl" : "text-divtwo"
+              }`}
+            >
               {user.data?.points} pts
             </span>
           </Link>
