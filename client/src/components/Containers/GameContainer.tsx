@@ -10,29 +10,29 @@ import { fr } from "date-fns/locale";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAuthContext } from "@/context/AuthContext";
 import AuthModal from "../Modals/AuthModal";
-import Skeleton from "../Loaders/Skeleton";
 import { LockClosedIcon } from "@heroicons/react/24/outline";
 import TeamCard from "../Cards/TeamCard";
 import Modal from "../Modals/Modal";
 import { Bet, Game } from "@/src/types/types";
-
 import { capitalizeFirstLetter } from "@/src/utils/capitalizeFirstLetter";
 import { getTeamById } from "@/src/utils/api/game/getTeamById";
+import { useRouter } from "next/router";
 
 type Props = {
   day: Game;
   bets?: Bet[];
+  handleRefetch?: () => void;
 };
 
-const GameContainer = ({ day, bets }: Props) => {
+const GameContainer = ({ day, bets, handleRefetch }: Props) => {
   const { id, date, dayId, firstTeamId, secondTeamId, winner } = day;
   const { isLogged } = useAuthContext();
   const [bet, setBet] = useState(0);
+  const router = useRouter();
 
   const [disabledDay, setDisabledDay] = useState(false);
   const [authModal, setAuthModal] = useState(false);
   const [betError, setBetError] = useState(false);
-  const [selectedTeam, setSelectedTeam] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
   const gameDate = capitalizeFirstLetter(
     format(parseISO(day.date.toString()), "PPPP", {
@@ -76,6 +76,7 @@ const GameContainer = ({ day, bets }: Props) => {
         }
       }
       setBetError(true);
+      setBet(0);
     },
   });
 
@@ -94,6 +95,7 @@ const GameContainer = ({ day, bets }: Props) => {
         }
       }
       setBetError(true);
+      setBet(0);
     },
   });
 
@@ -112,14 +114,15 @@ const GameContainer = ({ day, bets }: Props) => {
         }
       }
       setBetError(true);
+      setBet(0);
     },
   });
 
-  const handleClick = (currentTeamId: number, otherTeamId: number) => {
+  const handleClick = (teamId: number) => {
     const credentials = {
       gameId: id,
-      teamId: currentTeamId,
-      dayId: dayId,
+      teamId,
+      dayId,
     };
 
     if (disabledDay) {
@@ -128,32 +131,37 @@ const GameContainer = ({ day, bets }: Props) => {
     if (!isLogged) {
       return setAuthModal(true);
     }
-    if (selectedTeam === 0) {
+    if (bet === 0) {
       createBet.mutate(credentials);
       setBetError(false);
-      setSelectedTeam(currentTeamId);
+      setBet(teamId);
+      if (handleRefetch) {
+        handleRefetch();
+      }
       return;
     }
-    if (selectedTeam === currentTeamId) {
+    if (bet === teamId) {
       deleteBet.mutate(credentials);
       setBetError(false);
-      setSelectedTeam(0);
+      setBet(0);
+      if (handleRefetch) {
+        handleRefetch();
+      }
       return;
     } else {
       updateBet.mutate(credentials);
       setBetError(false);
-      setSelectedTeam(currentTeamId);
+      setBet(teamId);
+      if (handleRefetch) {
+        handleRefetch();
+      }
       return;
     }
   };
 
-  const handleKeyDown = (
-    event: KeyboardEvent<HTMLElement>,
-    currentTeamId: number,
-    otherTeamId: number
-  ) => {
+  const handleKeyDown = (event: KeyboardEvent<HTMLElement>, teamId: number) => {
     if (event.key === "Enter") {
-      handleClick(currentTeamId, otherTeamId);
+      handleClick(teamId);
     }
   };
 
@@ -179,46 +187,6 @@ const GameContainer = ({ day, bets }: Props) => {
     });
   }, [bets, dayId, firstTeamId, secondTeamId]);
 
-  // useEffect(() => {
-  //   teamsList.data?.teams.map((team) => {
-  //     if (team.id === firstTeamId) {
-  //       setFirstTeam(team);
-  //     }
-  //     if (team.id === secondTeamId) {
-  //       setSecondTeam(team);
-  //     }
-  //   });
-  // }, [id, firstTeamId, secondTeamId, teamsList.data]);
-
-  // useEffect(() => {
-  //   if (!firstTeam || !secondTeam || !isLogged) {
-  //     return;
-  //   }
-  //   if (typeof gamesWithBet.data === "undefined") {
-  //     return;
-  //   }
-  //   if (gamesWithBet.data.userBets.length > 0) {
-  //   }
-  //   gamesWithBet.data.userBets.map((bet) => {
-  //     if (bet.teamId === firstTeam.id) {
-  //       setNotSelected(secondTeam.id);
-  //       return setSelectedTeam(firstTeam.id);
-  //     }
-  //     if (bet.teamId === secondTeam.id) {
-  //       setNotSelected(firstTeam.id);
-  //       return setSelectedTeam(secondTeam.id);
-  //     }
-  //   });
-  // }, [gamesWithBet.data?.userBets, id, firstTeam, secondTeam]);
-
-  // useEffect(() => {
-  //   if (gamesWithBet.isError) {
-  //     setErrorMessage(
-  //       "Impossible de récupérer votre sélection, veuillez réessayer plus tard"
-  //     );
-  //   }
-  // }, [gamesWithBet]);
-
   return (
     <>
       <div className="w-full max-w-sm px-2 py-4 flex flex-col gap-3 rounded-md bg-neutral-700 shadow-elevation md:px-4">
@@ -243,12 +211,8 @@ const GameContainer = ({ day, bets }: Props) => {
                 team={firstTeam.data}
                 winner={winner}
                 disabledDay={disabledDay}
-                onClick={() =>
-                  handleClick(firstTeam.data.id, secondTeam.data.id)
-                }
-                onKeyDown={(e) =>
-                  handleKeyDown(e, firstTeam.data.id, secondTeam.data.id)
-                }
+                onClick={() => handleClick(firstTeam.data.id)}
+                onKeyDown={(e) => handleKeyDown(e, firstTeam.data.id)}
               />
               <TeamCard
                 role="button"
@@ -257,12 +221,8 @@ const GameContainer = ({ day, bets }: Props) => {
                 team={secondTeam.data}
                 winner={winner}
                 disabledDay={disabledDay}
-                onClick={() =>
-                  handleClick(firstTeam.data.id, secondTeam.data.id)
-                }
-                onKeyDown={(e) =>
-                  handleKeyDown(e, firstTeam.data.id, secondTeam.data.id)
-                }
+                onClick={() => handleClick(secondTeam.data.id)}
+                onKeyDown={(e) => handleKeyDown(e, secondTeam.data.id)}
               />
             </>
           )}

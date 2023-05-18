@@ -14,6 +14,7 @@ import { capitalizeFirstLetter } from "@/src/utils/capitalizeFirstLetter";
 import { useQuery } from "@tanstack/react-query";
 import { getUserById } from "@/src/utils/api/user/getUserById";
 import { useAuthContext } from "@/context/AuthContext";
+import Skeleton from "@/src/components/Loaders/Skeleton";
 
 type Props = {
   day: DayProps;
@@ -35,6 +36,8 @@ const Home = ({
   games,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { isLogged } = useAuthContext();
+  const emptyCards = Array(5).fill(0);
+
   const lfl: League = {
     name: "LFL",
     imageUrl:
@@ -51,11 +54,19 @@ const Home = ({
     })
   );
 
-  const { data, isLoading, isError } = useQuery(["user"], getUserById, {
-    staleTime: 10 * (60 * 1000), // 10 mins
-    cacheTime: 15 * (60 * 1000), // 15 mins
-    enabled: isLogged,
-  });
+  const { data, isLoading, isError, refetch } = useQuery(
+    ["user"],
+    getUserById,
+    {
+      staleTime: 10 * (60 * 1000), // 10 mins
+      cacheTime: 15 * (60 * 1000), // 15 mins
+      enabled: isLogged,
+    }
+  );
+
+  const handleRefetch = () => {
+    refetch();
+  };
 
   return (
     <>
@@ -91,9 +102,29 @@ const Home = ({
           </div>
 
           <div className="w-full flex flex-wrap justify-center gap-5 md:justify-start">
-            {games.map((day) => (
-              <GameContainer day={day} bets={data?.bets} key={day.id} />
-            ))}
+            {isError ? (
+              <p className="block text-xl my-20 mx-auto">
+                Une erreur est survenue lors du chargement des matchs
+              </p>
+            ) : null}
+            {isLogged && isLoading ? (
+              emptyCards.map((c, i) => {
+                return (
+                  <Skeleton className="w-full max-w-sm h-56" rounded key={i} />
+                );
+              })
+            ) : (
+              <>
+                {games.map((day) => (
+                  <GameContainer
+                    day={day}
+                    bets={data?.bets}
+                    handleRefetch={handleRefetch}
+                    key={day.id}
+                  />
+                ))}
+              </>
+            )}
           </div>
         </div>
       </section>

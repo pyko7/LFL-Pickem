@@ -1,26 +1,20 @@
-const Skeleton = ({
-  width,
-  height,
-  rounded,
-  ariaLabel,
-}: {
-  width: string;
-  height: string;
+import { HTMLAttributes } from "react";
+
+type Props = HTMLAttributes<HTMLDivElement> & {
   rounded?: boolean;
-  ariaLabel: string;
-}) => {
+  className?: string;
+};
+
+const Skeleton = ({ rounded, className, ...rest }: Props) => {
   return (
     <div
       role="status"
-      aria-label={ariaLabel}
-      style={{
-        width,
-        height,
-      }}
       className={`
-       animate-pulse bg-main-light shadow ${
-         rounded ? "rounded-md" : "rounded-none"
-       }`}
+       animate-pulse shadow bg-neutral-800
+       ${rounded ? "rounded-lg" : ""}
+       ${className}
+       `}
+      {...rest}
     />
   );
 };
