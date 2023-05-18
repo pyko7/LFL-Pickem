@@ -1,9 +1,9 @@
-import { HTMLAttributes } from "react";
+import { ButtonHTMLAttributes } from "react";
 import { Team } from "@/src/types/types";
 import Image from "next/image";
 import { useThemeContext } from "@/context/ThemeContext";
 
-type Props = HTMLAttributes<HTMLElement> & {
+type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   bet: number;
   team: Team;
   winner: number;
@@ -13,29 +13,34 @@ type Props = HTMLAttributes<HTMLElement> & {
 const TeamCard = ({ bet, team, winner, disabledDay, ...rest }: Props) => {
   const { leagueId } = useThemeContext();
   const selected = bet === team.id;
+  const lfl = leagueId === 1;
+  const divtwo = leagueId === 2;
+  const winningBet = disabledDay && selected && winner === team.id;
+  const losingBet = disabledDay && selected && winner !== team.id;
 
   return (
-    <article
+    <button
+      disabled={disabledDay}
       aria-label="select winning team"
       className={`relative w-full py-2 px-4 flex items-center justify-between rounded-xl bg-neutral-800
-       border-1 shadow-md  outline-1 outline-blue-400
-      ${disabledDay ? "cursor-default" : ""}
-      ${disabledDay && selected ? "hover:bg-neutral-900" : "hover:bg-neutral-800"}
-       ${selected ? "bg-neutral-900" : ""}
+       border-1 shadow-md outline-1 outline-blue-400 disabled:cursor-default
+        ${
+          selected
+            ? "bg-neutral-900 disabled:hover:bg-neutral-900"
+            : "disabled:hover:bg-neutral-800"
+        }
       ${
-        selected && leagueId === 1
+        !disabledDay && selected && lfl
           ? "border-lfl"
-          : selected && leagueId === 2
+          : selected && divtwo
           ? "border-divtwo"
+          : winningBet
+          ? "border-emerald-400"
+          : losingBet
+          ? "border-red-400"
           : "border-transparent"
       }
-      ${
-        winner === team.id
-          ? "border-emerald-400"
-          : winner !== 0
-          ? "border-red-400"
-          : ""
-      }
+    
       hover:bg-neutral-900`}
       {...rest}
     >
@@ -52,7 +57,7 @@ const TeamCard = ({ bet, team, winner, disabledDay, ...rest }: Props) => {
         </div>
         <div className="font-semibold">{team.name}</div>
       </div>
-    </article>
+    </button>
   );
 };
 
