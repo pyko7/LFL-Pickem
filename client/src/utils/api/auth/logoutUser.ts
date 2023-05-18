@@ -12,7 +12,6 @@ export const logoutUser = async () => {
       credentials: "include",
     });
     const data = await res.json();
-    console.log("test");
     if (!res.ok) {
       if (res.status === 401) {
         throw new Error("Requête non autorisée");
