@@ -9,7 +9,9 @@
   *:focus-visible {
     @apply px-2 outline-none border-2 outline border-lfl rounded-sm;
   }
+}
 
+@layer components {
   /*Navigation tabs*/
   .tabs__scrollbar--hide::-webkit-scrollbar {
     display: none;
@@ -20,25 +22,7 @@
   }
   /*****************/
 
-  /*game informations*/
-  .points_counter {
-    @apply text-sm py-1 px-2 text-lfl font-bold uppercase border-2 border-lfl rounded-lg;
-  }
-  .result_icon {
-    @apply absolute top-1/2 -translate-y-1/2 w-7 h-7 p-1 z-[1]  rounded-circle;
-  }
-  .result_icon--success {
-    @apply bg-lfl;
-  }
-  .result_icon--failure {
-    @apply bg-red-600;
-  }
-  /*****************/
-}
-
-@layer components {
   /*form & inputs*/
-
   .input_label_container {
     @apply relative w-full max-w-[290px] h-11 rounded-lg  sm:max-w-none;
   }

@@ -69,14 +69,14 @@ const Profile = () => {
                   <h1 className="max-w-sm text-lg font-bold lg:max-w-md lg:text-xl">
                     User
                   </h1>
-                  <p className="points_counter">N/A pts </p>
+                  <p className="text-sm py-1 px-2 text-lfl font-bold uppercase border-2 border-lfl rounded-lg">N/A pts </p>
                 </>
               ) : (
                 <>
                   <h1 className="max-w-sm text-lg font-bold lg:max-w-md lg:text-xl">
                     {currentUser.data.userName}
                   </h1>
-                  <p className="points_counter">
+                  <p className="text-sm py-1 px-2 text-lfl font-bold uppercase border-2 border-lfl rounded-lg">
                     {currentUser.data.points} pts
                   </p>
                 </>
