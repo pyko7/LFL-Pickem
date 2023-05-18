@@ -10,7 +10,6 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import Spinner from "../Loaders/Spinner";
 import Label from "../Inputs/Label";
 import IconLabel from "../Inputs/IconLabel";
-import IconButton from "../Buttons/IconButton";
 import InputErrorMessage from "../Inputs/InputErrorMessage";
 import Button from "../Buttons/Button";
 

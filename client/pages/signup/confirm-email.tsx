@@ -71,7 +71,7 @@ const ConfirmEmail = () => {
         <AuthModal
           authModal={login}
           setAuthModal={setLogin}
-          handleClick={handleLoginPageClick}
+          handleMenu={handleLoginPageClick}
         />
       )}
     </section>

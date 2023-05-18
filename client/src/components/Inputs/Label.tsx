@@ -1,10 +1,8 @@
 import { LabelHTMLAttributes } from "react";
 
-type InputProps = LabelHTMLAttributes<HTMLLabelElement> & {
-  className?: string;
-};
+type InputProps = LabelHTMLAttributes<HTMLLabelElement>;
 
-const Label = ({ children, className, ...rest }: InputProps) => {
+const Label = ({ children }: InputProps) => {
   return (
     <label
       className={`pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 bg-neutral-800 transition-all duration-200 ease-out motion-reduce:transition-none
