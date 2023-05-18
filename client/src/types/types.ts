@@ -41,7 +41,14 @@ export type Bet = {
 };
 
 export type User = {
+  id: string;
   userName: string;
   points: number;
   bets: Bet[];
+};
+
+export type UserLeaderboard = {
+  id: string;
+  userName: string;
+  points: number;
 };

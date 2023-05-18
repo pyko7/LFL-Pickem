@@ -3,38 +3,51 @@ import { useState } from "react";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { User } from "@/src/types/types";
+import { User, UserLeaderboard } from "@/src/types/types";
 import { getUserById } from "@/src/utils/api/user/getUserById";
-import { getUserRank } from "@/src/utils/api/user/getUserRank";
 import { useAuthContext } from "@/context/AuthContext";
 import Skeleton from "@/src/components/Loaders/Skeleton";
 import Modal from "@/src/components/Modals/Modal";
 import SendEmailForm from "@/src/components/Forms/SendEmailForm";
 import Divider from "@/src/components/Dividers/Divider";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { getLeaderboard } from "@/src/utils/api/user/getLeaderboard";
+import { getUserRanking } from "@/src/utils/getUserRanking";
 
-type UserRank = {
-  userRank: number;
-  top: number;
-  ranking: number;
+type Props = {
+  leaderboard: UserLeaderboard[];
 };
 
-const Profile = () => {
-  const { isLogged } = useAuthContext();
+export const getServerSideProps: GetServerSideProps<Props> = async () => {
+  const leaderboard = await getLeaderboard();
+  return {
+    props: { leaderboard },
+  };
+};
 
+const Profile = ({
+  leaderboard,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const { isLogged } = useAuthContext();
   const [resetPassword, setResetPassword] = useState(false);
   const [deleteAccount, setDeleteAccount] = useState(false);
 
-  const currentUser: UseQueryResult<User> = useQuery(["user"], getUserById, {
-    staleTime: 10 * (60 * 1000), // 10 mins
-    cacheTime: 15 * (60 * 1000), // 15 mins
-    enabled: isLogged,
-  });
+  const { data, isLoading, isError }: UseQueryResult<User> = useQuery(
+    ["user"],
+    getUserById,
+    {
+      staleTime: 10 * (60 * 1000), // 10 mins
+      cacheTime: 15 * (60 * 1000), // 15 mins
+      enabled: isLogged,
+    }
+  );
 
-  const userRank: UseQueryResult<UserRank> = useQuery(["rank"], getUserRank, {
-    staleTime: 10 * (60 * 1000), // 10 mins
-    cacheTime: 15 * (60 * 1000), // 15 mins
-    enabled: isLogged,
-  });
+  const ranking = leaderboard.sort((a, b) => b.points - a.points);
+
+  const userRank = isLogged
+    ? getUserRanking(ranking, data?.id)
+    : ranking.length;
+  const userTopPercentile = Math.trunc((userRank / ranking.length) * 100);
 
   const handlePasswordClick = () => {
     return resetPassword ? setResetPassword(false) : setResetPassword(true);
@@ -54,8 +67,8 @@ const Profile = () => {
       {isLogged ? (
         <section className="py-10 lg:py-20">
           <div className="w-full px-5 m-auto sm:max-w-3xl lg:max-w-4xl lg:px-0 ">
-            <div className="w-full flex justify-between text-neutral-light">
-              {currentUser.isLoading ? (
+            <div className="w-full flex justify-between text-neutral-light md:px-4">
+              {isLoading ? (
                 <>
                   <Skeleton
                     className="w-32 h-8"
@@ -68,22 +81,22 @@ const Profile = () => {
                     aria-label="Chargement des points"
                   />
                 </>
-              ) : currentUser.isError ? (
+              ) : isError ? (
                 <>
                   <h1 className="max-w-sm text-lg font-bold lg:max-w-md lg:text-xl">
                     User
                   </h1>
                   <p className="text-sm py-1 px-2 text-lfl font-bold uppercase border-2 border-lfl rounded-lg">
-                    N/A pts{" "}
+                    N/A pts
                   </p>
                 </>
               ) : (
                 <>
                   <h1 className="max-w-sm text-lg font-bold lg:max-w-md lg:text-xl">
-                    {currentUser.data.userName}
+                    {data.userName}
                   </h1>
                   <p className="text-sm py-1 px-2 text-lfl font-bold uppercase border-2 border-lfl rounded-lg">
-                    {currentUser.data.points} pts
+                    {data.points} pts
                   </p>
                 </>
               )}
@@ -91,42 +104,22 @@ const Profile = () => {
 
             <Divider className="my-8 sm:my-12" size="thin" />
 
-            <ul className="icons flex flex-col gap-6">
+            <ul className="icons flex flex-col gap-6 md:px-4">
               <li>
-                {userRank.isLoading ? (
-                  <Skeleton
-                    className="w-52 h-8"
-                    rounded
-                    aria-label="Chargement du rang"
-                  />
-                ) : userRank.isError ? (
-                  "Classement actuel: N/A"
-                ) : (
-                  `Classement actuel: ${userRank.data.userRank}`
-                )}
+                <span>Classement actuel: {userRank}</span>
               </li>
               <li>
-                {userRank.isLoading ? (
-                  <Skeleton
-                    className="w-24 h-8"
-                    rounded
-                    aria-label="Chargement du rang"
-                  />
-                ) : userRank.isError ? (
-                  "Top: N/A"
-                ) : (
-                  `Top: ${userRank.data.top}%`
-                )}
+                <span>Top: {userTopPercentile}%</span>
               </li>
             </ul>
 
             <Divider className="my-8 sm:my-12" size="thin" />
 
-            <ul className="w-full  py-4 flex flex-col gap-6 md:gap-3">
+            <ul className="w-full py-4 flex flex-col gap-6 md:gap-3">
               <li>
                 <button
                   type="button"
-                  className="w-fit flex items-center gap-3 rounded-sm text-neutral-light hover:shadow-md hover:bg-main-light md:py-2 md:pl-1 md:pr-6"
+                  className="w-fit flex items-center gap-3 rounded-3xl text-neutral-light hover:shadow-md hover:bg-neutral-600/30 md:py-2 md:pl-4 md:pr-6"
                   onClick={handlePasswordClick}
                 >
                   <PencilSquareIcon aria-hidden="true" className="w-6 h-6" />
@@ -136,10 +129,10 @@ const Profile = () => {
               <li>
                 <button
                   type="button"
-                  className="w-fit flex items-center gap-3 rounded-sm text-neutral-light hover:shadow-md hover:bg-main-light md:py-2 md:pl-1 md:pr-6"
+                  className="w-fit flex items-center gap-3 rounded-3xl text-neutral-light hover:shadow-md hover:bg-neutral-600/30 md:py-2 md:pl-4 md:pr-6"
                   onClick={handleDeleteAccountClick}
                 >
-                  <TrashIcon aria-hidden="true" className="w-6 h-6 -ml-[2px]" />
+                  <TrashIcon aria-hidden="true" className="w-6 h-6" />
                   Supprimer le compte
                 </button>
               </li>

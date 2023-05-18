@@ -11,6 +11,7 @@ import { verifyDate } from "../middleware/verifyDate";
 import { verifySession } from "../middleware/verifySession";
 import { getAllDays } from "../controllers/game/getAllDays";
 import { getTeamById } from "../controllers/game/getTeamById";
+import { getLeaderboard } from "../controllers/game/getLeaderboard";
 
 export const gameRoutes = Router();
 
@@ -20,6 +21,7 @@ gameRoutes.get("/days", getAllDays);
 gameRoutes.get("/days/:id", getDaysByLeague);
 gameRoutes.get("/days/bet/:id", verifySession, getGamesWithBetByDay);
 gameRoutes.get("/day/:id", getGamesByDayId);
+gameRoutes.get("/leaderboard",getLeaderboard)
 
 
 gameRoutes.post("/selected",verifySession, betLimiter,  verifyDate, addSelectedTeams);

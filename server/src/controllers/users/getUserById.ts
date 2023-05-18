@@ -19,13 +19,12 @@ export const getUserById = async (req: Request, res: Response) => {
       },
     });
 
-    res
-      .status(200)
-      .json({
-        userName: user?.userName,
-        points: user?.points,
-        bets: user?.bets,
-      });
+    res.status(200).json({
+      id: user?.id,
+      userName: user?.userName,
+      points: user?.points,
+      bets: user?.bets,
+    });
   } catch (error) {
     if (error instanceof Error) {
       res.status(400).json(error.message);
