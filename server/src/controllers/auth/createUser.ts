@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { auth } from "../../firebase";
 import { createUserSchema } from "../../validations/userValidation";
 import prisma from "../../prisma";
-import { sendEmail } from "./sendEmail";
+import { sendEmail } from "../../utils/users/email/sendEmail";
 import { generateConfirmEmailTemplate } from "../../utils/users/email/generateConfirmEmailTemplate";
 
 export const createUser = async (req: Request, res: Response) => {

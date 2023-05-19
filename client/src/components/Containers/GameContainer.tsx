@@ -4,8 +4,7 @@ import {
   updateSelectedTeams,
   deleteSelectedTeams,
 } from "@/src/utils/api/game/handleSelectedTeams";
-import { utcToZonedTime } from "date-fns-tz";
-import { format, isBefore, parseISO } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAuthContext } from "@/context/AuthContext";
@@ -16,7 +15,7 @@ import Modal from "../Modals/Modal";
 import { Bet, Game } from "@/src/types/types";
 import { capitalizeFirstLetter } from "@/src/utils/capitalizeFirstLetter";
 import { getTeamById } from "@/src/utils/api/game/getTeamById";
-import { useRouter } from "next/router";
+import { IsGamePast } from "@/src/utils/IsGamePast";
 
 type Props = {
   day: Game;
@@ -28,7 +27,6 @@ const GameContainer = ({ day, bets, handleRefetch }: Props) => {
   const { id, date, dayId, firstTeamId, secondTeamId, winner } = day;
   const { isLogged } = useAuthContext();
   const [bet, setBet] = useState(0);
-  const router = useRouter();
 
   const [disabledDay, setDisabledDay] = useState(false);
   const [authModal, setAuthModal] = useState(false);
@@ -124,8 +122,11 @@ const GameContainer = ({ day, bets, handleRefetch }: Props) => {
       teamId,
       dayId,
     };
+    const isPast = IsGamePast(date);
 
-    if (disabledDay) {
+    if (isPast) {
+      setBetError(true)
+      setErrorMessage("Les prédictions sont closes.")
       return;
     }
     if (!isLogged) {
@@ -166,14 +167,10 @@ const GameContainer = ({ day, bets, handleRefetch }: Props) => {
   };
 
   useEffect(() => {
-    const dateInFrance = utcToZonedTime(new Date(), "Europe/Paris");
-    //date-fns-tz has 1 hour off compare to Paris timezone, this is why timezone is set to London
-    const gameDateInFrance = utcToZonedTime(
-      parseISO(date.toString()),
-      "Europe/London"
-    );
-    const isPast = isBefore(gameDateInFrance, dateInFrance);
-    return isPast ? setDisabledDay(true) : setDisabledDay(false);
+    const isPast = IsGamePast(date);
+    if (isPast) {
+      setDisabledDay(true);
+    }
   }, [date]);
 
   useEffect(() => {
