@@ -10,13 +10,12 @@ import { useRouter } from "next/router";
 import { useAuthContext } from "@/context/AuthContext";
 import Label from "../Inputs/Label";
 import IconLabel from "../Inputs/IconLabel";
-import IconButton from "../Buttons/IconButton";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import InputErrorMessage from "../Inputs/InputErrorMessage";
 import Button from "../Buttons/Button";
 
 const LoginForm = ({ handleClose }: { handleClose: () => void }) => {
-  const { push, pathname } = useRouter();
+  const { push } = useRouter();
   const { setIsLogged } = useAuthContext();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
