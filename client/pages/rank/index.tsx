@@ -59,7 +59,7 @@ const RankPage = ({
           <h1 className="mb-10 text-lg font-bold lg:max-w-md lg:text-xl">
             Classement
           </h1>
-          <Leaderboard leaderboard={ranking} />
+          <Leaderboard currentUser={data} leaderboard={ranking} />
 
           {isLoading || isError ? null : (
             <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-2xl h-16 px-3 z-10 md:px-5 lg:hidden">

@@ -15,7 +15,7 @@ import InputErrorMessage from "../Inputs/InputErrorMessage";
 import Button from "../Buttons/Button";
 
 const LoginForm = ({ handleClose }: { handleClose: () => void }) => {
-  const { push } = useRouter();
+  const { push, pathname } = useRouter();
   const { setIsLogged } = useAuthContext();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -48,6 +48,9 @@ const LoginForm = ({ handleClose }: { handleClose: () => void }) => {
       setIsLogged(false);
     },
     onSuccess: () => {
+      if (pathname === "/signup/confirm-email") {
+        push("/");
+      }
       setIsLogged(true);
       handleClose();
     },

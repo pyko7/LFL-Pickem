@@ -56,13 +56,13 @@ const AuthModal = ({ authModal, setAuthModal, handleMenu }: Props) => {
           <Modal
             authModal={resetPassword}
             setAuthModal={setResetPassword}
-            title={"Modification de l'email"}
+            title={"Réinitialisation du mot de passe"}
             description={
-              "Entrez votre adresse email afin de recevoir un lien pour la modification du mot de passe"
+              "Entrez votre adresse email afin de recevoir un lien pour réinitialiser du mot de passe"
             }
           >
             <SendEmailForm
-              url={"user/reset-password"}
+              url={"auth/reset-password"}
               buttonName={"Réinitialiser le mot de passe"}
             />
           </Modal>

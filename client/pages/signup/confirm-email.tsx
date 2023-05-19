@@ -3,6 +3,7 @@ import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
 import AuthModal from "@/src/components/Modals/AuthModal";
 import Modal from "@/src/components/Modals/Modal";
+import SendEmailForm from "@/src/components/Forms/SendEmailForm";
 
 const ConfirmEmail = () => {
   const [login, setLogin] = useState(false);
@@ -17,7 +18,7 @@ const ConfirmEmail = () => {
   };
 
   return (
-    <section className="w-full max-w-5xl mx-auto px-4 text-neutral-light xl:px-0">
+    <section className="w-full max-w-5xl mx-auto px-4 text-neutral-light lg:mt-20 xl:px-0">
       <h1 className="text-2xl font-bold text-center sm:text-3xl">
         Confirmer votre email
       </h1>
@@ -64,8 +65,13 @@ const ConfirmEmail = () => {
         <Modal
           authModal={email}
           setAuthModal={setEmail}
-          title={"Réinitialisation du mot de passe"}
-        />
+          title={"Email de confirmation"}
+        >
+          <SendEmailForm
+            url={"auth/confirm-email"}
+            buttonName={"Renvoyer un email de confirmation"}
+          />
+        </Modal>
       )}
       {!login ? null : (
         <AuthModal

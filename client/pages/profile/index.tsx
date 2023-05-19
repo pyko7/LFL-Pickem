@@ -13,6 +13,7 @@ import Divider from "@/src/components/Dividers/Divider";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { getLeaderboard } from "@/src/utils/api/user/getLeaderboard";
 import { getUserRanking } from "@/src/utils/getUserRanking";
+import DeleteAccountForm from "@/src/components/Forms/DeleteAccountForm";
 
 type Props = {
   leaderboard: UserLeaderboard[];
@@ -143,24 +144,21 @@ const Profile = ({
             setAuthModal={setDeleteAccount}
             title={"Suppression du compte"}
             description={
-              "Cette action est irréversible, êtes-vous sûr(e) de vouloir supprimer votre addresse email ? \n   Inscrivez votre adresse email afin de confirmer la suppression définitive de votre compte."
+              "Cette action est irréversible, êtes-vous sûr(e) de vouloir supprimer votre addresse email ? \n\n   Inscrivez votre adresse email afin de confirmer la suppression définitive de votre compte."
             }
           >
-            <SendEmailForm
-              url={"user/reset-password"}
-              buttonName={"Réinitialiser le mot de passe"}
-            />
+            <DeleteAccountForm handleClose={() => setDeleteAccount(false)} />
           </Modal>
           <Modal
             authModal={resetPassword}
             setAuthModal={setResetPassword}
-            title={"Modification de l'email"}
+            title={"Réinitialisation du mot de passe"}
             description={
-              "Entrez votre adresse email afin de recevoir un lien pour la modification du mot de passe"
+              "Entrez votre adresse email afin de recevoir un lien pour réinitialiser du mot de passe"
             }
           >
             <SendEmailForm
-              url={"user/reset-password"}
+              url={"auth/reset-password"}
               buttonName={"Réinitialiser le mot de passe"}
             />
           </Modal>
