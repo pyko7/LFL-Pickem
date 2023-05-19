@@ -13,7 +13,6 @@ export const getLeaderboard = async (req: Request, res: Response) => {
 
     res.status(200).json(allUsers);
   } catch (error) {
-    console.log(error);
     if (error instanceof Error) {
       res.status(400).json(error.message);
     }

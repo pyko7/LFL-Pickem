@@ -12,7 +12,6 @@ export const getLeaderboard = async (): Promise<UserLeaderboard[]> => {
       }
     );
     const data = await res.json();
-    console.log(data);
     if (!res.ok) {
       throw new Error("Une erreur est survenue");
     }

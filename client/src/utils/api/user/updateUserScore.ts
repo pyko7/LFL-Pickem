@@ -17,7 +17,6 @@ export const updateUserScore = async (): Promise<void> => {
     }
   } catch (error) {
     if (error instanceof Error) {
-      console.log(error);
       throw new Error(error.message);
     }
     throw error;
