@@ -3,7 +3,8 @@ import { auth } from "../../firebase";
 import * as dotenv from "dotenv";
 import { userCredentials } from "../../validations/userValidation";
 import { genererateResetPasswordEmailTemplate } from "../../utils/users/email/generateResetPasswordEmailTemplate";
-import { sendEmail } from "./sendEmail";
+import { sendEmail } from "../../utils/users/email/sendEmail";
+
 dotenv.config();
 
 export const sendResetPasswordEmail = async (req: Request, res: Response) => {

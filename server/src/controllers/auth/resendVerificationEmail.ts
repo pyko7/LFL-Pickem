@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { auth } from "../../firebase";
 import dotenv from "dotenv";
 import { userCredentials } from "../../validations/userValidation";
-import { sendEmail } from "./sendEmail";
+import { sendEmail } from "../../utils/users/email/sendEmail";
 import { generateConfirmEmailTemplate } from "../../utils/users/email/generateConfirmEmailTemplate";
 dotenv.config();
 
