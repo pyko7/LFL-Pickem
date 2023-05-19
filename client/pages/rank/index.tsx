@@ -7,7 +7,6 @@ import { getUserRanking } from "@/src/utils/getUserRanking";
 import { useQuery } from "@tanstack/react-query";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
-import Head from "next/head";
 
 type Props = {
   leaderboard: UserLeaderboard[];
