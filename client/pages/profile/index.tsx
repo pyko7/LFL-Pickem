@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
@@ -14,6 +14,7 @@ import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { getLeaderboard } from "@/src/utils/api/user/getLeaderboard";
 import { getUserRanking } from "@/src/utils/getUserRanking";
 import DeleteAccountForm from "@/src/components/Forms/DeleteAccountForm";
+import { useRouter } from "next/router";
 
 type Props = {
   leaderboard: UserLeaderboard[];
@@ -29,6 +30,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async () => {
 const Profile = ({
   leaderboard,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const { push } = useRouter();
   const { isLogged } = useAuthContext();
   const [resetPassword, setResetPassword] = useState(false);
   const [deleteAccount, setDeleteAccount] = useState(false);
@@ -57,6 +59,12 @@ const Profile = ({
   const handleDeleteAccountClick = () => {
     return deleteAccount ? setDeleteAccount(false) : setDeleteAccount(true);
   };
+
+  useEffect(() => {
+    if (!isLogged) {
+      push("/");
+    }
+  }, []);
 
   return (
     <>
