@@ -86,8 +86,8 @@ const Home = ({
       </Head>
       <Modal
         classname="md:max-w-4xl"
-        authModal={ftueModal}
-        setAuthModal={setFtueModal}
+        open={ftueModal}
+        setOpen={setFtueModal}
         title={""}
       >
         <Carousel />

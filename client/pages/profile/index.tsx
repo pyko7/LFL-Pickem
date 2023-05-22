@@ -148,8 +148,8 @@ const Profile = ({
             </ul>
           </div>
           <Modal
-            authModal={deleteAccount}
-            setAuthModal={setDeleteAccount}
+            open={deleteAccount}
+            setOpen={setDeleteAccount}
             title={"Suppression du compte"}
             description={
               "Cette action est irréversible, êtes-vous sûr(e) de vouloir supprimer votre addresse email ? \n\n   Inscrivez votre adresse email afin de confirmer la suppression définitive de votre compte."
@@ -158,8 +158,8 @@ const Profile = ({
             <DeleteAccountForm handleClose={() => setDeleteAccount(false)} />
           </Modal>
           <Modal
-            authModal={resetPassword}
-            setAuthModal={setResetPassword}
+            open={resetPassword}
+            setOpen={setResetPassword}
             title={"Réinitialisation du mot de passe"}
             description={
               "Entrez votre adresse email afin de recevoir un lien pour réinitialiser du mot de passe"

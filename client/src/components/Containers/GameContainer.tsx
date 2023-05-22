@@ -238,8 +238,8 @@ const GameContainer = ({ day, bets, handleRefetch }: Props) => {
         handleMenu={handleAuthModalClick}
       />
       <Modal
-        authModal={betError}
-        setAuthModal={setBetError}
+        open={betError}
+        setOpen={setBetError}
         title={"Erreur"}
         description={errorMessage}
       />

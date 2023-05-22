@@ -5,8 +5,8 @@ import IconButton from "../Buttons/IconButton";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 type Props = {
-  authModal: boolean;
-  setAuthModal: (authModal: boolean) => void;
+  open: boolean;
+  setOpen: (open: boolean) => void;
   title: string;
   description?: string;
   children?: ReactNode;
@@ -14,20 +14,20 @@ type Props = {
 };
 
 const Modal = ({
-  authModal = false,
-  setAuthModal,
+  open = false,
+  setOpen,
   title,
   description,
   children,
   classname,
 }: Props) => {
   const handleClose = () => {
-    return setAuthModal(false);
+    return setOpen(false);
   };
 
   return (
-    <Transition show={authModal}>
-      <Dialog open={authModal} onClose={handleClose} className="relative z-50">
+    <Transition show={open}>
+      <Dialog open={open} onClose={handleClose} className="relative z-50">
         <Transition.Child
           enter="transition-opacity ease-in-out duration-300"
           enterFrom="opacity-0"
@@ -40,7 +40,9 @@ const Modal = ({
 
           <div className="fixed inset-0 overflow-y-auto">
             <div className="flex w-full min-h-full items-center justify-center p-4 text-neutral-200">
-              <Dialog.Panel className={`w-full py-6 px-4 flex flex-col items-center gap-6 rounded-md bg-neutral-800 sm:max-w-lg md:px-6 ${classname}`}>
+              <Dialog.Panel
+                className={`w-full py-6 px-4 flex flex-col items-center gap-6 rounded-md bg-neutral-800 sm:max-w-lg md:px-6 ${classname}`}
+              >
                 <div className="w-full flex flex-row-reverse">
                   <IconButton onClick={handleClose}>
                     <XMarkIcon />

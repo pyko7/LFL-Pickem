@@ -28,8 +28,8 @@ const AuthModal = ({ authModal, setAuthModal, handleMenu }: Props) => {
     <>
       {signUpForm ? (
         <Modal
-          authModal={authModal}
-          setAuthModal={setAuthModal}
+          open={authModal}
+          setOpen={setAuthModal}
           title={"S'inscrire"}
         >
           <SignUpForm handleClose={handleClose} />
@@ -39,8 +39,8 @@ const AuthModal = ({ authModal, setAuthModal, handleMenu }: Props) => {
         </Modal>
       ) : (
         <Modal
-          authModal={authModal}
-          setAuthModal={setAuthModal}
+          open={authModal}
+          setOpen={setAuthModal}
           title={"Connexion"}
         >
           <LoginForm handleClose={handleClose} />
@@ -54,8 +54,8 @@ const AuthModal = ({ authModal, setAuthModal, handleMenu }: Props) => {
           </div>
 
           <Modal
-            authModal={resetPassword}
-            setAuthModal={setResetPassword}
+            open={resetPassword}
+            setOpen={setResetPassword}
             title={"Réinitialisation du mot de passe"}
             description={
               "Entrez votre adresse email afin de recevoir un lien pour réinitialiser du mot de passe"

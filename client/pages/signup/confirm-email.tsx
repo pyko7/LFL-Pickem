@@ -63,8 +63,8 @@ const ConfirmEmail = () => {
       </div>
       {!email ? null : (
         <Modal
-          authModal={email}
-          setAuthModal={setEmail}
+          open={email}
+          setOpen={setEmail}
           title={"Email de confirmation"}
         >
           <SendEmailForm
