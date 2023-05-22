@@ -1,5 +1,0 @@
--- AlterTable
-ALTER TABLE `game` ADD COLUMN `leagueId` INTEGER NOT NULL DEFAULT 0;
-
--- AddForeignKey
-ALTER TABLE `Game` ADD CONSTRAINT `Game_leagueId_fkey` FOREIGN KEY (`leagueId`) REFERENCES `League`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

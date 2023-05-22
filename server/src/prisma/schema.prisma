@@ -8,11 +8,11 @@ datasource db {
 }
 
 model User {
-  id       String @id
-  email    String @unique
-  userName String @unique
-  points   Int    @default(0)
-  bets     Bet[]
+  id              String   @id
+  email           String   @unique
+  userName        String   @unique
+  points          Int      @default(0)
+  bets            Bet[]
 }
 
 model League {
