@@ -1,8 +1,15 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import Head from "next/head";
 import Header from "./Navigation/Header";
+import { useRouter } from "next/router";
 
 const Layout = ({ children }: { children?: ReactNode }) => {
+  const { pathname, push } = useRouter();
+  useEffect(() => {
+    if (pathname !== "/") {
+      push("/");
+    }
+  }, [pathname]);
   return (
     <>
       <Head>
@@ -23,11 +30,9 @@ const Layout = ({ children }: { children?: ReactNode }) => {
         />
       </Head>
 
-      <div className="w-full min-h-screen bg-main text-neutral">
-        <Header />
-        <main className="w-full h-full my-0 mx-auto p-0">
-          {children}
-        </main>
+      <div className="w-full min-h-screen bg-[#171717] text-white">
+        {/* <Header /> */}
+        <main className="w-full h-full my-0 mx-auto p-0">{children}</main>
       </div>
     </>
   );
