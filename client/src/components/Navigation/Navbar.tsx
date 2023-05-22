@@ -1,28 +1,31 @@
 import Link from "next/link";
 import { UserIcon } from "@heroicons/react/24/outline";
 import { useAuthContext } from "@/context/AuthContext";
-import { useQuery } from "@tanstack/react-query";
-import { getUserById } from "@/src/utils/api/user/getUserById";
 import IconButton from "../Buttons/IconButton";
 import { navLinks } from "@/src/utils/navLinks";
 import DropdownMenu from "../Menus/DropdownMenu";
 import { useThemeContext } from "@/context/ThemeContext";
 import Skeleton from "../Loaders/Skeleton";
+import { User } from "@/src/types/types";
 
 type Props = {
+  data: User | undefined;
+  isLoading: boolean;
+  isError: boolean;
   logoutUser: () => void;
   handleDropdownMenu: () => void;
 };
 
-const Navbar = ({ logoutUser, handleDropdownMenu }: Props) => {
-  const { isLogged } = useAuthContext();
+const Navbar = ({
+  data,
+  isLoading,
+  isError,
+  logoutUser,
+  handleDropdownMenu,
+}: Props) => {
+  const { isLogged, score } = useAuthContext();
   const { leagueId } = useThemeContext();
 
-  const user = useQuery(["user"], getUserById, {
-    staleTime: 10 * (60 * 1000), // 10 mins
-    cacheTime: 15 * (60 * 1000), // 15 mins
-    enabled: isLogged,
-  });
   return (
     <nav
       role="navigation"
@@ -47,22 +50,28 @@ const Navbar = ({ logoutUser, handleDropdownMenu }: Props) => {
             href="/profile"
             className="h-full flex flex-col justify-center items-end font-bold text-sm"
           >
-            {user.isLoading ? (
+            {isLoading ? (
               <>
-                <Skeleton className="w-20 h-5 bg-neutral-700" rounded aria-label="Chargement du pseudo" />
-                <Skeleton className="w-4/5 h-5 mt-2 bg-neutral-700" rounded aria-label="Chargement du score"/>
+                <Skeleton
+                  className="w-20 h-5 bg-neutral-700"
+                  rounded
+                  aria-label="Chargement du pseudo"
+                />
+                <Skeleton
+                  className="w-4/5 h-5 mt-2 bg-neutral-700"
+                  rounded
+                  aria-label="Chargement du score"
+                />
               </>
             ) : null}
-            {user.isError ? (
-              <span>Récupération des données impossible</span>
-            ) : null}
-            <span className="whitespace-nowrap">{user.data?.userName}</span>
+            {isError ? <span>Récupération des données impossible</span> : null}
+            <span className="whitespace-nowrap">{data?.userName}</span>
             <span
               className={`whitespace-nowrap ${
                 leagueId === 1 ? "text-lfl" : "text-divtwo"
               }`}
             >
-              {user.data?.points} pts
+              {score ? score : data?.points} pts
             </span>
           </Link>
           <DropdownMenu handleClick={logoutUser} />

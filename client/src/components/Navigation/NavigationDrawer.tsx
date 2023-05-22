@@ -2,11 +2,13 @@ import { Transition } from "@headlessui/react";
 import Link from "next/link";
 import { useAuthContext } from "@/context/AuthContext";
 import Button from "../Buttons/Button";
-import { useQuery } from "@tanstack/react-query";
-import { getUserById } from "@/src/utils/api/user/getUserById";
 import { navLinks } from "@/src/utils/navLinks";
+import { User } from "@/src/types/types";
 
 type Props = {
+  data: User | undefined;
+  isLoading: boolean;
+  isError: boolean;
   open: boolean;
   setAuthModal: (authModal: boolean) => void;
   handleClose: () => void;
@@ -14,18 +16,15 @@ type Props = {
 };
 
 const NavigationDrawer = ({
+  data,
+  isLoading,
+  isError,
   open,
   setAuthModal,
   handleClose,
   logoutUser,
 }: Props) => {
-  const { isLogged } = useAuthContext();
-
-  const user = useQuery(["user"], getUserById, {
-    staleTime: 10 * (60 * 1000), // 10 mins
-    cacheTime: 15 * (60 * 1000), // 15 mins
-    enabled: isLogged,
-  });
+  const { isLogged, score } = useAuthContext();
 
   const handleClick = () => {
     if (!isLogged) {
@@ -79,10 +78,13 @@ const NavigationDrawer = ({
               href="/profile"
               className="w-fit flex flex-col font-bold text-sm"
             >
-              {user.isLoading ? <span>loading...</span> : null}
-              {user.isError ? <span>error...</span> : null}
-              <span>{user.data?.userName}</span>
-              <span className="text-lfl">{user.data?.points} pts</span>
+              {isLoading ? <span>loading...</span> : null}
+              {isError ? <span>error...</span> : null}
+              <span>{data?.userName}</span>
+              <span className="text-lfl">
+                {" "}
+                {score ? score : data?.points} pts
+              </span>
             </Link>
           )}
           <Button type="button" className="w-fit text-sm" onClick={handleClick}>

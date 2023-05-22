@@ -21,7 +21,7 @@ export const updateUserScore = async (req: Request, res: Response) => {
     const updatedPoints = calculateScore(bets);
 
     if (updatedPoints > points) {
-      await prisma.user.update({
+      const user = await prisma.user.update({
         where: {
           id: decodedToken.uid,
         },
@@ -29,9 +29,10 @@ export const updateUserScore = async (req: Request, res: Response) => {
           points: updatedPoints,
         },
       });
+      return res.status(200).json(user.points);
     }
 
-    res.status(200).json({ message: "Score updated" });
+    res.status(200).json(points);
   } catch (error) {
     if (error instanceof Error) {
       res.status(400).json(error.message);

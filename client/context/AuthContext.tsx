@@ -12,6 +12,8 @@ type Children = { children: ReactNode };
 type AuthContextInterface = {
   isLogged: boolean;
   setIsLogged: (isLogged: boolean) => void;
+  score: number | undefined;
+  setScore: (score: number) => void;
 };
 
 const AuthContext = createContext({} as AuthContextInterface);
@@ -21,6 +23,7 @@ export const useAuthContext = () => {
 };
 
 export const AuthProvider = ({ children }: Children) => {
+  const [score, setScore] = useState<number | undefined>();
   const [isLogged, setIsLogged] = useState(false);
   const pid = Cookies.get("pid");
   const secret = new TextEncoder().encode(
@@ -46,7 +49,7 @@ export const AuthProvider = ({ children }: Children) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isLogged, setIsLogged }}>
+    <AuthContext.Provider value={{ isLogged, setIsLogged, score, setScore }}>
       {children}
     </AuthContext.Provider>
   );

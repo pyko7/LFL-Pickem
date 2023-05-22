@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Navbar from "./Navbar";
@@ -8,13 +8,21 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import IconButton from "../Buttons/IconButton";
 import { logoutUser as logout } from "@/src/utils/api/auth/logoutUser";
 import { useAuthContext } from "@/context/AuthContext";
+import { useQuery } from "@tanstack/react-query";
+import { getUserById } from "@/src/utils/api/user/getUserById";
 
 const Header = () => {
-  const { setIsLogged } = useAuthContext();
+  const { isLogged, setIsLogged } = useAuthContext();
   const [open, setOpen] = useState(false);
   const [authModal, setAuthModal] = useState(false);
   const logo =
     "https://res.cloudinary.com/dkferpmf6/image/upload/v1674578020/LFL/white_lfl.webp";
+
+  const { data, isLoading, isError } = useQuery(["user"], getUserById, {
+    staleTime: 10 * (60 * 1000), // 10 mins
+    cacheTime: 15 * (60 * 1000), // 15 mins
+    enabled: isLogged,
+  });
 
   const handleMenu = () => {
     return open ? setOpen(false) : setOpen(true);
@@ -37,6 +45,9 @@ const Header = () => {
           <Image src={logo} alt="logo" fill priority />
         </Link>
         <Navbar
+          data={data}
+          isLoading={isLoading}
+          isError={isError}
           logoutUser={logoutUser}
           handleDropdownMenu={handleDropdownMenu}
         />
@@ -55,6 +66,9 @@ const Header = () => {
 
         <div className="absolute top-0 -right-0 lg:hidden">
           <NavigationDrawer
+            data={data}
+            isLoading={isLoading}
+            isError={isError}
             open={open}
             setAuthModal={setAuthModal}
             handleClose={handleMenu}

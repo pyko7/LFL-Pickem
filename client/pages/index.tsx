@@ -15,6 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getUserById } from "@/src/utils/api/user/getUserById";
 import { useAuthContext } from "@/context/AuthContext";
 import Skeleton from "@/src/components/Loaders/Skeleton";
+import { updateUserScore } from "@/src/utils/api/user/updateUserScore";
 
 type Props = {
   day: DayProps;

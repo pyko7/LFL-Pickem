@@ -13,10 +13,11 @@ import IconLabel from "../Inputs/IconLabel";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import InputErrorMessage from "../Inputs/InputErrorMessage";
 import Button from "../Buttons/Button";
+import { updateUserScore } from "@/src/utils/api/user/updateUserScore";
 
 const LoginForm = ({ handleClose }: { handleClose: () => void }) => {
   const { push, pathname } = useRouter();
-  const { setIsLogged } = useAuthContext();
+  const { setIsLogged, setScore } = useAuthContext();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -47,7 +48,11 @@ const LoginForm = ({ handleClose }: { handleClose: () => void }) => {
       }
       setIsLogged(false);
     },
-    onSuccess: () => {
+    onSuccess: async () => {
+      const score = await updateUserScore();
+      if (score) {
+        setScore(score);
+      }
       if (pathname === "/signup/confirm-email") {
         push("/");
       }
