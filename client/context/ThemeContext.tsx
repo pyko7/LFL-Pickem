@@ -11,6 +11,7 @@ type Children = { children: ReactNode };
 
 type ThemeProps = {
   leagueId: number;
+  setLeagueId: (leagueId: number) => void;
 };
 
 const ThemeContext = createContext({} as ThemeProps);
@@ -31,7 +32,7 @@ export const ThemeProvider = ({ children }: Children) => {
   }, [pathname]);
 
   return (
-    <ThemeContext.Provider value={{ leagueId }}>
+    <ThemeContext.Provider value={{ leagueId, setLeagueId }}>
       {children}
     </ThemeContext.Provider>
   );

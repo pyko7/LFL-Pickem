@@ -15,7 +15,8 @@ import { useQuery } from "@tanstack/react-query";
 import { getUserById } from "@/src/utils/api/user/getUserById";
 import { useAuthContext } from "@/context/AuthContext";
 import Skeleton from "@/src/components/Loaders/Skeleton";
-import { updateUserScore } from "@/src/utils/api/user/updateUserScore";
+import { useThemeContext } from "@/context/ThemeContext";
+import { useEffect } from "react";
 
 type Props = {
   day: DayProps;
@@ -36,6 +37,7 @@ const Home = ({
   day,
   games,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const { setLeagueId } = useThemeContext();
   const { isLogged } = useAuthContext();
   const emptyCards = Array(5).fill(0);
 
@@ -69,6 +71,10 @@ const Home = ({
     refetch();
   };
 
+  useEffect(() => {
+    setLeagueId(day.leagueId);
+  }, []);
+
   return (
     <>
       <Head>
@@ -95,7 +101,11 @@ const Home = ({
           <h2 className="text-lg uppercase">Prochaine journée:</h2>
           <div className="w-full flex gap-2 text-neutral-light">
             <div className="relative w-6 h-6">
-              <Image src={lfl.imageUrl} alt={`${lfl.name}`} fill />
+              <Image
+                src={day.leagueId === 1 ? lfl.imageUrl : divTwo.imageUrl}
+                alt={`${lfl.name}`}
+                fill
+              />
             </div>
             <h3 className="max-w-sm font-bold lg:max-w-md lg:text-xl">
               {date}

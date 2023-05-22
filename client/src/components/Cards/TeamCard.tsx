@@ -18,7 +18,6 @@ const TeamCard = ({ bet, team, winner, disabledDay, ...rest }: Props) => {
   const winningBet = disabledDay && selected && winner === team.id;
   const losingBet = disabledDay && selected && winner !== team.id;
   const pendingBet = disabledDay && selected && winner === 0;
-
   return (
     <button
       disabled={disabledDay}
@@ -30,17 +29,18 @@ const TeamCard = ({ bet, team, winner, disabledDay, ...rest }: Props) => {
             ? "bg-neutral-900 disabled:hover:bg-neutral-900"
             : "disabled:hover:bg-neutral-800"
         }
-      ${
-        !disabledDay && selected && lfl || pendingBet
-          ? "border-lfl"
-          : selected && divtwo
-          ? "border-divtwo"
-          : winningBet
-          ? "border-emerald-400"
-          : losingBet
-          ? "border-red-400"
-          : "border-transparent"
-      }
+        ${
+          (!disabledDay && selected && lfl) || (selected && lfl && pendingBet)
+            ? "border-lfl"
+            : (!disabledDay && selected && divtwo) ||
+              (selected && divtwo && pendingBet)
+            ? "border-divtwo"
+            : winningBet
+            ? "border-emerald-400"
+            : losingBet
+            ? "border-red-400"
+            : "border-transparent"
+        }
     
       hover:bg-neutral-900`}
       {...rest}

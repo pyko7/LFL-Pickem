@@ -125,8 +125,8 @@ const GameContainer = ({ day, bets, handleRefetch }: Props) => {
     const isPast = IsGamePast(date);
 
     if (isPast) {
-      setBetError(true)
-      setErrorMessage("Les prédictions sont closes.")
+      setBetError(true);
+      setErrorMessage("Les prédictions sont closes.");
       return;
     }
     if (!isLogged) {
@@ -188,7 +188,14 @@ const GameContainer = ({ day, bets, handleRefetch }: Props) => {
     <>
       <div className="w-full max-w-sm px-2 py-4 flex flex-col gap-3 rounded-md bg-neutral-700 shadow-elevation md:px-4">
         <div className="flex flex-col gap-1">
-          <span>{gameDate}</span>
+          <div className="w-full flex items-center justify-between">
+            <span>{gameDate}</span>
+            {winner !==0 && winner === bet ? (
+              <span className="px-2 py-1 rounded-xl border-1 border-emerald-400 text-emerald-400 text-sm font-bold">
+                +3 pts
+              </span>
+            ) : null}
+          </div>
           <div className="flex gap-1">
             <LockClosedIcon aria-hidden="true" className="w-4 h-4" />
             <span className="text-xs">Fin des prédictions: {gameDate} 18h</span>
