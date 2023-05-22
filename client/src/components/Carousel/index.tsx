@@ -3,6 +3,8 @@ import Image from "next/image";
 import { useState } from "react";
 import Button from "../Buttons/Button";
 
+type Props = { handleClose: () => void };
+
 const rules = [
   {
     imageUrl: "/images/bet.webp",
@@ -24,7 +26,7 @@ const rules = [
   },
 ];
 
-const Carousel = () => {
+const Carousel = ({ handleClose }: Props) => {
   const [active, setActive] = useState(0);
 
   const handlePreviousClick = () => {
@@ -87,7 +89,11 @@ const Carousel = () => {
                   </div>
                   <div className="w-1/3 flex justify-end">
                     {active === rules.length - 1 ? (
-                      <Button variant="text" aria-label="Fermer la modale">
+                      <Button
+                        variant="text"
+                        aria-label="Fermer la modale"
+                        onClick={handleClose}
+                      >
                         J'ai compris
                       </Button>
                     ) : (

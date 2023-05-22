@@ -154,6 +154,7 @@ const Profile = ({
             description={
               "Cette action est irréversible, êtes-vous sûr(e) de vouloir supprimer votre addresse email ? \n\n   Inscrivez votre adresse email afin de confirmer la suppression définitive de votre compte."
             }
+            handleClose={handleDeleteAccountClick}
           >
             <DeleteAccountForm handleClose={() => setDeleteAccount(false)} />
           </Modal>
@@ -164,6 +165,7 @@ const Profile = ({
             description={
               "Entrez votre adresse email afin de recevoir un lien pour réinitialiser du mot de passe"
             }
+            handleClose={handlePasswordClick}
           >
             <SendEmailForm
               url={"auth/reset-password"}

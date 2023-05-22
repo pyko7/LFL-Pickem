@@ -31,6 +31,7 @@ const AuthModal = ({ authModal, setAuthModal, handleMenu }: Props) => {
           open={authModal}
           setOpen={setAuthModal}
           title={"S'inscrire"}
+          handleClose={handleClose}
         >
           <SignUpForm handleClose={handleClose} />
           <Button variant="text" onClick={handleSignUpForm}>
@@ -42,6 +43,7 @@ const AuthModal = ({ authModal, setAuthModal, handleMenu }: Props) => {
           open={authModal}
           setOpen={setAuthModal}
           title={"Connexion"}
+          handleClose={handleClose}
         >
           <LoginForm handleClose={handleClose} />
           <div className="flex flex-col gap-2">
@@ -60,6 +62,7 @@ const AuthModal = ({ authModal, setAuthModal, handleMenu }: Props) => {
             description={
               "Entrez votre adresse email afin de recevoir un lien pour réinitialiser du mot de passe"
             }
+            handleClose={handleClose}
           >
             <SendEmailForm
               url={"auth/reset-password"}

@@ -66,6 +66,7 @@ const ConfirmEmail = () => {
           open={email}
           setOpen={setEmail}
           title={"Email de confirmation"}
+          handleClose={handleVerificationEmailClick}
         >
           <SendEmailForm
             url={"auth/confirm-email"}

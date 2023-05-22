@@ -16,9 +16,7 @@ import { getUserById } from "@/src/utils/api/user/getUserById";
 import { useAuthContext } from "@/context/AuthContext";
 import Skeleton from "@/src/components/Loaders/Skeleton";
 import { useThemeContext } from "@/context/ThemeContext";
-import { useEffect, useState } from "react";
-import Carousel from "@/src/components/Carousel";
-import Modal from "@/src/components/Modals/Modal";
+import { useEffect } from "react";
 
 type Props = {
   day: DayProps;
@@ -41,7 +39,6 @@ const Home = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { setLeagueId } = useThemeContext();
   const { isLogged } = useAuthContext();
-  const [ftueModal, setFtueModal] = useState(false);
   const emptyCards = Array(5).fill(0);
 
   const lfl: League = {
@@ -84,14 +81,6 @@ const Home = ({
         <title>Accueil - LFL-Pickem</title>
         <meta property="og:title" content="Accueil - LFL-Pickem" />
       </Head>
-      <Modal
-        classname="md:max-w-4xl"
-        open={ftueModal}
-        setOpen={setFtueModal}
-        title={""}
-      >
-        <Carousel />
-      </Modal>
       <section className="w-full p-4 flex flex-col gap-10 md:px-8 md:gap-16 xl:gap-20">
         <div className="w-full flex flex-col gap-5 md:gap-14 lg:max-w-7xl lg:mx-auto xl:mt-5">
           <h2 className="text-center text-lg uppercase lg:text-start">

@@ -7,10 +7,11 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 type Props = {
   open: boolean;
   setOpen: (open: boolean) => void;
-  title: string;
+  title?: string;
   description?: string;
   children?: ReactNode;
   classname?: string;
+  handleClose: () => void;
 };
 
 const Modal = ({
@@ -20,11 +21,8 @@ const Modal = ({
   description,
   children,
   classname,
+  handleClose,
 }: Props) => {
-  const handleClose = () => {
-    return setOpen(false);
-  };
-
   return (
     <Transition show={open}>
       <Dialog open={open} onClose={handleClose} className="relative z-50">

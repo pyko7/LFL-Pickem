@@ -59,6 +59,10 @@ const GameContainer = ({ day, bets, handleRefetch }: Props) => {
     return setAuthModal(true);
   };
 
+  const handleErrorModal = () => {
+    return betError ? setBetError(false) : setBetError(true);
+  };
+
   const createBet = useMutation({
     mutationFn: addSelectedTeams,
     onError: (error) => {
@@ -190,7 +194,7 @@ const GameContainer = ({ day, bets, handleRefetch }: Props) => {
         <div className="flex flex-col gap-1">
           <div className="w-full flex items-center justify-between">
             <span>{gameDate}</span>
-            {winner !==0 && winner === bet ? (
+            {winner !== 0 && winner === bet ? (
               <span className="px-2 py-1 rounded-xl border-1 border-emerald-400 text-emerald-400 text-sm font-bold">
                 +3 pts
               </span>
@@ -242,6 +246,7 @@ const GameContainer = ({ day, bets, handleRefetch }: Props) => {
         setOpen={setBetError}
         title={"Erreur"}
         description={errorMessage}
+        handleClose={handleErrorModal}
       />
     </>
   );
