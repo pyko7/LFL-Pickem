@@ -2,6 +2,7 @@ import { useState } from "react";
 import Tab from "./Tab";
 import Tabs from "./Tabs";
 import { DayProps } from "@/src/types/types";
+import { useRouter } from "next/router";
 
 type Props = {
   schedule: DayProps[];
@@ -17,6 +18,9 @@ const ScrollableDaysTabs = ({
   fetchGames,
 }: Props) => {
   const [position, setPosition] = useState(0);
+  const { pathname } = useRouter();
+  const games =
+    pathname === "/lfl" ? schedule.slice(0, 18) : schedule.slice(18);
 
   const handleClick = (value: DayProps) => {
     fetchGames(value.id);
@@ -27,7 +31,7 @@ const ScrollableDaysTabs = ({
     <div className="absolute top-8 left-1/2 -translate-x-1/2 w-full max-w-7xl rounded-md bg-neutral-700">
       <nav aria-label="Selecteur de journée" className=" w-full h-full ">
         <Tabs position={position}>
-          {schedule.map((day, index) => (
+          {games.map((day, index) => (
             <Tab
               dayData={dayData}
               setDayData={setDayData}
