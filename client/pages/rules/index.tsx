@@ -1,13 +1,12 @@
 const Rules = () => {
   const rules = [
-    "Prédisez les vainqueurs de chaque journée de LFL.",
+    "Prédisez les vainqueurs de chaque journée de LFL et de Div2.",
     `En cas de bonne prédiction, vous gagnez 3 points. Si vous avez fait le
     mauvais choix, vous ne perdez pas de points mais vous n'en
     gagnez pas non plus.`,
-    "Vous avez jusqu'à 18h pour prédire sur les matchs du jour même.",
-    `Les journées se déroulant généralement le mercredi soir et le jeudi
-    soir. Les résultats sont mis à jour le lendemain des journées à 7h.`,
     "Réaliser un score parfait sur une journée vous octroie un bonus de 5 points",
+    "Vous avez jusqu'à 18h pour prédire sur les matchs du jour même.",
+    `Les journées se déroulant généralement du mardi au vendredi, les résultats sont mis à jour le lendemain des journées à 7h.`,
     "Amusez-vous :)",
   ];
 
