@@ -10,6 +10,7 @@ type Props = {
   title: string;
   description?: string;
   children?: ReactNode;
+  classname?: string;
 };
 
 const Modal = ({
@@ -18,6 +19,7 @@ const Modal = ({
   title,
   description,
   children,
+  classname,
 }: Props) => {
   const handleClose = () => {
     return setAuthModal(false);
@@ -38,7 +40,7 @@ const Modal = ({
 
           <div className="fixed inset-0 overflow-y-auto">
             <div className="flex w-full min-h-full items-center justify-center p-4 text-neutral-200">
-              <Dialog.Panel className="w-full py-6 px-4 flex flex-col items-center gap-6 rounded-md bg-neutral-800 sm:max-w-lg md:px-6">
+              <Dialog.Panel className={`w-full py-6 px-4 flex flex-col items-center gap-6 rounded-md bg-neutral-800 sm:max-w-lg md:px-6 ${classname}`}>
                 <div className="w-full flex flex-row-reverse">
                   <IconButton onClick={handleClose}>
                     <XMarkIcon />
