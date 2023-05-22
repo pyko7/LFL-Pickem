@@ -73,7 +73,7 @@ const Home = ({
 
   useEffect(() => {
     setLeagueId(day.leagueId);
-  }, []);
+  }, [day.leagueId, setLeagueId]);
 
   return (
     <>

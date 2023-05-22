@@ -7,18 +7,21 @@ type Props = { handleClose: () => void };
 
 const rules = [
   {
+    id: 1,
     imageUrl: "/images/bet.webp",
     title: "Prédisez les vainqueurs",
     description:
       "Prédire les vainqueurs de chaque match vous permet de gagner 3 points par match. Si vous choisissez la mauvaise équipe, vous ne gagnez aucun point.",
   },
   {
+    id: 2,
     imageUrl: "/images/perfect_day.webp",
     title: "Bonus de points",
     description:
       "Réaliser une journée de prédictions parfaite va vous octroyer un bonus de 5 points sur la journée.",
   },
   {
+    id: 3,
     imageUrl: "/images/leaderboard.webp",
     title: "Classement",
     description:
@@ -47,7 +50,7 @@ const Carousel = ({ handleClose }: Props) => {
     <div className="w-full">
       {rules.map((rule, i, rules) => {
         return (
-          <div key={i}>
+          <div key={rule.id}>
             {active === i ? (
               <>
                 <div className="relative w-full aspect-video">
@@ -80,6 +83,7 @@ const Carousel = ({ handleClose }: Props) => {
                     {rules.map((e, idx) => {
                       return (
                         <span
+                          key={idx}
                           className={`block w-2 h-2 ${
                             idx === i ? "bg-lfl" : "bg-neutral-500"
                           } rounded-circle`}
@@ -94,7 +98,7 @@ const Carousel = ({ handleClose }: Props) => {
                         aria-label="Fermer la modale"
                         onClick={handleClose}
                       >
-                        J'ai compris
+                        J&apos;ai compris
                       </Button>
                     ) : (
                       <button

@@ -64,7 +64,7 @@ const Profile = ({
     if (!isLogged) {
       push("/");
     }
-  }, []);
+  }, [isLogged, push]);
 
   return (
     <>
