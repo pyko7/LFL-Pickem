@@ -14,6 +14,8 @@ type AuthContextInterface = {
   setIsLogged: (isLogged: boolean) => void;
   score: number | undefined;
   setScore: (score: number) => void;
+  modal: boolean;
+  setModal: (modal: boolean) => void;
 };
 
 const AuthContext = createContext({} as AuthContextInterface);
@@ -25,6 +27,7 @@ export const useAuthContext = () => {
 export const AuthProvider = ({ children }: Children) => {
   const [score, setScore] = useState<number | undefined>();
   const [isLogged, setIsLogged] = useState(false);
+  const [modal, setModal] = useState(false);
   const pid = Cookies.get("pid");
   const secret = new TextEncoder().encode(
     process.env.NEXT_PUBLIC_JWT_SECRET_KEY
@@ -49,7 +52,9 @@ export const AuthProvider = ({ children }: Children) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isLogged, setIsLogged, score, setScore }}>
+    <AuthContext.Provider
+      value={{ isLogged, setIsLogged, score, setScore, modal, setModal }}
+    >
       {children}
     </AuthContext.Provider>
   );

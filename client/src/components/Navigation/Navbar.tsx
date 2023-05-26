@@ -13,18 +13,15 @@ type Props = {
   isLoading: boolean;
   isError: boolean;
   logoutUser: () => void;
-  handleDropdownMenu: () => void;
 };
 
-const Navbar = ({
-  data,
-  isLoading,
-  isError,
-  logoutUser,
-  handleDropdownMenu,
-}: Props) => {
-  const { isLogged, score } = useAuthContext();
+const Navbar = ({ data, isLoading, isError, logoutUser }: Props) => {
+  const { isLogged, score, setModal } = useAuthContext();
   const { leagueId } = useThemeContext();
+
+  const handleClick = () => {
+    setModal(true);
+  };
 
   return (
     <nav
@@ -81,7 +78,7 @@ const Navbar = ({
           <IconButton
             aria-label="Authentication button"
             className="w-8 h-8 focus:p-0"
-            onClick={handleDropdownMenu}
+            onClick={handleClick}
           >
             <UserIcon aria-hidden="true" />
           </IconButton>

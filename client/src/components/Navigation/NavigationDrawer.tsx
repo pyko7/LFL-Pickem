@@ -10,7 +10,6 @@ type Props = {
   isLoading: boolean;
   isError: boolean;
   open: boolean;
-  setAuthModal: (authModal: boolean) => void;
   handleClose: () => void;
   logoutUser: () => void;
 };
@@ -20,15 +19,14 @@ const NavigationDrawer = ({
   isLoading,
   isError,
   open,
-  setAuthModal,
   handleClose,
   logoutUser,
 }: Props) => {
-  const { isLogged, score } = useAuthContext();
+  const { isLogged, score, setModal } = useAuthContext();
 
   const handleClick = () => {
     if (!isLogged) {
-      return setAuthModal(true);
+      return setModal(true);
     }
     logoutUser();
   };

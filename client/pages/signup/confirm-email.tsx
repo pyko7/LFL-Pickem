@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
-import AuthModal from "@/src/components/Modals/AuthModal";
 import Modal from "@/src/components/Modals/Modal";
 import SendEmailForm from "@/src/components/Forms/SendEmailForm";
+import { useAuthContext } from "@/context/AuthContext";
 
 const ConfirmEmail = () => {
-  const [login, setLogin] = useState(false);
+  const { setModal } = useAuthContext();
   const [email, setEmail] = useState(false);
 
   const handleLoginPageClick = () => {
-    return login ? setLogin(false) : setLogin(true);
+    return setModal(true);
   };
 
   const handleVerificationEmailClick = () => {
@@ -73,13 +73,6 @@ const ConfirmEmail = () => {
             buttonName={"Renvoyer un email de confirmation"}
           />
         </Modal>
-      )}
-      {!login ? null : (
-        <AuthModal
-          authModal={login}
-          setAuthModal={setLogin}
-          handleMenu={handleLoginPageClick}
-        />
       )}
     </section>
   );

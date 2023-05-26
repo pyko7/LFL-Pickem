@@ -8,10 +8,9 @@ import SendEmailForm from "../Forms/SendEmailForm";
 type Props = {
   authModal: boolean;
   setAuthModal: (authModal: boolean) => void;
-  handleMenu: () => void;
 };
 
-const AuthModal = ({ authModal, setAuthModal, handleMenu }: Props) => {
+const AuthModal = ({ authModal, setAuthModal }: Props) => {
   const [resetPassword, setResetPassword] = useState(false);
   const [signUpForm, setSignUpForm] = useState(false);
 
@@ -20,7 +19,6 @@ const AuthModal = ({ authModal, setAuthModal, handleMenu }: Props) => {
   };
 
   const handleClose = () => {
-    handleMenu();
     return setAuthModal(false);
   };
 
@@ -34,9 +32,12 @@ const AuthModal = ({ authModal, setAuthModal, handleMenu }: Props) => {
           handleClose={handleClose}
         >
           <SignUpForm handleClose={handleClose} />
-          <Button variant="text" onClick={handleSignUpForm}>
-            Se connecter
-          </Button>
+          <div className="flex flex-col gap-2">
+            <Button variant="text">Continuer en tant qu'invité</Button>
+            <Button variant="text" onClick={handleSignUpForm}>
+              Se connecter
+            </Button>
+          </div>
         </Modal>
       ) : (
         <Modal
@@ -47,6 +48,7 @@ const AuthModal = ({ authModal, setAuthModal, handleMenu }: Props) => {
         >
           <LoginForm handleClose={handleClose} />
           <div className="flex flex-col gap-2">
+            <Button variant="text">Continuer en tant qu'invité</Button>
             <Button variant="text" onClick={() => setResetPassword(true)}>
               Mot de passe oublié ?
             </Button>

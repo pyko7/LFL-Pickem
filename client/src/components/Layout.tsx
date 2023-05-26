@@ -4,9 +4,12 @@ import Header from "./Navigation/Header";
 import { ThemeProvider } from "@/context/ThemeContext";
 import Modal from "./Modals/Modal";
 import Carousel from "./Carousel";
+import AuthModal from "./Modals/AuthModal";
+import { useAuthContext } from "@/context/AuthContext";
 
 const Layout = ({ children }: { children?: ReactNode }) => {
   const [ftueModal, setFtueModal] = useState(true);
+  const { modal, setModal } = useAuthContext();
 
   const handleClick = () => {
     localStorage.setItem("ftue", "true");
@@ -53,7 +56,14 @@ const Layout = ({ children }: { children?: ReactNode }) => {
         </Modal>
         <div className="w-full min-h-screen bg-neutral-900 text-neutral-200">
           <Header />
-          <main className="w-full h-full">{children}</main>
+          <main className="w-full h-full">
+            <>
+              {children}
+              {!modal ? null : (
+                <AuthModal authModal={modal} setAuthModal={setModal} />
+              )}
+            </>
+          </main>
         </div>
       </ThemeProvider>
     </>

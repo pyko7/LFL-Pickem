@@ -8,7 +8,6 @@ import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAuthContext } from "@/context/AuthContext";
-import AuthModal from "../Modals/AuthModal";
 import { LockClosedIcon } from "@heroicons/react/24/outline";
 import TeamCard from "../Cards/TeamCard";
 import Modal from "../Modals/Modal";
@@ -25,11 +24,10 @@ type Props = {
 
 const GameContainer = ({ day, bets, handleRefetch }: Props) => {
   const { id, date, dayId, firstTeamId, secondTeamId, winner } = day;
-  const { isLogged } = useAuthContext();
+  const { isLogged, setModal } = useAuthContext();
   const [bet, setBet] = useState(0);
 
   const [disabledDay, setDisabledDay] = useState(false);
-  const [authModal, setAuthModal] = useState(false);
   const [betError, setBetError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const gameDate = capitalizeFirstLetter(
@@ -54,10 +52,6 @@ const GameContainer = ({ day, bets, handleRefetch }: Props) => {
       cacheTime: 15 * (60 * 1000), // 15 mins
     }
   );
-
-  const handleAuthModalClick = () => {
-    return setAuthModal(true);
-  };
 
   const handleErrorModal = () => {
     return betError ? setBetError(false) : setBetError(true);
@@ -134,7 +128,7 @@ const GameContainer = ({ day, bets, handleRefetch }: Props) => {
       return;
     }
     if (!isLogged) {
-      return setAuthModal(true);
+      return setModal(true);
     }
     if (bet === 0) {
       createBet.mutate(credentials);
@@ -236,11 +230,7 @@ const GameContainer = ({ day, bets, handleRefetch }: Props) => {
           )}
         </div>
       </div>
-      <AuthModal
-        authModal={authModal}
-        setAuthModal={setAuthModal}
-        handleMenu={handleAuthModalClick}
-      />
+
       <Modal
         open={betError}
         setOpen={setBetError}
