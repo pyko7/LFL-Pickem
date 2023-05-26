@@ -67,7 +67,7 @@ const LoginForm = ({ handleClose }: { handleClose: () => void }) => {
 
   return (
     <form
-      className="w-full m-auto flex flex-col items-center gap-2 rounded-lg sm:max-w-sm sm:p-9 md:max-w-md lg:max-w-md lg:gap-5"
+      className="w-full m-auto flex flex-col items-center gap-2 rounded-lg sm:max-w-sm sm:p-9 md:max-w-md lg:max-w-md lg:gap-0"
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="input_label_container mb-6">
