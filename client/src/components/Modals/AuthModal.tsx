@@ -4,6 +4,9 @@ import SignUpForm from "../Forms/SignUpForm";
 import Modal from "./Modal";
 import Button from "../Buttons/Button";
 import SendEmailForm from "../Forms/SendEmailForm";
+import { useMutation } from "@tanstack/react-query";
+import { createAnonymousSession } from "@/src/utils/api/auth/createAnonymousSession";
+import { useAuthContext } from "@/context/AuthContext";
 
 type Props = {
   authModal: boolean;
@@ -11,7 +14,9 @@ type Props = {
 };
 
 const AuthModal = ({ authModal, setAuthModal }: Props) => {
+  const { setIsLogged } = useAuthContext();
   const [resetPassword, setResetPassword] = useState(false);
+  const [error, setError] = useState("");
   const [signUpForm, setSignUpForm] = useState(false);
 
   const handleSignUpForm = () => {
@@ -20,6 +25,21 @@ const AuthModal = ({ authModal, setAuthModal }: Props) => {
 
   const handleClose = () => {
     return setAuthModal(false);
+  };
+
+  const mutation = useMutation({
+    mutationFn: createAnonymousSession,
+    onError: () => {
+      setError("Une erreur est survenue");
+    },
+    onSuccess: async () => {
+      setIsLogged(true);
+      handleClose();
+    },
+  });
+
+  const handleClick = () => {
+    mutation.mutate();
   };
 
   return (
@@ -32,8 +52,11 @@ const AuthModal = ({ authModal, setAuthModal }: Props) => {
           handleClose={handleClose}
         >
           <SignUpForm handleClose={handleClose} />
+          {error ? <span className="-mt-10 text-red-500">{error}</span> : null}
           <div className="flex flex-col gap-2">
-            <Button variant="text">Continuer en tant qu'invité</Button>
+            <Button variant="text" onClick={handleClick}>
+              Continuer en tant qu'invité
+            </Button>
             <Button variant="text" onClick={handleSignUpForm}>
               Se connecter
             </Button>
@@ -47,8 +70,11 @@ const AuthModal = ({ authModal, setAuthModal }: Props) => {
           handleClose={handleClose}
         >
           <LoginForm handleClose={handleClose} />
+          {error ? <span className="-mt-10 text-red-500">{error}</span> : null}
           <div className="flex flex-col gap-2">
-            <Button variant="text">Continuer en tant qu'invité</Button>
+            <Button variant="text" onClick={handleClick}>
+              Continuer en tant qu'invité
+            </Button>
             <Button variant="text" onClick={() => setResetPassword(true)}>
               Mot de passe oublié ?
             </Button>

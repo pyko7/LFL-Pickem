@@ -18,6 +18,10 @@ export const verifyUser = async (
     const { payload } = await jwtVerify(pid, secret);
     const decodedToken = await auth.verifySessionCookie(session);
 
+    if (decodedToken.firebase.sign_in_provider === "anonmyous") {
+      throw new Error("Unauthorized request");
+    }
+
     if (user.email !== decodedToken.email || payload.pid !== decodedToken.uid) {
       throw Error("Forbidden access");
     }
