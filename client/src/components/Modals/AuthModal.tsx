@@ -55,7 +55,7 @@ const AuthModal = ({ authModal, setAuthModal }: Props) => {
           {error ? <span className="-mt-10 text-red-500">{error}</span> : null}
           <div className="flex flex-col gap-2">
             <Button variant="text" onClick={handleClick}>
-              Continuer en tant qu'invité
+              Continuer en tant qu&apos;invité
             </Button>
             <Button variant="text" onClick={handleSignUpForm}>
               Se connecter
@@ -73,7 +73,7 @@ const AuthModal = ({ authModal, setAuthModal }: Props) => {
           {error ? <span className="-mt-10 text-red-500">{error}</span> : null}
           <div className="flex flex-col gap-2">
             <Button variant="text" onClick={handleClick}>
-              Continuer en tant qu'invité
+              Continuer en tant qu&apos;invité
             </Button>
             <Button variant="text" onClick={() => setResetPassword(true)}>
               Mot de passe oublié ?
