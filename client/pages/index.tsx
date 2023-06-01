@@ -118,7 +118,7 @@ const Home = () => {
           </div>
 
           <div className="w-full flex flex-wrap justify-center gap-5 md:justify-start">
-            {isError ? (
+            {isError || allDays.isError || day.isError || games.isError ? (
               <p className="block text-xl my-20 mx-auto">
                 Une erreur est survenue lors du chargement des matchs
               </p>
