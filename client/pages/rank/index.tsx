@@ -1,38 +1,27 @@
 import { useAuthContext } from "@/context/AuthContext";
 import Leaderboard from "@/src/components/List/Leaderboard";
-import { UserLeaderboard } from "@/src/types/types";
 import { getLeaderboard } from "@/src/utils/api/user/getLeaderboard";
 import { getUserById } from "@/src/utils/api/user/getUserById";
 import { getUserRanking } from "@/src/utils/getUserRanking";
 import { useQuery } from "@tanstack/react-query";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 
-type Props = {
-  leaderboard: UserLeaderboard[];
-};
-
-export const getServerSideProps: GetServerSideProps<Props> = async () => {
-  const leaderboard = await getLeaderboard();
-  return {
-    props: { leaderboard },
-  };
-};
-
-const RankPage = ({
-  leaderboard,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const RankPage = () => {
   const { isLogged } = useAuthContext();
   const { data, isLoading, isError } = useQuery(["user"], getUserById, {
     staleTime: 10 * (60 * 1000), // 10 mins
     cacheTime: 15 * (60 * 1000), // 15 mins
     enabled: isLogged,
   });
-  const ranking = leaderboard.sort((a, b) => b.points - a.points);
+  const leaderboard = useQuery(["leaderboard"], getLeaderboard, {
+    staleTime: 10 * (60 * 1000), // 10 mins
+    cacheTime: 15 * (60 * 1000), // 15 mins
+  });
 
-  const userRank = isLogged
-    ? getUserRanking(ranking, data?.id)
-    : ranking.length;
+  const ranking = leaderboard.data?.sort((a, b) => b.points - a.points);
+
+  const userRank =
+    isLogged && ranking ? getUserRanking(ranking, data?.id) : ranking?.length;
 
   return (
     <>
@@ -59,7 +48,9 @@ const RankPage = ({
           <h1 className="mb-10 text-lg font-bold lg:max-w-md lg:text-xl">
             Classement
           </h1>
-          <Leaderboard currentUser={data} leaderboard={ranking} />
+          {!ranking ? null : (
+            <Leaderboard currentUser={data} leaderboard={ranking} />
+          )}
 
           {isLoading || isError ? null : (
             <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-2xl h-16 px-3 z-10 md:px-5 lg:hidden">

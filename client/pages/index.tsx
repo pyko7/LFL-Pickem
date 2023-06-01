@@ -1,9 +1,8 @@
 import Head from "next/head";
 import { getAllDays } from "@/src/utils/api/game/getAllDays";
 import { getClosestDayFromNow } from "@/src/utils/getClosestDayFromNow";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { getGamesByDayId } from "@/src/utils/api/game/getGamesByDayId";
-import { DayProps, Game, League } from "@/src/types/types";
+import { League } from "@/src/types/types";
 import LeagueCard from "@/src/components/Cards/LeagueCard";
 import Divider from "@/src/components/Dividers/Divider";
 import Image from "next/image";
@@ -18,25 +17,7 @@ import Skeleton from "@/src/components/Loaders/Skeleton";
 import { useThemeContext } from "@/context/ThemeContext";
 import { useEffect } from "react";
 
-type Props = {
-  day: DayProps;
-  games: Game[];
-};
-
-export const getServerSideProps: GetServerSideProps<Props> = async () => {
-  const allDays = await getAllDays();
-  const day = getClosestDayFromNow(allDays);
-  const games = await getGamesByDayId(day.id);
-
-  return {
-    props: { day, games },
-  };
-};
-
-const Home = ({
-  day,
-  games,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Home = () => {
   const { setLeagueId } = useThemeContext();
   const { isLogged } = useAuthContext();
   const emptyCards = Array(5).fill(0);
@@ -51,11 +32,6 @@ const Home = ({
     imageUrl:
       "https://res.cloudinary.com/dkferpmf6/image/upload/v1681475197/div2-logo_su2wug.svg",
   };
-  const date = capitalizeFirstLetter(
-    format(parseISO(day.date.toString()), "PPPP", {
-      locale: fr,
-    })
-  );
 
   const { data, isLoading, isError, refetch } = useQuery(
     ["user"],
@@ -66,14 +42,44 @@ const Home = ({
       enabled: isLogged,
     }
   );
+  const allDays = useQuery(["days"], getAllDays, {
+    staleTime: 10 * (60 * 1000), // 10 mins
+    cacheTime: 15 * (60 * 1000), // 15 mins
+  });
+
+  const day = useQuery(["user"], () => getClosestDayFromNow(allDays.data!), {
+    staleTime: 10 * (60 * 1000), // 10 mins
+    cacheTime: 15 * (60 * 1000), // 15 mins
+    enabled: allDays.data ? true : false,
+  });
+  const games = useQuery(
+    ["user", day.data?.id],
+    () => getGamesByDayId(day.data?.id!),
+    {
+      staleTime: 10 * (60 * 1000), // 10 mins
+      cacheTime: 15 * (60 * 1000), // 15 mins
+      enabled: day.data ? true : false,
+    }
+  );
+
+  const date = day.data
+    ? capitalizeFirstLetter(
+        format(parseISO(day.data.date.toString()), "PPPP", {
+          locale: fr,
+        })
+      )
+    : "";
 
   const handleRefetch = () => {
     refetch();
   };
 
   useEffect(() => {
-    setLeagueId(day.leagueId);
-  }, [day.leagueId, setLeagueId]);
+    if (!day.data) {
+      return;
+    }
+    setLeagueId(day.data.leagueId);
+  }, [day.data?.leagueId, setLeagueId]);
 
   return (
     <>
@@ -101,7 +107,7 @@ const Home = ({
           <div className="w-full flex gap-2 text-neutral-light">
             <div className="relative w-6 h-6">
               <Image
-                src={day.leagueId === 1 ? lfl.imageUrl : divTwo.imageUrl}
+                src={day.data?.leagueId === 1 ? lfl.imageUrl : divTwo.imageUrl}
                 alt={`${lfl.name}`}
                 fill
               />
@@ -130,7 +136,7 @@ const Home = ({
               })
             ) : (
               <>
-                {games.map((day) => (
+                {games.data?.map((day) => (
                   <GameContainer
                     day={day}
                     bets={data?.bets}

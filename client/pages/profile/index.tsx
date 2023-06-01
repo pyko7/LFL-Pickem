@@ -3,33 +3,19 @@ import { useEffect, useState } from "react";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { User, UserLeaderboard } from "@/src/types/types";
+import { User } from "@/src/types/types";
 import { getUserById } from "@/src/utils/api/user/getUserById";
 import { useAuthContext } from "@/context/AuthContext";
 import Skeleton from "@/src/components/Loaders/Skeleton";
 import Modal from "@/src/components/Modals/Modal";
 import SendEmailForm from "@/src/components/Forms/SendEmailForm";
 import Divider from "@/src/components/Dividers/Divider";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { getLeaderboard } from "@/src/utils/api/user/getLeaderboard";
 import { getUserRanking } from "@/src/utils/getUserRanking";
 import DeleteAccountForm from "@/src/components/Forms/DeleteAccountForm";
 import { useRouter } from "next/router";
 
-type Props = {
-  leaderboard: UserLeaderboard[];
-};
-
-export const getServerSideProps: GetServerSideProps<Props> = async () => {
-  const leaderboard = await getLeaderboard();
-  return {
-    props: { leaderboard },
-  };
-};
-
-const Profile = ({
-  leaderboard,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Profile = () => {
   const { push } = useRouter();
   const { isLogged } = useAuthContext();
   const [resetPassword, setResetPassword] = useState(false);
@@ -45,12 +31,17 @@ const Profile = ({
     }
   );
 
-  const ranking = leaderboard.sort((a, b) => b.points - a.points);
+  const leaderboard = useQuery(["leaderboard"], getLeaderboard, {
+    staleTime: 10 * (60 * 1000), // 10 mins
+    cacheTime: 15 * (60 * 1000), // 15 mins
+  });
 
-  const userRank = isLogged
-    ? getUserRanking(ranking, data?.id)
-    : ranking.length;
-  const userTopPercentile = Math.trunc((userRank / ranking.length) * 100);
+  const ranking = leaderboard.data?.sort((a, b) => b.points - a.points);
+
+  const userRank =
+    isLogged && ranking ? getUserRanking(ranking, data?.id) : ranking?.length;
+  const userTopPercentile =
+    userRank && ranking ? Math.trunc((userRank / ranking.length) * 100) : 0;
 
   const handlePasswordClick = () => {
     return resetPassword ? setResetPassword(false) : setResetPassword(true);
