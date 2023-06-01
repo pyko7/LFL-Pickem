@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import prisma from "../../prisma";
 import { auth } from "../../firebase";
+import { generateUsername } from "../../utils/users/generateUsername";
 
 export const createAnonymousUser = async (
   req: Request,
@@ -11,13 +12,13 @@ export const createAnonymousUser = async (
 
   try {
     const token = await auth.verifyIdToken(idToken);
-    const randomInt = Math.floor(Math.random() * 999) + 1;
+    const userName = await generateUsername();
 
     await prisma.user.create({
       data: {
         id: token.uid,
         email: `${token.uid}`,
-        userName: `Picker${randomInt}`,
+        userName,
       },
     });
 
