@@ -4,7 +4,6 @@ CREATE TABLE `User` (
     `email` VARCHAR(191) NOT NULL,
     `userName` VARCHAR(191) NOT NULL,
     `points` INTEGER NOT NULL DEFAULT 0,
-    `lastScoreUpdate` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     UNIQUE INDEX `User_email_key`(`email`),
     UNIQUE INDEX `User_userName_key`(`userName`),
@@ -69,10 +68,10 @@ CREATE TABLE `Bet` (
 ALTER TABLE `Team` ADD CONSTRAINT `Team_leagueId_fkey` FOREIGN KEY (`leagueId`) REFERENCES `League`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Game` ADD CONSTRAINT `Game_firstTeamId_fkey` FOREIGN KEY (`firstTeamId`) REFERENCES `Team`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `Game` ADD CONSTRAINT `Game_firstTeamId_fkey` FOREIGN KEY (`firstTeamId`) REFERENCES `Team`(`id`) ON DELETE SET NULL ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE `Game` ADD CONSTRAINT `Game_secondTeamId_fkey` FOREIGN KEY (`secondTeamId`) REFERENCES `Team`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `Game` ADD CONSTRAINT `Game_secondTeamId_fkey` FOREIGN KEY (`secondTeamId`) REFERENCES `Team`(`id`) ON DELETE SET NULL ON UPDATE NO ACTION;
 
 -- AddForeignKey
 ALTER TABLE `Game` ADD CONSTRAINT `Game_dayId_fkey` FOREIGN KEY (`dayId`) REFERENCES `Day`(`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
