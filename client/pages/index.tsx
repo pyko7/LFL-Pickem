@@ -1,4 +1,3 @@
-import { useCountdown } from "@/src/hooks/useCountdown";
 import Head from "next/head";
 import { getAllDays } from "@/src/utils/api/game/getAllDays";
 import { getClosestDayFromNow } from "@/src/utils/getClosestDayFromNow";
