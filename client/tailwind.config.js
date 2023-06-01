@@ -7,54 +7,24 @@ module.exports = {
         "main-light": "#36414A",
         main: "#252C32",
         "main-dark": "#0A0E13",
-        secondary: "#B8933A",
-        "secondary-light": "#C5A047",
-        "neutral-light": "#FFFFFE",
-        neutral: "#9E9E9E",
-        "neutral-dark": "#121212",
+        lfl: "#B8933A",
+        "lfl-light": "#C5A047",
+        divtwo: "#e8378c",
+        "divtwo-light": "#ea4b97",
+      },
+      borderWidth: {
+        1: "1px",
       },
       borderRadius: {
         circle: "50%",
       },
-      grayscale: {
-        30: "30%",
-        75: "75%",
-      },
-      keyframes: {
-        centerFirstTeamLogo: {
-          from: {},
-          to: {
-            top: "50%",
-            right: "50%",
-            transform: " translate(50%,-50%)",
-          },
-        },
-        centerSecondTeamLogo: {
-          from: {},
-          to: {
-            top: "50%",
-            left: "50%",
-            transform: " translate(-50%,-50%)",
-          },
-        },
-        slideLogoToLeft: {
-          from: {},
-          to: {
-            left: "12px",
-          },
-        },
-        slideLogoToRight: {
-          from: {},
-          to: {
-            right: "12px",
-          },
-        },
-      },
-      animation: {
-        centerFirstTeamLogo: "centerFirstTeamLogo 1s ease-out forwards",
-        centerSecondTeamLogo: "centerSecondTeamLogo 1s ease-out forwards",
-        slideLogoToLeft: "slideLogoToLeft .5s ease-in-out forwards",
-        slideLogoToRight: "slideLogoToRight .5s ease-in-out forwards",
+      boxShadow: {
+        elevation:
+          "0px 8px 10px 1px hsla(0,0%,0%,0.14), 0px 3px 14px 2px hsla(0,0%,0%,0.12), 0px 5px 5px -3px hsla(0,0%,0%,0.2)",
+        "elevation-lfl":
+          "0px 8px 10px 1px hsla(42,52%,47%,0.14), 0px 3px 14px 2px hsla(42,52%,47%,0.12), 0px 5px 5px -3px hsla(42,52%,47%,0.2)",
+        "elevation-divtwo":
+          "0px 8px 10px 1px hsla(331,79%,56%,0.14), 0px 3px 14px 2px hsla(331,79%,56%,0.12), 0px 5px 5px -3px hsla(331,79%,56%,0.2)",
       },
     },
   },

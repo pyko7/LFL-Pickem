@@ -1,43 +1,60 @@
-import { useEffect, useState } from "react";
-import { Game, Team } from "@/src/types/teams";
-import { useGameContext } from "@/context/GameContext";
+import { KeyboardEvent, useEffect, useState } from "react";
 import {
   addSelectedTeams,
   updateSelectedTeams,
   deleteSelectedTeams,
 } from "@/src/utils/api/game/handleSelectedTeams";
-import { utcToZonedTime } from "date-fns-tz";
-import { isBefore, parseISO } from "date-fns";
-import { useMutation } from "@tanstack/react-query";
-import ErrorModal from "../Modals/ErrorModal";
+import { format, parseISO } from "date-fns";
+import { fr } from "date-fns/locale";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAuthContext } from "@/context/AuthContext";
-import AuthModal from "../Modals/AuthModal";
-import FirstTeamContainer from "./FirstTeamContainer";
-import SecondTeamContainer from "./SecondTeamContainer";
-import Skeleton from "../Loaders/Skeleton";
+import { LockClosedIcon } from "@heroicons/react/24/outline";
+import TeamCard from "../Cards/TeamCard";
+import Modal from "../Modals/Modal";
+import { Bet, Game } from "@/src/types/types";
+import { capitalizeFirstLetter } from "@/src/utils/capitalizeFirstLetter";
+import { getTeamById } from "@/src/utils/api/game/getTeamById";
+import { IsGamePast } from "@/src/utils/IsGamePast";
 
-const GameContainer = (props: Game) => {
-  const { isLogged } = useAuthContext();
-  const [firstTeam, setFirstTeam] = useState<Team>();
-  const [secondTeam, setSecondTeam] = useState<Team>();
+type Props = {
+  day: Game;
+  bets?: Bet[];
+  handleRefetch?: () => void;
+};
+
+const GameContainer = ({ day, bets, handleRefetch }: Props) => {
+  const { id, date, dayId, firstTeamId, secondTeamId, winner } = day;
+  const { isLogged, setModal } = useAuthContext();
+  const [bet, setBet] = useState(0);
+
   const [disabledDay, setDisabledDay] = useState(false);
-  const [userAuth, setUserAuth] = useState(false);
   const [betError, setBetError] = useState(false);
-  const [selectedTeam, setSelectedTeam] = useState(0);
-  const [notSelected, setNotSelected] = useState(0);
-  const [noBet, setNoBet] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const { teamsList, gamesWithBet } = useGameContext();
-  const authProps = { userAuth, setUserAuth };
+  const gameDate = capitalizeFirstLetter(
+    format(parseISO(day.date.toString()), "PPPP", {
+      locale: fr,
+    })
+  );
 
-  const teamContainerProps = {
-    game: props,
-    firstTeam: firstTeam!,
-    secondTeam: secondTeam!,
-    selectedTeam,
-    disabledDay,
-    notSelected,
-    noBet,
+  const firstTeam = useQuery(
+    ["team", firstTeamId],
+    () => getTeamById(firstTeamId),
+    {
+      staleTime: 10 * (60 * 1000), // 10 mins
+      cacheTime: 15 * (60 * 1000), // 15 mins
+    }
+  );
+  const secondTeam = useQuery(
+    ["team", secondTeamId],
+    () => getTeamById(secondTeamId),
+    {
+      staleTime: 10 * (60 * 1000), // 10 mins
+      cacheTime: 15 * (60 * 1000), // 15 mins
+    }
+  );
+
+  const handleErrorModal = () => {
+    return betError ? setBetError(false) : setBetError(true);
   };
 
   const createBet = useMutation({
@@ -55,6 +72,7 @@ const GameContainer = (props: Game) => {
         }
       }
       setBetError(true);
+      setBet(0);
     },
   });
 
@@ -73,6 +91,7 @@ const GameContainer = (props: Game) => {
         }
       }
       setBetError(true);
+      setBet(0);
     },
   });
 
@@ -91,148 +110,134 @@ const GameContainer = (props: Game) => {
         }
       }
       setBetError(true);
+      setBet(0);
     },
   });
 
-  const handleClick = (currentTeamId: number, otherTeamId: number) => {
+  const handleClick = (teamId: number) => {
     const credentials = {
-      gameId: props.id,
-      teamId: currentTeamId,
-      dayId: props.dayId,
+      gameId: id,
+      teamId,
+      dayId,
     };
-    if (!isLogged) {
-      return setUserAuth(true);
-    }
+    const isPast = IsGamePast(date);
 
-    if (disabledDay) {
+    if (isPast) {
+      setBetError(true);
+      setErrorMessage("Les prédictions sont closes.");
       return;
     }
-    if (selectedTeam === 0) {
+    if (!isLogged) {
+      return setModal(true);
+    }
+    if (bet === 0) {
       createBet.mutate(credentials);
       setBetError(false);
-      setNoBet(false);
-      setSelectedTeam(currentTeamId);
-      setNotSelected(otherTeamId);
+      setBet(teamId);
+      if (handleRefetch) {
+        handleRefetch();
+      }
       return;
     }
-    if (selectedTeam === currentTeamId) {
+    if (bet === teamId) {
       deleteBet.mutate(credentials);
       setBetError(false);
-      setNoBet(true);
-      setSelectedTeam(0);
-      setNotSelected(0);
+      setBet(0);
+      if (handleRefetch) {
+        handleRefetch();
+      }
       return;
     } else {
       updateBet.mutate(credentials);
       setBetError(false);
-      setNoBet(false);
-      setNotSelected(otherTeamId);
-      setSelectedTeam(currentTeamId);
+      setBet(teamId);
+      if (handleRefetch) {
+        handleRefetch();
+      }
       return;
     }
   };
 
-  useEffect(() => {
-    const dateInFrance = utcToZonedTime(new Date(), "Europe/Paris");
-    //date-fns-tz has 1 hour off compare to Paris timezone, this is why timezone is set to London
-    const gameDateInFrance = utcToZonedTime(
-      parseISO(props.date),
-      "Europe/London"
-    );
-    const isPast = isBefore(gameDateInFrance, dateInFrance);
-    return isPast ? setDisabledDay(true) : setDisabledDay(false);
-  }, [props.date]);
+  const handleKeyDown = (event: KeyboardEvent<HTMLElement>, teamId: number) => {
+    if (event.key === "Enter") {
+      handleClick(teamId);
+    }
+  };
 
   useEffect(() => {
-    teamsList.data?.teams.map((team) => {
-      if (team.id === props.firstTeamId) {
-        setFirstTeam(team);
+    const isPast = IsGamePast(date);
+    if (isPast) {
+      setDisabledDay(true);
+    }
+  }, [date]);
+
+  useEffect(() => {
+    bets?.forEach((bet) => {
+      if (bet.dayId === dayId && bet.teamId === firstTeamId) {
+        return setBet(firstTeamId);
       }
-      if (team.id === props.secondTeamId) {
-        setSecondTeam(team);
+      if (bet.dayId === dayId && bet.teamId === secondTeamId) {
+        return setBet(secondTeamId);
       }
     });
-  }, [props.id, props.firstTeamId, props.secondTeamId, teamsList.data]);
-
-  useEffect(() => {
-    if (!firstTeam || !secondTeam || !isLogged) {
-      return;
-    }
-    if (typeof gamesWithBet.data === "undefined") {
-      return;
-    }
-    if (gamesWithBet.data.userBets.length > 0) {
-      setNoBet(false);
-    }
-    gamesWithBet.data.userBets.map((bet) => {
-      if (bet.teamId === firstTeam.id) {
-        setNotSelected(secondTeam.id);
-        return setSelectedTeam(firstTeam.id);
-      }
-      if (bet.teamId === secondTeam.id) {
-        setNotSelected(firstTeam.id);
-        return setSelectedTeam(secondTeam.id);
-      }
-    });
-  }, [gamesWithBet.data?.userBets, props.id, firstTeam, secondTeam]);
-
-  useEffect(() => {
-    if (gamesWithBet.isError) {
-      setErrorMessage(
-        "Impossible de récupérer votre sélection, veuillez réessayer plus tard"
-      );
-    }
-  }, [gamesWithBet]);
+  }, [bets, dayId, firstTeamId, secondTeamId]);
 
   return (
     <>
-      <div className="w-full flex justify-between gap-2 sm:gap-3">
-        <>
-          {teamsList.isLoading || (isLogged && gamesWithBet.isLoading) ? (
-            <Skeleton
-              width="100%"
-              height="64px"
-              rounded
-              ariaLabel="Chargement des équipes"
-            />
-          ) : (
+      <div className="w-full max-w-sm px-2 py-4 flex flex-col gap-3 rounded-md bg-neutral-700 shadow-elevation md:px-4">
+        <div className="flex flex-col gap-1">
+          <div className="w-full flex items-center justify-between">
+            <span>{gameDate}</span>
+            {winner !== 0 && winner === bet ? (
+              <span className="px-2 py-1 rounded-xl border-1 border-emerald-400 text-emerald-400 text-sm font-bold">
+                +3 pts
+              </span>
+            ) : null}
+          </div>
+          <div className="flex gap-1">
+            <LockClosedIcon aria-hidden="true" className="w-4 h-4" />
+            <span className="text-xs">Fin des prédictions: {gameDate} 18h</span>
+          </div>
+        </div>
+
+        <div className="py-2 flex flex-col gap-5">
+          {firstTeam.isError ||
+          firstTeam.isLoading ||
+          secondTeam.isError ||
+          secondTeam.isLoading ? null : (
             <>
-              {!firstTeam || !secondTeam ? null : (
-                <FirstTeamContainer
-                  {...teamContainerProps}
-                  handleClick={handleClick}
-                />
-              )}
+              <TeamCard
+                role="button"
+                tabIndex={0}
+                bet={bet}
+                team={firstTeam.data}
+                winner={winner}
+                disabledDay={disabledDay}
+                onClick={() => handleClick(firstTeam.data.id)}
+                onKeyDown={(e) => handleKeyDown(e, firstTeam.data.id)}
+              />
+              <TeamCard
+                role="button"
+                tabIndex={0}
+                bet={bet}
+                team={secondTeam.data}
+                winner={winner}
+                disabledDay={disabledDay}
+                onClick={() => handleClick(secondTeam.data.id)}
+                onKeyDown={(e) => handleKeyDown(e, secondTeam.data.id)}
+              />
             </>
           )}
-        </>
-        {teamsList.isLoading || (isLogged && gamesWithBet.isLoading) ? (
-          <Skeleton
-            width="100%"
-            height="64px"
-            rounded
-            ariaLabel="Chargement des équipes"
-          />
-        ) : (
-          <>
-            {!firstTeam || !secondTeam ? null : (
-              <SecondTeamContainer
-                {...teamContainerProps}
-                handleClick={handleClick}
-              />
-            )}
-          </>
-        )}
+        </div>
       </div>
-      {betError || gamesWithBet.isError ? (
-        <ErrorModal
-          betError={betError}
-          setBetError={setBetError}
-          errorMessage={errorMessage}
-        />
-      ) : null}
 
-      <AuthModal {...authProps} />
+      <Modal
+        open={betError}
+        setOpen={setBetError}
+        title={"Erreur"}
+        description={errorMessage}
+        handleClose={handleErrorModal}
+      />
     </>
   );
 };

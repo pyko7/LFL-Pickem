@@ -1,13 +1,17 @@
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { AuthForm } from "@/src/types/forms";
+import { AuthForm } from "@/src/types/types";
 import { createUserSchema } from "@/src/validations/authValidation";
 import { useMutation } from "@tanstack/react-query";
 import { createUser } from "@/src/utils/api/auth/createUser";
 import { useRouter } from "next/router";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import Spinner from "../Loaders/Spinner";
+import Label from "../Inputs/Label";
+import IconLabel from "../Inputs/IconLabel";
+import InputErrorMessage from "../Inputs/InputErrorMessage";
+import Button from "../Buttons/Button";
 
 const SignUpForm = ({ handleClose }: { handleClose: () => void }) => {
   const { push } = useRouter();
@@ -83,28 +87,13 @@ const SignUpForm = ({ handleClose }: { handleClose: () => void }) => {
             required
             {...register("pseudo")}
           />
-          <label
-            htmlFor="pseudoInput"
-            className={`input_label 
-            peer-[:not(:placeholder-shown)]:-translate-y-[34px]
-            peer-[:not(:placeholder-shown)]:-translate-x-2
-            peer-[:not(:placeholder-shown)]:scale-[0.8]
-            peer-[:not(:placeholder-shown)]:px-2
-            peer-focus:-translate-y-[34px] peer-focus:-translate-x-2 peer-focus:scale-[0.8]
-      peer-focus:px-2`}
-          >
-            Pseudo
-          </label>
+          <Label htmlFor="pseudoInput">Pseudo</Label>
         </div>
         {mutation.isError && pseudoErrorMessage.length > 0 ? (
-          <p className="w-full max-w-[290px] mb-4 text-sm text-red-400 sm:max-w-none">
-            {pseudoErrorMessage}
-          </p>
+          <InputErrorMessage>{pseudoErrorMessage}</InputErrorMessage>
         ) : null}
         {errors.pseudo ? (
-          <p className="w-full max-w-[290px] mb-4 text-sm text-red-400 sm:max-w-none">
-            {errors.pseudo.message}
-          </p>
+          <InputErrorMessage>{errors.pseudo.message}</InputErrorMessage>
         ) : (
           ""
         )}
@@ -120,28 +109,13 @@ const SignUpForm = ({ handleClose }: { handleClose: () => void }) => {
             required
             {...register("email")}
           />
-          <label
-            htmlFor="emailInput"
-            className={`input_label 
-            peer-[:not(:placeholder-shown)]:-translate-y-[34px]
-            peer-[:not(:placeholder-shown)]:-translate-x-2
-            peer-[:not(:placeholder-shown)]:scale-[0.8]
-            peer-[:not(:placeholder-shown)]:px-2
-            peer-focus:-translate-y-[34px] peer-focus:-translate-x-2 peer-focus:scale-[0.8]
-      peer-focus:px-2`}
-          >
-            Adresse email
-          </label>
+          <Label htmlFor="emailInput">Adresse email</Label>
         </div>
         {mutation.isError && emailErrorMessage.length > 0 ? (
-          <p className="w-full max-w-[290px] mb-4 text-sm text-red-400 sm:max-w-none">
-            {emailErrorMessage}
-          </p>
+          <InputErrorMessage>{emailErrorMessage}</InputErrorMessage>
         ) : null}
         {errors.email ? (
-          <p className="w-full max-w-[290px] mb-4 text-sm text-red-400 sm:max-w-none">
-            {errors.email.message}
-          </p>
+          <InputErrorMessage>{errors.email.message}</InputErrorMessage>
         ) : (
           ""
         )}
@@ -157,50 +131,26 @@ const SignUpForm = ({ handleClose }: { handleClose: () => void }) => {
             required
             {...register("password")}
           />
-          <label
+          <Label htmlFor="passwordInput">Mot de passe</Label>
+          <IconLabel
             htmlFor="passwordInput"
-            className={`input_label 
-            peer-[:not(:placeholder-shown)]:-translate-y-[34px]
-            peer-[:not(:placeholder-shown)]:-translate-x-2
-            peer-[:not(:placeholder-shown)]:scale-[0.8]
-            peer-[:not(:placeholder-shown)]:px-2
-            peer-focus:-translate-y-[34px] peer-focus:-translate-x-2 peer-focus:scale-[0.8]
-      peer-focus:px-2`}
+            aria-label="toggle password"
+            onClick={handleClickShowPassword}
           >
-            Mot de passe
-          </label>
-          <label
-            htmlFor="passwordInput"
-            className="absolute top-1/2 right-4 -translate-y-1/2 w-5 h-5 "
-          >
-            <button
-              type="button"
-              role="button"
-              aria-label={`${
-                passwordVisible
-                  ? "Masquer le mot de passe"
-                  : "Afficher le mot de passe"
-              }`}
-              className="w-full h-full text-neutral-light focus-visible:text-neutral-light focus-visible:p-0"
-              onClick={handleClickShowPassword}
-            >
+            <div className="w-5 h-5">
               {passwordVisible ? (
                 <EyeSlashIcon aria-hidden="true" className="w-full h-full" />
               ) : (
                 <EyeIcon aria-hidden="true" className="w-full h-full" />
               )}
-            </button>
-          </label>
+            </div>
+          </IconLabel>
         </div>
         {mutation.isError && errorMessage.length > 0 ? (
-          <p className="w-full max-w-[290px] mb-4 text-sm text-red-400 sm:max-w-none">
-            {errorMessage}
-          </p>
+          <InputErrorMessage>{errorMessage}</InputErrorMessage>
         ) : null}
         {errors.password ? (
-          <p className="w-full max-w-[290px] mb-4 text-sm text-red-400 sm:max-w-none">
-            {errors.password.message}
-          </p>
+          <InputErrorMessage>{errors.password.message}</InputErrorMessage>
         ) : (
           ""
         )}
@@ -215,65 +165,46 @@ const SignUpForm = ({ handleClose }: { handleClose: () => void }) => {
             required
             {...register("confirmPassword")}
           />
-          <label
-            htmlFor="confirmPasswordInput"
-            className={`input_label 
-            peer-[:not(:placeholder-shown)]:-translate-y-[34px]
-            peer-[:not(:placeholder-shown)]:-translate-x-2
-            peer-[:not(:placeholder-shown)]:scale-[0.8]
-            peer-[:not(:placeholder-shown)]:px-2
-            peer-focus:-translate-y-[34px] peer-focus:-translate-x-2 peer-focus:scale-[0.8]
-      peer-focus:px-2`}
-          >
+
+          <Label htmlFor="confirmPasswordInput">
             Confirmer le mot de passe
-          </label>
-          <label
+          </Label>
+          <IconLabel
             htmlFor="confirmPasswordInput"
-            className="absolute top-1/2 right-4 -translate-y-1/2 w-5 h-5 "
+            aria-label="toggle confirm password"
+            onClick={handleClickShowConfirmPassword}
           >
-            <button
-              type="button"
-              role="button"
-              aria-label={`${
-                passwordVisible
-                  ? "Masquer la confirmation du mot de passe"
-                  : "Afficher la confirmation du mot de passe"
-              }`}
-              className="w-full h-full text-neutral-light focus-visible:text-neutral-light focus-visible:p-0"
-              onClick={handleClickShowConfirmPassword}
-            >
+            <div className="w-5 h-5">
               {confirmPasswordVisible ? (
                 <EyeSlashIcon aria-hidden="true" className="w-full h-full" />
               ) : (
                 <EyeIcon aria-hidden="true" className="w-full h-full" />
               )}
-            </button>
-          </label>
+            </div>
+          </IconLabel>
         </div>
         {mutation.isError && errorMessage.length > 0 ? (
-          <p className="w-full max-w-[290px] mb-4 text-sm text-red-400 sm:max-w-none">
-            {errorMessage}
-          </p>
+          <InputErrorMessage>{errorMessage}</InputErrorMessage>
         ) : null}
         {errors.confirmPassword ? (
-          <p className="w-full max-w-[290px] mb-4 text-sm text-red-400 sm:max-w-none">
+          <InputErrorMessage>
             {errors.confirmPassword.message}
-          </p>
+          </InputErrorMessage>
         ) : (
           ""
         )}
       </div>
 
-      <button
+      <Button
         type="submit"
-        className="w-full max-w-[275px] mt-3 py-3 rounded shadow text-base font-bold uppercase focus:shadow-outline focus:outline-none hover:bg-secondary-light  text-neutral-dark bg-secondary focus-visible:border-neutral-light"
+        className="w-fit text-neutral-dark focus-visible:border-neutral-light"
       >
         {mutation.isLoading ? (
           <Spinner dark ariaLabel="Attente de l'inscription" />
         ) : (
           "S'inscrire"
         )}
-      </button>
+      </Button>
     </form>
   );
 };

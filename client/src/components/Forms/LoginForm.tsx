@@ -1,25 +1,25 @@
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import Spinner from "../Loaders/Spinner";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { AuthForm } from "@/src/types/forms";
+import { AuthForm } from "@/src/types/types";
 import { logUserSchema } from "@/src/validations/authValidation";
 import { useMutation } from "@tanstack/react-query";
 import { logUser } from "@/src/utils/api/auth/logUser";
 import { useRouter } from "next/router";
 import { useAuthContext } from "@/context/AuthContext";
+import Label from "../Inputs/Label";
+import IconLabel from "../Inputs/IconLabel";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import InputErrorMessage from "../Inputs/InputErrorMessage";
+import Button from "../Buttons/Button";
+import { updateUserScore } from "@/src/utils/api/user/updateUserScore";
 
 const LoginForm = ({ handleClose }: { handleClose: () => void }) => {
   const { push, pathname } = useRouter();
-  const { setIsLogged } = useAuthContext();
-  const [passwordValue, setPasswordValue] = useState("");
+  const { setIsLogged, setScore } = useAuthContext();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
-  const handlePasswordValueChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setPasswordValue(event.target.value);
-  };
 
   const handleClickShowPassword = () => {
     return passwordVisible
@@ -48,8 +48,12 @@ const LoginForm = ({ handleClose }: { handleClose: () => void }) => {
       }
       setIsLogged(false);
     },
-    onSuccess: () => {
-      if (pathname !== "/") {
+    onSuccess: async () => {
+      const score = await updateUserScore();
+      if (score) {
+        setScore(score);
+      }
+      if (pathname === "/signup/confirm-email") {
         push("/");
       }
       setIsLogged(true);
@@ -63,7 +67,7 @@ const LoginForm = ({ handleClose }: { handleClose: () => void }) => {
 
   return (
     <form
-      className="w-full m-auto flex flex-col items-center gap-2 rounded-lg sm:max-w-sm sm:p-9 md:max-w-md lg:max-w-md lg:gap-5"
+      className="w-full m-auto flex flex-col items-center gap-2 rounded-lg sm:max-w-sm sm:p-9 md:max-w-md lg:max-w-md lg:gap-0"
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="input_label_container mb-6">
@@ -75,18 +79,7 @@ const LoginForm = ({ handleClose }: { handleClose: () => void }) => {
           required
           {...register("email")}
         />
-        <label
-          htmlFor="emailInput"
-          className={`input_label 
-          peer-[:not(:placeholder-shown)]:-translate-y-[34px]
-          peer-[:not(:placeholder-shown)]:-translate-x-2
-          peer-[:not(:placeholder-shown)]:scale-[0.8]
-          peer-[:not(:placeholder-shown)]:px-2
-          peer-focus:-translate-y-[34px] peer-focus:-translate-x-2 peer-focus:scale-[0.8]
-    peer-focus:px-2`}
-        >
-          Adresse email
-        </label>
+        <Label htmlFor="emailInput">Adresse email</Label>
       </div>
 
       <div className="input_label_container">
@@ -98,60 +91,40 @@ const LoginForm = ({ handleClose }: { handleClose: () => void }) => {
           required
           {...register("password")}
         />
-        <label
+        <Label htmlFor="passwordInput">Mot de passe</Label>
+        <IconLabel
           htmlFor="passwordInput"
-          className={`input_label
-          peer-[:not(:placeholder-shown)]:-translate-y-[34px]
-          peer-[:not(:placeholder-shown)]:-translate-x-2
-          peer-[:not(:placeholder-shown)]:scale-[0.8]
-          peer-[:not(:placeholder-shown)]:px-2
-          peer-focus:-translate-y-[34px] peer-focus:-translate-x-2 peer-focus:scale-[0.8]
-    peer-focus:px-2`}
+          aria-label="toggle password"
+          onClick={handleClickShowPassword}
         >
-          Mot de passe
-        </label>
-        <label
-          htmlFor="passwordInput"
-          className="absolute top-1/2 right-4 -translate-y-1/2 w-5 h-5 "
-        >
-          <button
-            type="button"
-            role="button"
-            aria-label={`${
-              passwordVisible
-                ? "Masquer le mot de passe"
-                : "Afficher le mot de passe"
-            }`}
-            className="w-full h-full text-neutral-light focus-visible:text-neutral-light focus-visible:p-0"
-            onClick={handleClickShowPassword}
-          >
+          <div className="w-5 h-5">
             {passwordVisible ? (
               <EyeSlashIcon aria-hidden="true" className="w-full h-full" />
             ) : (
               <EyeIcon aria-hidden="true" className="w-full h-full" />
             )}
-          </button>
-        </label>
+          </div>
+        </IconLabel>
       </div>
 
       {mutation.isError ? (
-        <p className="w-full text-red-400">{errorMessage}</p>
+        <InputErrorMessage>{errorMessage}</InputErrorMessage>
       ) : errors.email || errors.password ? (
-        <p className="w-full text-red-400">
+        <InputErrorMessage>
           Adresse email et/ou mot de passe incorrect
-        </p>
+        </InputErrorMessage>
       ) : null}
 
-      <button
+      <Button
         type="submit"
-        className="w-full max-w-[275px] mt-3 py-3 rounded shadow text-base font-bold uppercase focus:shadow-outline focus:outline-none hover:bg-secondary-light  text-neutral-dark bg-secondary focus-visible:border-neutral-light"
+        className="w-fit mt-6 text-neutral-dark focus-visible:border-neutral-light"
       >
         {mutation.isLoading ? (
-          <Spinner dark ariaLabel="Attente de la connexion" />
+          <Spinner dark ariaLabel="Attente de l'inscription" />
         ) : (
           "Se connecter"
         )}
-      </button>
+      </Button>
     </form>
   );
 };

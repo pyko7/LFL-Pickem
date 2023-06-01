@@ -1,13 +1,21 @@
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { sendAuthEmail } from "@/src/utils/api/auth/sendAuthEmail";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { AuthForm, EmailFormProps } from "@/src/types/forms";
+import { AuthForm } from "@/src/types/types";
 import { sendEmailSchema } from "@/src/validations/authValidation";
 import { useMutation } from "@tanstack/react-query";
 import Spinner from "../Loaders/Spinner";
+import Label from "../Inputs/Label";
+import InputErrorMessage from "../Inputs/InputErrorMessage";
+import Button from "../Buttons/Button";
 
-const SendEmailForm = ({ url, buttonName }: EmailFormProps) => {
+type Props = {
+  url: string;
+  buttonName: string;
+};
+
+const SendEmailForm = ({ url, buttonName }: Props) => {
   const successMessage = `Demande réussie ! Vous recevrez un email sous peu contenant un lien pour ${buttonName}.`;
   const [errorMessage, setErrorMessage] = useState("");
   const {
@@ -47,33 +55,22 @@ const SendEmailForm = ({ url, buttonName }: EmailFormProps) => {
           required
           {...register("email")}
         />
-        <label
-          htmlFor="emailInput"
-          className={`input_label 
-          peer-[:not(:placeholder-shown)]:-translate-y-[34px]
-          peer-[:not(:placeholder-shown)]:-translate-x-2
-          peer-[:not(:placeholder-shown)]:scale-[0.8]
-          peer-[:not(:placeholder-shown)]:px-2
-          peer-focus:-translate-y-[34px] peer-focus:-translate-x-2 peer-focus:scale-[0.8]
-    peer-focus:px-2`}
-        >
-          Adresse email
-        </label>
+        <Label htmlFor="emailInput">Adresse email</Label>
       </div>
       {errors.email ? (
-        <p className="w-full text-red-600">{errors.email.message}</p>
+        <InputErrorMessage>{errors.email.message}</InputErrorMessage>
       ) : null}
 
-      <button
+      <Button
         type="submit"
-        className="w-auto mt-3 px-4 py-2 rounded shadow text-[14px] font-bold uppercase focus:shadow-outline focus:outline-none hover:bg-secondary-light  text-neutral-dark bg-secondary sm:text-base"
+        className="w-fit text-neutral-dark focus-visible:border-neutral-light"
       >
         {mutation.isLoading ? (
           <Spinner dark ariaLabel="En attente de l'envoie de l'email" />
         ) : (
           `${buttonName}`
         )}
-      </button>
+      </Button>
       {mutation.isError ? (
         <p className="pt-[2px] pb-3 text-red-600">{errorMessage}</p>
       ) : null}

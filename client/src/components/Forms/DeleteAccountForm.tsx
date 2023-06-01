@@ -1,13 +1,16 @@
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { deleteUser } from "@/src/utils/api/user/deleteUser";
 import Spinner from "../Loaders/Spinner";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { AuthForm } from "@/src/types/forms";
+import { AuthForm } from "@/src/types/types";
 import { sendEmailSchema } from "@/src/validations/authValidation";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useAuthContext } from "@/context/AuthContext";
+import Label from "../Inputs/Label";
+import InputErrorMessage from "../Inputs/InputErrorMessage";
+import Button from "../Buttons/Button";
 
 const DeleteAccountForm = ({ handleClose }: { handleClose: () => void }) => {
   const { push } = useRouter();
@@ -56,33 +59,23 @@ const DeleteAccountForm = ({ handleClose }: { handleClose: () => void }) => {
           placeholder=" "
           {...register("email")}
         />
-        <label
-          htmlFor="emailInput"
-          className={`input_label 
-          peer-[:not(:placeholder-shown)]:-translate-y-[34px]
-          peer-[:not(:placeholder-shown)]:-translate-x-2
-          peer-[:not(:placeholder-shown)]:scale-[0.8]
-          peer-[:not(:placeholder-shown)]:px-2
-          peer-focus:-translate-y-[34px] peer-focus:-translate-x-2 peer-focus:scale-[0.8]
-    peer-focus:px-2`}
-        >
-          Adresse email
-        </label>
+        <Label htmlFor="emailInput">Adresse email</Label>
       </div>
+
       {errors.email ? (
-        <p className="w-full text-red-400">{errors.email.message}</p>
+        <InputErrorMessage>{errors.email.message}</InputErrorMessage>
       ) : null}
 
-      <button
+      <Button
         type="submit"
-        className="w-full max-w-[275px] mt-3 py-3 rounded shadow text-base font-bold uppercase focus:shadow-outline focus:outline-none hover:bg-secondary-light  text-neutral-dark bg-secondary focus-visible:border-neutral-light"
+        className="w-fit text-neutral-dark focus-visible:border-neutral-light"
       >
         {mutation.isLoading ? (
-          <Spinner dark ariaLabel="Attente de la suppression" />
+          <Spinner dark ariaLabel="En attente de l'envoie de l'email" />
         ) : (
           "Supprimer le compte"
         )}
-      </button>
+      </Button>
 
       {mutation.isError ? (
         <p className="pt-[2px] pb-3 text-red-400">{errorMessage}</p>

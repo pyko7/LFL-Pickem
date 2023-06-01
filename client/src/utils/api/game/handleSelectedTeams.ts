@@ -1,7 +1,12 @@
-import { SelectedTeam } from "@/src/types/teams";
 import { getCsrfToken } from "../credentials/getCsrfToken";
 
-export const addSelectedTeams = async (bet: SelectedTeam) => {
+type Bet = {
+  gameId: number;
+  teamId: number;
+  dayId: number;
+};
+
+export const addSelectedTeams = async (bet: Bet): Promise<void> => {
   try {
     const csrfToken = await getCsrfToken();
     const res = await fetch(
@@ -20,15 +25,15 @@ export const addSelectedTeams = async (bet: SelectedTeam) => {
     if (!res.ok) {
       throw new Error(res.statusText);
     }
-    return data;
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message);
     }
+    throw error;
   }
 };
 
-export const updateSelectedTeams = async (bet: SelectedTeam) => {
+export const updateSelectedTeams = async (bet: Bet): Promise<void> => {
   try {
     const csrfToken = await getCsrfToken();
     const res = await fetch(
@@ -47,15 +52,15 @@ export const updateSelectedTeams = async (bet: SelectedTeam) => {
     if (!res.ok) {
       throw new Error(res.statusText);
     }
-    return data;
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message);
     }
+    throw error;
   }
 };
 
-export const deleteSelectedTeams = async (bet: SelectedTeam) => {
+export const deleteSelectedTeams = async (bet: Bet): Promise<void> => {
   try {
     const csrfToken = await getCsrfToken();
     const res = await fetch(
@@ -74,10 +79,10 @@ export const deleteSelectedTeams = async (bet: SelectedTeam) => {
     if (!res.ok) {
       throw new Error(res.statusText);
     }
-    return data;
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message);
     }
+    throw error;
   }
 };

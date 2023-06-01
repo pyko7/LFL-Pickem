@@ -1,38 +1,33 @@
-import { Day } from "../types/teams";
-import { addMilliseconds, differenceInMilliseconds, isAfter } from "date-fns";
+import { isAfter, isSameDay } from "date-fns";
+import { closestTo } from "date-fns";
+import { DayProps } from "../types/types";
 /**
  * This function allows to display the closest when the user arrives on the homepage
  * With the closest day found we can fetch the games of this day
  * @param array This is the list of days with their ids& dates
- * @returns The closest day from today
+ * @returns The closest day from today present in the games list
  */
-export const getClosestDayFromNow = (array: Day[]) => {
-  let validDates: Day[] = [];
-  let times: number[] = [];
-  let date: any = "";
+export const getClosestDayFromNow = (array: DayProps[]): DayProps => {
+  let validDates: DayProps[] = [];
+  let dayDates: Date[] = [];
 
   validDates = array.filter((day) => isAfter(new Date(day.date), new Date()));
+  validDates.forEach((day) => {
+    dayDates.push(new Date(day.date));
+  });
 
   if (validDates.length === 0) {
-    const lastDate = array.pop()?.date;
-    if (lastDate) {
-      return (date = new Date(lastDate).toDateString());
-    } else {
-      return date;
-    }
+    return array.slice(-1)[0];
   }
 
-  validDates.forEach((day) => {
-    const diff = Math.abs(
-      differenceInMilliseconds(new Date(day.date), new Date())
-    );
-    times.push(diff);
-    const closestDateInMilliseconds = addMilliseconds(
-      new Date(),
-      Math.min(...times)
-    );
+  const closestDate = closestTo(new Date(), dayDates);
+  if (!closestDate) {
+    return array[0];
+  }
 
-    date = new Date(closestDateInMilliseconds).toDateString();
-  });
-  return date;
+  const day = array.find((day) => isSameDay(new Date(day.date), closestDate));
+  if (!day) {
+    return array[0];
+  }
+  return day;
 };

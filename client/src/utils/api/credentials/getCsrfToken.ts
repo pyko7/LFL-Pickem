@@ -1,4 +1,4 @@
-export const getCsrfToken = async () => {
+export const getCsrfToken = async (): Promise<string> => {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/csrf-token`, {
       method: "GET",
@@ -16,5 +16,6 @@ export const getCsrfToken = async () => {
     if (error instanceof Error) {
       throw new Error(error.message);
     }
+    throw error;
   }
 };

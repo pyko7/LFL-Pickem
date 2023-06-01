@@ -8,43 +8,56 @@ datasource db {
 }
 
 model User {
-  id       String @id
-  email    String @unique
-  userName String @unique
-  points   Int    @default(0)
-  bets     Bet[]
+  id              String   @id
+  email           String   @unique
+  userName        String   @unique
+  points          Int      @default(0)
+  bets            Bet[]
+}
+
+model League {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  Team Team[]
+  Game Game[]
+  Day  Day[]
 }
 
 model Team {
   id         Int    @id @default(autoincrement())
   name       String @unique
   logo       String
-  color      String
   Bet        Bet[]
   FirstTeam  Game[] @relation("FirstTeam")
   SecondTeam Game[] @relation("SecondTeam")
+  LeagueId   League @relation(references: [id], fields: [leagueId], onDelete: Cascade, onUpdate: Cascade)
+  leagueId   Int    @default(0)
 }
 
 model Game {
   id           Int      @id @default(autoincrement())
   date         DateTime
-  firstTeam    Team?    @relation("FirstTeam", references: [id], fields: [firstTeamId])
-  secondTeam   Team?    @relation("SecondTeam", references: [id], fields: [secondTeamId])
+  firstTeam    Team?    @relation("FirstTeam", references: [id], fields: [firstTeamId], onUpdate: NoAction)
+  secondTeam   Team?    @relation("SecondTeam", references: [id], fields: [secondTeamId], onUpdate: NoAction)
   winner       Int      @default(0)
   firstTeamId  Int?
   secondTeamId Int?
   Day          Day      @relation(fields: [dayId], references: [id], onDelete: NoAction, onUpdate: Cascade)
   dayId        Int      @default(0)
   Bet          Bet[]
+  LeagueId     League   @relation(references: [id], fields: [leagueId], onDelete: Cascade, onUpdate: Cascade)
+  leagueId     Int      @default(0)
 
   @@unique([id, date])
 }
 
 model Day {
-  id    Int      @id @default(autoincrement())
-  games Game[]
-  date  DateTime @default(now())
-  Bet   Bet[]
+  id       Int      @id @default(autoincrement())
+  games    Game[]
+  date     DateTime @default(now())
+  Bet      Bet[]
+  League   League   @relation(fields: [leagueId], references: [id])
+  leagueId Int      @default(1)
 }
 
 model Bet {

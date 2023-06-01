@@ -1,84 +1,65 @@
-import { useState, useEffect } from "react";
-import { TeamProps } from "@/src/types/teams";
+import { ButtonHTMLAttributes } from "react";
+import { Team } from "@/src/types/types";
 import Image from "next/image";
+import { useThemeContext } from "@/context/ThemeContext";
 
-const FirstTeam = ({
-  team,
-  notSelected,
-  disabledDay,
-  noBet,
-  firstTeam,
-}: TeamProps) => {
-  const [visible, setVisible] = useState(true);
+type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
+  bet: number;
+  team: Team;
+  winner: number;
+  disabledDay: boolean;
+};
 
-  useEffect(() => {
-    if (notSelected === team.id) {
-      setVisible(false);
-    } else {
-      setVisible(true);
-    }
-  }, [notSelected, team.id]);
-
+const TeamCard = ({ bet, team, winner, disabledDay, ...rest }: Props) => {
+  const { leagueId } = useThemeContext();
+  const selected = bet === team.id;
+  const lfl = leagueId === 1;
+  const divtwo = leagueId === 2;
+  const winningBet = disabledDay && selected && winner === team.id;
+  const losingBet = disabledDay && selected && winner !== team.id;
+  const pendingBet = disabledDay && selected && winner === 0;
   return (
     <button
-      type="button"
-      name={team.name}
-      className={`relative team__card w-full 
-      ${disabledDay ? "contrast-0 cursor-not-allowed" : ""}
-      ${
-        visible && !noBet && !disabledDay ? "filter-none hover:filter-none" : ""
-      }
-      `}
-      style={{
-        background: firstTeam
-          ? `linear-gradient(90deg, rgb(10, 14, 19) 0%, ${team.color} 75%)`
-          : `linear-gradient(-90deg, rgb(10, 14, 19) 0%, ${team.color} 75%)`,
-      }}
-    >
-      <h2
-        className={`${
-          noBet || disabledDay
-            ? "animate-none"
-            : !visible && firstTeam
-            ? "opacity-0 "
-            : !visible && !firstTeam
-            ? "opacity-0 "
-            : visible && firstTeam
-            ? "opacity-1 "
-            : visible && !firstTeam
-            ? "opacity-1 "
-            : ""
-        }
-        ${disabledDay && !visible ? "opacity-0" : ""}
-        ${firstTeam ? "mr-5" : "ml-5"}
-        team_card_title--opacity max-w-[75px] whitespace-pre-wrap text-sm font-bold sm:max-w-none sm:text-base`}
-      >
-        {team.name}
-      </h2>
-
-      <Image
-        loader={() => team.logo}
-        unoptimized
-        src={team.logo}
-        alt={team.name}
-        width={50}
-        height={50}
-        className={`absolute top-1/2 ${firstTeam ? "right-3" : "left-3"} 
+      disabled={disabledDay}
+      aria-label="select winning team"
+      className={`relative w-full py-2 px-4 flex items-center justify-between rounded-xl bg-neutral-800
+       border-1 shadow-md outline-1 outline-blue-400 disabled:cursor-default
         ${
-          !visible && firstTeam
-            ? "animate-centerFirstTeamLogo"
-            : !visible && !firstTeam
-            ? "animate-centerSecondTeamLogo"
-            : visible && firstTeam
-            ? "slideLogoToRight"
-            : visible && !firstTeam
-            ? "animate-slideLogoToLeft"
-            : ""
+          selected
+            ? "bg-neutral-900 disabled:hover:bg-neutral-900"
+            : "disabled:hover:bg-neutral-800"
         }
-        -translate-y-1/2 w-10 h-10 object-contain sm:w-12 sm:h-12`}
-      />
+        ${
+          (!disabledDay && selected && lfl) || (selected && lfl && pendingBet)
+            ? "border-lfl"
+            : (!disabledDay && selected && divtwo) ||
+              (selected && divtwo && pendingBet)
+            ? "border-divtwo"
+            : winningBet
+            ? "border-emerald-400"
+            : losingBet
+            ? "border-red-400"
+            : "border-transparent"
+        }
+    
+      hover:bg-neutral-900`}
+      {...rest}
+    >
+      <div className="w-full flex items-center gap-2">
+        <div className="relative w-10 h-10">
+          <Image
+            loader={() => team.logo}
+            unoptimized
+            src={team.logo}
+            alt=""
+            fill
+            className={`object-contain`}
+          />
+        </div>
+        <div className="font-semibold">{team.name}</div>
+      </div>
     </button>
   );
 };
 
-export default FirstTeam;
+export default TeamCard;

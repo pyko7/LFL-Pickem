@@ -1,4 +1,4 @@
-import { AuthForm } from "@/src/types/forms";
+import { AuthForm } from "@/src/types/types";
 import { auth } from "@/firebase";
 import {
   signInWithEmailAndPassword,
@@ -8,7 +8,7 @@ import {
 import { FirebaseError } from "firebase/app";
 import { getCsrfToken } from "../credentials/getCsrfToken";
 
-export const logUser = async (userData: AuthForm) => {
+export const logUser = async (userData: AuthForm): Promise<void> => {
   const { email, password } = userData;
   try {
     const csrfToken = await getCsrfToken();
@@ -38,7 +38,6 @@ export const logUser = async (userData: AuthForm) => {
       throw new Error(res.statusText);
     }
     await auth.signOut();
-    return data;
   } catch (error) {
     if (error instanceof FirebaseError) {
       if (error.code === "auth/wrong-password") {
@@ -56,5 +55,6 @@ export const logUser = async (userData: AuthForm) => {
     if (error instanceof Error) {
       throw new Error(error.message);
     }
+    throw error;
   }
 };
