@@ -29,9 +29,9 @@ app.use(
 app.use(cookieParser());
 app.get("/api/csrf-token", generateCsrfToken);
 app.use(doubleCsrfProtection);
-app.use("/api/auth", authRoutes);
-app.use("/api/user", verifySession, userRoutes);
-app.use("/api/game", gameRoutes);
+// app.use("/api/auth", authRoutes);
+// app.use("/api/user", verifySession, userRoutes);
+// app.use("/api/game", gameRoutes);
 app.listen(process.env.PORT, () => {
   console.log("listening at " + port);
 });
